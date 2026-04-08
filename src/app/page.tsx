@@ -2,7 +2,6 @@ import Link from "next/link";
 import { categories } from "@/data/categories";
 import { tools, getFeaturedTools, getToolsByCategory } from "@/data/tools";
 import { ToolCard } from "@/components/tool";
-import { CategoryCard } from "@/components/category";
 
 export default function Home() {
   const featuredTools = getFeaturedTools();
@@ -10,64 +9,63 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative py-28 text-center overflow-hidden">
-        {/* Glow orb */}
+      <section className="relative py-24 text-center overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
-
         <h1 className="font-serif italic text-5xl sm:text-7xl text-foreground glow-text relative">
-          发现最好用的 AI 工具
+          AI 工具聚合导航
         </h1>
         <p className="mt-4 text-lg text-muted max-w-2xl mx-auto relative">
-          精选 {tools.length}+ 款优质 AI 工具，按场景分类，帮你快速上手 AI 时代
+          {tools.length}+ 款精选 AI 工具，一站直达，点击即跳转官网
         </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-3 relative">
+      </section>
+
+      {/* Category Navigation */}
+      <section className="max-w-6xl mx-auto px-6 mb-8">
+        <div className="flex flex-wrap justify-center gap-2">
           {categories.map((cat) => (
-            <Link
+            <a
               key={cat.id}
-              href={`/category/${cat.id}`}
+              href={`#${cat.id}`}
               className="glass px-5 py-2.5 rounded-full text-sm text-accent-dim hover:text-accent hover:border-accent/30 transition-all"
             >
               {cat.icon} {cat.name}
-            </Link>
-          ))}
-          <Link
-            href="/recommend"
-            className="glass-strong px-5 py-2.5 rounded-full text-sm text-accent font-semibold"
-          >
-            🎯 智能推荐
-          </Link>
-        </div>
-      </section>
-
-      {/* Featured Tools */}
-      <section className="max-w-6xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <h2 className="font-serif italic text-3xl text-foreground">精选推荐</h2>
-          <p className="text-muted text-sm mt-1">编辑精选的优质 AI 工具</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {featuredTools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+              <span className="ml-1 text-muted/50 text-xs">{getToolsByCategory(cat.id).length}</span>
+            </a>
           ))}
         </div>
       </section>
 
-      {/* All Categories */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="mb-8">
-          <h2 className="font-serif italic text-3xl text-foreground">按场景找工具</h2>
-          <p className="text-muted text-sm mt-1">选择你的使用场景</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {categories.map((cat) => (
-            <CategoryCard
-              key={cat.id}
-              category={cat}
-              toolCount={getToolsByCategory(cat.id).length}
-            />
-          ))}
-        </div>
-      </section>
+      {/* All Categories with Tools */}
+      {categories.map((cat) => {
+        const catTools = getToolsByCategory(cat.id);
+        if (catTools.length === 0) return null;
+        return (
+          <section key={cat.id} id={cat.id} className="max-w-6xl mx-auto px-6 py-10 scroll-mt-24">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-3xl">{cat.icon}</span>
+              <div>
+                <h2 className="font-serif italic text-2xl text-foreground">{cat.name}</h2>
+                <p className="text-sm text-muted">{cat.description}</p>
+              </div>
+              <span className="ml-auto glass px-3 py-1 rounded-full text-xs text-accent-dim">
+                {catTools.length} 款
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {catTools.map((tool) => (
+                <ToolCard key={tool.id} tool={tool} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* Back to top */}
+      <div className="text-center py-12">
+        <a href="#" className="text-sm text-muted hover:text-accent transition-colors">
+          ↑ 回到顶部
+        </a>
+      </div>
     </div>
   );
 }

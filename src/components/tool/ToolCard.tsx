@@ -23,18 +23,14 @@ function PricingBadge({ priceType }: { priceType: Tool["priceType"] }) {
 
 export function ToolCard({ tool, className }: ToolCardProps) {
   return (
-    <Link
-      href={`/tool/${tool.slug}`}
-      className={cn("group glass-card rounded-xl p-5 block", className)}
-    >
+    <div className={cn("group glass-card rounded-xl p-5", className)}>
+      {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2.5">
           <span className="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">
             {tool.logoText}
           </span>
-          <h3 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
-            {tool.name}
-          </h3>
+          <h3 className="text-base font-semibold text-foreground">{tool.name}</h3>
         </div>
         <PricingBadge priceType={tool.priceType} />
       </div>
@@ -45,7 +41,8 @@ export function ToolCard({ tool, className }: ToolCardProps) {
         {tool.description}
       </p>
 
-      <div className="flex flex-wrap gap-1.5 mb-3">
+      {/* Tags */}
+      <div className="flex flex-wrap gap-1.5 mb-4">
         {tool.tags.slice(0, 4).map((tag) => (
           <span key={tag} className="text-xs bg-surface-high text-muted px-2 py-0.5 rounded">
             {tag}
@@ -54,8 +51,26 @@ export function ToolCard({ tool, className }: ToolCardProps) {
       </div>
 
       {tool.priceNote && (
-        <p className="text-xs text-muted/60">{tool.priceNote}</p>
+        <p className="text-xs text-muted/60 mb-4">{tool.priceNote}</p>
       )}
-    </Link>
+
+      {/* Actions - primary: go to official site, secondary: view detail */}
+      <div className="flex items-center justify-between pt-3 border-t border-border">
+        <a
+          href={tool.officialUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-foreground transition-colors"
+        >
+          直达官网 ↗
+        </a>
+        <Link
+          href={`/tool/${tool.slug}`}
+          className="text-xs text-muted hover:text-accent transition-colors"
+        >
+          详情
+        </Link>
+      </div>
+    </div>
   );
 }
