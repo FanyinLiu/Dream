@@ -10,6 +10,9 @@ export const recommendQuestions: RecommendQuestion[] = [
       { value: "video", label: "制作视频", description: "短视频、数字人口播、广告片" },
       { value: "writing", label: "写作 / 文案", description: "文章、营销文案、翻译、润色" },
       { value: "coding", label: "编程 / 开发", description: "代码补全、全栈开发、Bug 修复" },
+      { value: "music", label: "音乐 / 音频", description: "歌曲创作、配乐、语音合成" },
+      { value: "webdev", label: "网页制作", description: "网站搭建、落地页、UI 生成" },
+      { value: "prompt", label: "提示词工具", description: "提示词优化、模板、学习" },
     ],
   },
   {
@@ -89,5 +92,23 @@ export const taskOptionsByCategory: Record<CategoryId, { value: string; label: s
     { value: "review", label: "代码审查" },
     { value: "debug", label: "调试 / 修 Bug" },
     { value: "fullstack", label: "全栈应用开发" },
+  ],
+  music: [
+    { value: "song", label: "生成完整歌曲" },
+    { value: "bgm", label: "背景音乐 / 配乐" },
+    { value: "voice", label: "语音合成 / 配音" },
+    { value: "clone", label: "声音克隆" },
+  ],
+  webdev: [
+    { value: "landing", label: "落地页 / 营销页" },
+    { value: "fullsite", label: "完整网站搭建" },
+    { value: "ui", label: "UI 组件生成" },
+    { value: "prototype", label: "快速原型" },
+  ],
+  prompt: [
+    { value: "optimize", label: "提示词优化" },
+    { value: "template", label: "找提示词模板" },
+    { value: "learn", label: "学习提示词技巧" },
+    { value: "image-prompt", label: "AI 绘画提示词" },
   ],
 };
