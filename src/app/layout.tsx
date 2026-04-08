@@ -15,40 +15,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="antialiased">
-      <body className="min-h-screen flex flex-col bg-gray-50">
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                {siteConfig.name}
-              </span>
-              <span className="text-sm text-gray-500 hidden sm:inline">
-                {siteConfig.tagline}
-              </span>
+    <html lang="zh-CN" className="dark antialiased">
+      <body className="min-h-screen flex flex-col">
+        {/* Floating Glass Navbar */}
+        <nav className="fixed top-0 left-0 right-0 z-50 mx-auto mt-4 max-w-5xl px-4">
+          <div className="flex items-center justify-between px-6 py-3 rounded-full glass-strong">
+            <Link href="/" className="text-2xl italic font-serif text-foreground tracking-tighter">
+              AI Nav
             </Link>
-            <nav className="flex items-center gap-6 text-sm">
+            <div className="hidden md:flex items-center gap-8">
               {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  className="text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
-            </nav>
+            </div>
+            {/* Mobile menu */}
+            <div className="md:hidden flex items-center gap-4">
+              {siteConfig.navItems.slice(0, 3).map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </header>
+        </nav>
+
+        {/* Spacer for fixed nav */}
+        <div className="h-20" />
 
         <main className="flex-1">{children}</main>
 
-        <footer className="bg-white border-t border-gray-200 mt-auto">
-          <div className="max-w-6xl mx-auto px-4 py-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-8">
+        {/* Footer */}
+        <footer className="border-t border-border mt-20">
+          <div className="max-w-6xl mx-auto px-6 py-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mb-10">
               {siteConfig.footerLinks.map((group) => (
                 <div key={group.title}>
-                  <h4 className="font-semibold text-gray-900 text-sm mb-3">
+                  <h4 className="text-xs uppercase tracking-widest text-accent mb-4 font-semibold">
                     {group.title}
                   </h4>
                   <ul className="space-y-2">
@@ -56,7 +68,7 @@ export default function RootLayout({
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                          className="text-sm text-muted hover:text-foreground transition-colors"
                         >
                           {link.label}
                         </Link>
@@ -66,16 +78,18 @@ export default function RootLayout({
                 </div>
               ))}
               <div>
-                <h4 className="font-semibold text-gray-900 text-sm mb-3">
+                <h4 className="text-xs uppercase tracking-widest text-accent mb-4 font-semibold">
                   关于
                 </h4>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted leading-relaxed">
                   {siteConfig.description}
                 </p>
               </div>
             </div>
-            <div className="text-center text-sm text-gray-400 border-t border-gray-100 pt-6">
-              {siteConfig.name} - {siteConfig.tagline}
+            <div className="text-center text-xs text-muted/60 border-t border-border pt-6">
+              <span className="italic font-serif text-lg text-foreground/40">AI Nav</span>
+              <span className="mx-2">·</span>
+              {siteConfig.tagline}
             </div>
           </div>
         </footer>

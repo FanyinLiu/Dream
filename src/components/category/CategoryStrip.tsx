@@ -16,10 +16,10 @@ export function CategoryStrip({ categories, activeCategoryId, className }: Categ
           key={cat.id}
           href={`/category/${cat.id}`}
           className={cn(
-            "px-4 py-2 rounded-full text-sm font-medium transition-colors border",
+            "px-4 py-2 rounded-full text-sm transition-all",
             cat.id === activeCategoryId
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:text-blue-600",
+              ? "glass-strong text-accent font-semibold"
+              : "glass text-muted hover:text-accent",
           )}
         >
           {cat.icon} {cat.name}

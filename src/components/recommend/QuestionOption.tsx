@@ -15,27 +15,27 @@ export function QuestionOption({ option, selected, onSelect }: QuestionOptionPro
       type="button"
       onClick={onSelect}
       className={cn(
-        "w-full text-left p-4 rounded-xl border-2 transition-all",
+        "w-full text-left p-4 rounded-xl transition-all",
         selected
-          ? "border-blue-600 bg-blue-50"
-          : "border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm",
+          ? "glass-strong text-accent"
+          : "glass-card text-foreground",
       )}
     >
       <div className="flex items-center gap-3">
         <div
           className={cn(
-            "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
-            selected ? "border-blue-600" : "border-gray-300",
+            "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
+            selected ? "border-accent" : "border-muted/40",
           )}
         >
-          {selected && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+          {selected && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
         </div>
         <div>
-          <p className={cn("font-medium", selected ? "text-blue-900" : "text-gray-900")}>
+          <p className={cn("font-medium", selected ? "text-accent" : "text-foreground")}>
             {option.label}
           </p>
           {option.description && (
-            <p className="text-sm text-gray-500 mt-0.5">{option.description}</p>
+            <p className="text-sm text-muted mt-0.5">{option.description}</p>
           )}
         </div>
       </div>

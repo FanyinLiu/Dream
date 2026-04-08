@@ -30,12 +30,10 @@ function ResultContent() {
   if (answers.requirements?.length) summaryAnswers.requirements = answers.requirements;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">🎯 推荐结果</h1>
-        <p className="text-gray-500 mt-2">
-          根据你的需求，为你精选了以下 AI 工具
-        </p>
+    <div className="max-w-3xl mx-auto px-6 py-10">
+      <div className="text-center mb-10">
+        <h1 className="font-serif italic text-4xl text-foreground glow-text">推荐结果</h1>
+        <p className="text-muted mt-2">根据你的需求，为你精选了以下 AI 工具</p>
       </div>
 
       <RecommendationSummary answers={summaryAnswers} />
@@ -46,36 +44,17 @@ function ResultContent() {
             const tool = getToolById(result.toolId);
             if (!tool) return null;
             return (
-              <RecommendationCard
-                key={result.toolId}
-                tool={tool}
-                score={result.score}
-                matchReasons={result.matchReasons}
-                rank={index + 1}
-              />
+              <RecommendationCard key={result.toolId} tool={tool} score={result.score} matchReasons={result.matchReasons} rank={index + 1} />
             );
           })}
         </div>
       ) : (
-        <EmptyState
-          title="暂无匹配结果"
-          description="抱歉，没有找到完全匹配的工具。试试调整你的选择条件。"
-        />
+        <EmptyState title="暂无匹配结果" description="抱歉，没有找到完全匹配的工具。试试调整你的选择条件。" />
       )}
 
-      <div className="text-center mt-8 flex gap-4 justify-center">
-        <Link
-          href="/recommend"
-          className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
-        >
-          ← 重新选择
-        </Link>
-        <Link
-          href="/categories"
-          className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          浏览全部分类
-        </Link>
+      <div className="text-center mt-10 flex gap-6 justify-center">
+        <Link href="/recommend" className="text-sm text-accent hover:text-foreground font-medium transition-colors">← 重新选择</Link>
+        <Link href="/categories" className="text-sm text-muted hover:text-foreground transition-colors">浏览全部分类</Link>
       </div>
     </div>
   );
@@ -83,11 +62,7 @@ function ResultContent() {
 
 export default function RecommendResultPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="text-center py-20 text-gray-500">加载中...</div>
-      }
-    >
+    <Suspense fallback={<div className="text-center py-20 text-muted">加载中...</div>}>
       <ResultContent />
     </Suspense>
   );

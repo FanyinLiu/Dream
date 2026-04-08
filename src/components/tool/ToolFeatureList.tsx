@@ -10,22 +10,22 @@ export function ToolFeatureList({ pros, cons, className }: ToolFeatureListProps)
   return (
     <div className={cn("grid grid-cols-1 sm:grid-cols-2 gap-6", className)}>
       <div>
-        <h4 className="text-sm font-semibold text-green-700 mb-2">✅ 优势</h4>
-        <ul className="space-y-1.5">
+        <h4 className="text-sm font-semibold text-green-400 mb-3">优势</h4>
+        <ul className="space-y-2">
           {pros.map((pro) => (
-            <li key={pro} className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-green-500 mt-0.5 shrink-0">•</span>
+            <li key={pro} className="text-sm text-muted flex items-start gap-2">
+              <span className="text-green-400 mt-0.5 shrink-0">+</span>
               {pro}
             </li>
           ))}
         </ul>
       </div>
       <div>
-        <h4 className="text-sm font-semibold text-red-700 mb-2">⚠️ 不足</h4>
-        <ul className="space-y-1.5">
+        <h4 className="text-sm font-semibold text-orange-400 mb-3">不足</h4>
+        <ul className="space-y-2">
           {cons.map((con) => (
-            <li key={con} className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-red-500 mt-0.5 shrink-0">•</span>
+            <li key={con} className="text-sm text-muted flex items-start gap-2">
+              <span className="text-orange-400 mt-0.5 shrink-0">-</span>
               {con}
             </li>
           ))}

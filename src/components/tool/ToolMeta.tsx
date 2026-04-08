@@ -26,8 +26,8 @@ export function ToolMeta({ tool }: ToolMetaProps) {
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-gray-400 text-xs">{label}</dt>
-      <dd className="text-gray-900 font-medium mt-0.5">{value}</dd>
+      <dt className="text-muted text-xs uppercase tracking-wider">{label}</dt>
+      <dd className="text-foreground font-medium mt-0.5">{value}</dd>
     </div>
   );
 }
