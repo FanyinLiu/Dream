@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { siteConfig } from "@/data/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Nav - 发现最好用的 AI 工具",
-  description:
-    "精选优质 AI 工具导航，帮你按场景快速找到最适合的 AI 工具。写作、绘画、视频、编程、设计，一站搞定。",
-  keywords: [
-    "AI工具",
-    "AI导航",
-    "人工智能",
-    "ChatGPT",
-    "Midjourney",
-    "AI写作",
-    "AI绘画",
-  ],
+  title: siteConfig.name + " - " + siteConfig.tagline,
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
 };
 
 export default function RootLayout({
@@ -29,31 +21,22 @@ export default function RootLayout({
           <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                AI Nav
+                {siteConfig.name}
               </span>
               <span className="text-sm text-gray-500 hidden sm:inline">
-                发现最好用的 AI 工具
+                {siteConfig.tagline}
               </span>
             </Link>
             <nav className="flex items-center gap-6 text-sm">
-              <Link
-                href="/"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                首页
-              </Link>
-              <Link
-                href="/categories"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                分类
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                关于
-              </Link>
+              {siteConfig.navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           </div>
         </header>
@@ -61,11 +44,39 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer className="bg-white border-t border-gray-200 mt-auto">
-          <div className="max-w-6xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
-            <p>AI Nav - 精选 AI 工具导航</p>
-            <p className="mt-1">
-              帮你在 AI 时代找到最好用的工具，提升效率，释放创造力。
-            </p>
+          <div className="max-w-6xl mx-auto px-4 py-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-8">
+              {siteConfig.footerLinks.map((group) => (
+                <div key={group.title}>
+                  <h4 className="font-semibold text-gray-900 text-sm mb-3">
+                    {group.title}
+                  </h4>
+                  <ul className="space-y-2">
+                    {group.links.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <div>
+                <h4 className="font-semibold text-gray-900 text-sm mb-3">
+                  关于
+                </h4>
+                <p className="text-sm text-gray-500">
+                  {siteConfig.description}
+                </p>
+              </div>
+            </div>
+            <div className="text-center text-sm text-gray-400 border-t border-gray-100 pt-6">
+              {siteConfig.name} - {siteConfig.tagline}
+            </div>
           </div>
         </footer>
       </body>

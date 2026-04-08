@@ -1,25 +1,10 @@
 import Link from "next/link";
-import { categories, getFeaturedTools, tools } from "@/data/tools";
-
-function PricingBadge({ pricing }: { pricing: string }) {
-  const styles = {
-    free: "bg-green-100 text-green-700",
-    freemium: "bg-blue-100 text-blue-700",
-    paid: "bg-orange-100 text-orange-700",
-  };
-  const labels = {
-    free: "免费",
-    freemium: "免费试用",
-    paid: "付费",
-  };
-  return (
-    <span
-      className={`text-xs px-2 py-0.5 rounded-full font-medium ${styles[pricing as keyof typeof styles]}`}
-    >
-      {labels[pricing as keyof typeof labels]}
-    </span>
-  );
-}
+import { categories } from "@/data/categories";
+import { tools, getFeaturedTools, getToolsByCategory } from "@/data/tools";
+import { siteConfig } from "@/data/site";
+import { SectionHeader } from "@/components/common";
+import { CategoryCard } from "@/components/category";
+import { ToolCard } from "@/components/tool";
 
 export default function Home() {
   const featuredTools = getFeaturedTools();
@@ -46,71 +31,36 @@ export default function Home() {
                 {cat.icon} {cat.name}
               </Link>
             ))}
+            <Link
+              href="/recommend"
+              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium transition-colors border border-white/30"
+            >
+              🎯 智能推荐
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Featured Tools */}
       <section className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          精选推荐
-        </h2>
+        <SectionHeader title="精选推荐" description="编辑精选的优质 AI 工具" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {featuredTools.map((tool) => (
-            <a
-              key={tool.id}
-              href={tool.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:border-blue-300 transition-all"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                  {tool.name}
-                </h3>
-                <PricingBadge pricing={tool.pricing} />
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                {tool.description}
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {tool.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              {tool.pricingNote && (
-                <p className="text-xs text-gray-400 mt-3">
-                  {tool.pricingNote}
-                </p>
-              )}
-            </a>
+            <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
       </section>
 
       {/* All Categories */}
       <section className="max-w-6xl mx-auto px-4 pb-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          按场景找工具
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <SectionHeader title="按场景找工具" description="选择你的使用场景，找到最合适的 AI 工具" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {categories.map((cat) => (
-            <Link
+            <CategoryCard
               key={cat.id}
-              href={`/category/${cat.id}`}
-              className="group bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-300 transition-all"
-            >
-              <div className="text-3xl mb-2">{cat.icon}</div>
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                {cat.name}
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">{cat.description}</p>
-            </Link>
+              category={cat}
+              toolCount={getToolsByCategory(cat.id).length}
+            />
           ))}
         </div>
       </section>
