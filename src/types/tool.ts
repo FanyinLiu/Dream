@@ -1,6 +1,6 @@
 // ─── 基础枚举类型 ───
 
-export type CategoryId = "image" | "video" | "writing" | "coding";
+export type CategoryId = "image" | "video" | "writing" | "coding" | "music" | "webdev" | "prompt";
 
 export type PriceType = "free" | "freemium" | "paid";
 

@@ -41,6 +41,36 @@ export const categories: Category[] = [
     sort: 4,
     useCases: ["代码补全", "Bug 修复", "代码重构", "全栈开发", "代码审查"],
   },
+  {
+    id: "music",
+    slug: "music",
+    name: "AI 音乐",
+    icon: "🎵",
+    description: "音乐生成、歌曲创作、配乐制作，AI 帮你玩转音乐",
+    featured: true,
+    sort: 5,
+    useCases: ["歌曲创作", "背景音乐", "配乐制作", "音效生成", "翻唱"],
+  },
+  {
+    id: "webdev",
+    slug: "webdev",
+    name: "AI 建站",
+    icon: "🌐",
+    description: "网页生成、网站搭建、UI 设计，零代码快速上线",
+    featured: true,
+    sort: 6,
+    useCases: ["落地页制作", "个人网站", "企业官网", "原型设计", "UI 生成"],
+  },
+  {
+    id: "prompt",
+    slug: "prompt",
+    name: "提示词",
+    icon: "💡",
+    description: "提示词优化、Prompt 模板、AI 指令库，让 AI 更懂你",
+    featured: true,
+    sort: 7,
+    useCases: ["提示词优化", "Prompt 模板", "角色设定", "工作流编排", "指令分享"],
+  },
 ];
 
 export function getCategoryById(id: string): Category | undefined {
