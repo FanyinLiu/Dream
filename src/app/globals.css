@@ -7,7 +7,7 @@
   --font-serif: "Instrument Serif", "Noto Serif SC", serif;
   --font-display: "Noto Serif SC", "Instrument Serif", serif;
 
-  --color-surface: #131313;
+  --color-surface: #0f1117;
   --color-atmospheric: #accae9;
   --color-on-surface: #e2e2e2;
 
@@ -31,11 +31,11 @@
 
 @layer components {
   .liquid-glass {
-    @apply bg-white/5 backdrop-blur-3xl border border-white/10;
+    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.12];
   }
 
   .liquid-glass-strong {
-    @apply bg-white/10 backdrop-blur-3xl border border-white/20 shadow-[0_0_40px_rgba(172,202,233,0.1)];
+    @apply bg-white/[0.08] backdrop-blur-2xl border border-white/[0.18] shadow-[0_0_40px_rgba(172,202,233,0.08)];
   }
 
   .ghost-border {

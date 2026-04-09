@@ -18,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
-        {/* Cinematic Background */}
+        {/* Cinematic Smoke Background */}
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-teal-500/[0.07] rounded-full blur-[120px]" />
-          <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-purple-600/[0.06] rounded-full blur-[140px]" />
-          <div className="absolute bottom-[-20%] left-[10%] w-[70%] h-[70%] bg-cyan-500/[0.05] rounded-full blur-[150px]" />
-          <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] bg-blue-500/[0.04] rounded-full blur-[100px]" />
+          <div className="absolute top-[-15%] left-[-15%] w-[55%] h-[55%] bg-teal-400/25 rounded-full blur-[100px]" />
+          <div className="absolute top-[10%] right-[-10%] w-[65%] h-[65%] bg-purple-500/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-15%] left-[5%] w-[60%] h-[60%] bg-emerald-500/15 rounded-full blur-[130px]" />
+          <div className="absolute top-[30%] left-[25%] w-[45%] h-[45%] bg-fuchsia-500/15 rounded-full blur-[110px]" />
+          <div className="absolute top-[5%] left-[40%] w-[35%] h-[50%] bg-cyan-400/18 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[10%] right-[5%] w-[40%] h-[40%] bg-violet-500/12 rounded-full blur-[120px]" />
         </div>
 
         {/* Navbar */}

@@ -24,7 +24,7 @@ export function ToolCard({ tool, className }: ToolCardProps) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`group relative rounded-2xl p-6 flex flex-col h-full bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5)] transition-all duration-500 ${className || ""}`}
+      className={`group relative rounded-2xl p-6 flex flex-col h-full bg-white/[0.06] backdrop-blur-2xl border border-white/[0.12] hover:bg-white/[0.10] hover:border-white/[0.25] hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.4)] transition-all duration-500 ${className || ""}`}
     >
       {/* Hover gradient glow */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-atmospheric/0 to-atmospheric/0 group-hover:from-atmospheric/[0.08] group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
