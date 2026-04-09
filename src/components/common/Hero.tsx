@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Search } from "lucide-react";
+import { SearchDialog } from "./SearchDialog";
 
 export function Hero() {
+  const [searchOpen, setSearchOpen] = useState(false);
+
   return (
     <section className="relative pt-12 pb-20 px-6 overflow-hidden">
       {/* Background Glow */}
@@ -33,16 +37,18 @@ export function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="relative max-w-2xl mx-auto"
         >
-          <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-            <Search className="w-5 h-5 text-on-surface/40" />
-          </div>
-          <a href="#image">
-            <div className="w-full h-16 pl-14 pr-6 rounded-full bg-white/5 border border-white/10 text-on-surface/30 flex items-center backdrop-blur-xl hover:border-atmospheric/30 transition-all cursor-pointer">
-              搜索绘画、视频、写作、编程工具...
-            </div>
-          </a>
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="w-full h-16 pl-14 pr-6 rounded-full bg-white/5 border border-white/10 text-on-surface/30 flex items-center backdrop-blur-xl hover:border-atmospheric/30 transition-all cursor-pointer text-left"
+          >
+            <Search className="w-5 h-5 text-on-surface/40 absolute left-6" />
+            搜索绘画、视频、写作、编程工具...
+          </button>
         </motion.div>
       </div>
+
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
     </section>
   );
 }

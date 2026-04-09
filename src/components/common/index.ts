@@ -5,3 +5,4 @@ export { SectionHeader } from "./SectionHeader";
 export { EmptyState } from "./EmptyState";
 export { Hero } from "./Hero";
 export { Chatbox } from "./Chatbox";
+export { SearchDialog } from "./SearchDialog";
