@@ -77,9 +77,6 @@ export function Hero() {
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
-  const modelBtnRef = useRef<HTMLButtonElement>(null);
-  const modelPanelRef = useRef<HTMLDivElement>(null);
-  const [menuPos, setMenuPos] = useState<{ bottom: number; right: number } | null>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -89,11 +86,7 @@ export function Hero() {
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      const target = e.target as Node;
-      if (
-        modelMenuRef.current && !modelMenuRef.current.contains(target) &&
-        modelPanelRef.current && !modelPanelRef.current.contains(target)
-      ) {
+      if (modelMenuRef.current && !modelMenuRef.current.contains(e.target as Node)) {
         setModelMenuOpen(false);
       }
     }
@@ -219,7 +212,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="liquid-glass-strong rounded-3xl p-5"
+          className="liquid-glass-strong rounded-3xl p-5 overflow-visible"
         >
           <div className="relative bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
             <input
@@ -264,16 +257,9 @@ export function Hero() {
             </div>
 
             {/* Model selector */}
-            <div className="shrink-0 ml-2" ref={modelMenuRef}>
+            <div className="relative shrink-0 ml-2" ref={modelMenuRef}>
               <button
-                ref={modelBtnRef}
-                onClick={() => {
-                  if (!modelMenuOpen && modelBtnRef.current) {
-                    const rect = modelBtnRef.current.getBoundingClientRect();
-                    setMenuPos({ bottom: window.innerHeight - rect.top + 8, right: window.innerWidth - rect.right });
-                  }
-                  setModelMenuOpen(!modelMenuOpen);
-                }}
+                onClick={() => setModelMenuOpen(!modelMenuOpen)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] text-on-surface/40 hover:text-white transition-colors"
               >
                 {selectedModel.name}
@@ -281,15 +267,13 @@ export function Hero() {
               </button>
 
               <AnimatePresence>
-                {modelMenuOpen && menuPos && (
+                {modelMenuOpen && (
                   <motion.div
-                    ref={modelPanelRef}
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    style={{ bottom: menuPos.bottom, right: menuPos.right }}
-                    className="fixed w-80 bg-surface/95 backdrop-blur-2xl rounded-2xl overflow-hidden shadow-2xl border border-white/15 z-[200]"
+                    className="absolute bottom-full right-0 mb-2 w-80 bg-surface/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 z-[200]"
                   >
                     <div className="px-4 pt-4 pb-2">
                       <h3 className="text-xs font-semibold text-white">选择模型</h3>
