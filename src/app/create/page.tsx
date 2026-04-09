@@ -1,26 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { Image, PenTool, Music, Video } from "lucide-react";
+import Link from "next/link";
+import { Image, PenTool, Music, Video, ArrowRight, Sparkles, Copy, Check } from "lucide-react";
 
 const tabs = [
-  { id: "image", label: "AI 绘画", Icon: Image, description: "输入描述，AI 帮你生成图片" },
-  { id: "text", label: "AI 写作", Icon: PenTool, description: "输入主题或要求，AI 帮你写内容" },
-  { id: "music", label: "AI 音乐", Icon: Music, description: "描述风格和心情，AI 帮你作曲（即将上线）" },
-  { id: "video", label: "AI 视频", Icon: Video, description: "描述画面，AI 帮你生成视频（即将上线）" },
+  { id: "text", label: "AI 写作", Icon: PenTool },
+  { id: "image", label: "AI 绘画", Icon: Image },
+  { id: "music", label: "AI 音乐", Icon: Music },
+  { id: "video", label: "AI 视频", Icon: Video },
+];
+
+const WRITING_TEMPLATES = [
+  { label: "小红书文案", prompt: "帮我写一篇小红书风格的种草文案，主题是：", placeholder: "输入产品或主题，如：夏日防晒霜推荐" },
+  { label: "公众号文章", prompt: "帮我写一篇微信公众号文章，主题是：", placeholder: "输入文章主题，如：AI 如何改变设计行业" },
+  { label: "工作周报", prompt: "帮我写一份工作周报，本周完成的工作包括：", placeholder: "列出本周完成的主要工作" },
+  { label: "产品描述", prompt: "帮我写一段吸引人的产品描述：", placeholder: "输入产品名称和特点" },
+  { label: "英文邮件", prompt: "帮我写一封英文商务邮件：", placeholder: "输入邮件目的和关键信息" },
+  { label: "自由写作", prompt: "", placeholder: "输入你的写作需求..." },
 ];
 
 export default function CreatePage() {
-  const [activeTab, setActiveTab] = useState("image");
+  const [activeTab, setActiveTab] = useState("text");
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl text-white mb-4">AI 创作工坊</h1>
-        <p className="text-on-surface/40 font-light">选择创作类型，输入描述，AI 帮你生成</p>
+        <p className="text-on-surface/40 font-light">选择创作类型，让 AI 帮你完成</p>
       </div>
 
-      {/* Tabs */}
       <div className="flex flex-wrap justify-center gap-3 mb-10">
         {tabs.map((tab) => (
           <button
@@ -39,127 +48,90 @@ export default function CreatePage() {
         ))}
       </div>
 
-      {/* Content */}
-      {activeTab === "image" && <ImageGenerator />}
       {activeTab === "text" && <TextGenerator />}
-      {activeTab === "music" && <ComingSoon Icon={Music} title="AI 音乐生成" description="正在接入 Suno / Udio API，即将上线" />}
-      {activeTab === "video" && <ComingSoon Icon={Video} title="AI 视频生成" description="正在接入 Runway / Kling API，即将上线" />}
+      {activeTab === "image" && <ToolGuide category="image" title="AI 绘画" tools={IMAGE_TOOLS} />}
+      {activeTab === "music" && <ToolGuide category="music" title="AI 音乐" tools={MUSIC_TOOLS} />}
+      {activeTab === "video" && <ToolGuide category="video" title="AI 视频" tools={VIDEO_TOOLS} />}
     </div>
   );
 }
 
-function ImageGenerator() {
-  const [prompt, setPrompt] = useState("");
-  const [size, setSize] = useState("1024x1024");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ url: string; revisedPrompt?: string } | null>(null);
-  const [error, setError] = useState("");
+const IMAGE_TOOLS = [
+  { name: "Midjourney", slug: "midjourney", desc: "画质天花板，概念设计首选", tag: "最强画质" },
+  { name: "Canva", slug: "canva", desc: "零基础出设计图，模板海量", tag: "新手友好" },
+  { name: "DALL-E 3", slug: "dall-e", desc: "ChatGPT 内置，自然语言零门槛", tag: "最易上手" },
+  { name: "Ideogram", slug: "ideogram", desc: "文字渲染之王，做 Logo 和海报", tag: "文字最强" },
+];
 
-  async function handleGenerate() {
-    if (!prompt.trim()) return;
-    setLoading(true);
-    setError("");
-    setResult(null);
+const MUSIC_TOOLS = [
+  { name: "Suno", slug: "suno", desc: "输入描述生成完整歌曲，含人声", tag: "最火" },
+  { name: "Udio", slug: "udio", desc: "音质更细腻，专业音乐人也在用", tag: "音质最好" },
+  { name: "ElevenLabs", slug: "elevenlabs", desc: "最逼真的语音合成和声音克隆", tag: "配音首选" },
+  { name: "AIVA", slug: "aiva", desc: "影视级配乐作曲，可商用", tag: "专业配乐" },
+];
 
-    try {
-      const res = await fetch("/api/generate/image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, size }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setResult(data);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "生成失败，请重试");
-    } finally {
-      setLoading(false);
-    }
-  }
+const VIDEO_TOOLS = [
+  { name: "Runway", slug: "runway", desc: "AI 视频生成领跑者，质量最高", tag: "最强" },
+  { name: "Kling", slug: "kling", desc: "国产高质量视频生成，性价比之王", tag: "性价比" },
+  { name: "CapCut", slug: "capcut", desc: "免费 AI 剪辑加字幕，新手必备", tag: "免费" },
+  { name: "HeyGen", slug: "heygen", desc: "AI 数字人口播视频，100+ 语言", tag: "数字人" },
+];
 
+function ToolGuide({ category, title, tools }: { category: string; title: string; tools: { name: string; slug: string; desc: string; tag: string }[] }) {
   return (
-    <div className="space-y-6">
-      <div className="liquid-glass-strong rounded-3xl p-8">
-        <label className="block text-xs uppercase tracking-widest text-atmospheric mb-3 font-semibold">
-          描述你想生成的图片
-        </label>
-        <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="例如：一只赛博朋克风格的猫坐在霓虹灯下的东京街头，细节丰富，电影质感"
-          rows={3}
-          className="w-full bg-white/5 text-white rounded-xl border border-white/10 px-4 py-3 text-sm placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 resize-none"
-        />
-        <div className="flex items-center gap-4 mt-4">
-          <div>
-            <label className="text-xs text-on-surface/40 mr-2">尺寸</label>
-            <select
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className="bg-white/5 text-white text-sm rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-atmospheric/50"
-            >
-              <option value="1024x1024">1:1 方形</option>
-              <option value="1792x1024">16:9 横版</option>
-              <option value="1024x1792">9:16 竖版</option>
-            </select>
-          </div>
-          <button
-            type="button"
-            onClick={handleGenerate}
-            disabled={loading || !prompt.trim()}
-            className="ml-auto px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-          >
-            {loading ? "生成中..." : "生成图片"}
-          </button>
-        </div>
+    <div>
+      <div className="liquid-glass-strong rounded-3xl p-8 mb-6 text-center">
+        <Sparkles className="w-8 h-8 text-atmospheric mx-auto mb-4" />
+        <h3 className="text-xl text-white mb-2">{title}推荐</h3>
+        <p className="text-sm text-on-surface/40 mb-1">
+          以下是我们精选的{title}工具，点击直达详情
+        </p>
       </div>
 
-      {error && (
-        <div className="liquid-glass rounded-xl p-4 border-red-500/30">
-          <p className="text-sm text-red-400">{error}</p>
-        </div>
-      )}
-
-      {result && (
-        <div className="liquid-glass rounded-2xl p-6 border border-white/5">
-          <img src={result.url} alt={prompt} className="w-full rounded-xl mb-4" />
-          {result.revisedPrompt && (
-            <p className="text-xs text-on-surface/40">
-              <strong className="text-atmospheric">AI 优化后的提示词：</strong>
-              {result.revisedPrompt}
-            </p>
-          )}
-          <a
-            href={result.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-3 text-sm text-atmospheric hover:text-white transition-colors"
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        {tools.map((tool) => (
+          <Link
+            key={tool.slug}
+            href={`/tool/${tool.slug}`}
+            className="group liquid-glass ghost-border rounded-2xl p-5 block hover:bg-white/[0.08] transition-all"
           >
-            下载原图 ↗
-          </a>
-        </div>
-      )}
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-lg text-white group-hover:text-atmospheric transition-colors">{tool.name}</h4>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-atmospheric/10 text-atmospheric">{tool.tag}</span>
+            </div>
+            <p className="text-sm text-on-surface/50 mb-3">{tool.desc}</p>
+            <span className="text-xs text-atmospheric flex items-center gap-1">
+              查看详情 <ArrowRight className="w-3 h-3" />
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      <div className="text-center">
+        <Link
+          href={`/category/${category}`}
+          className="inline-flex items-center gap-2 text-sm text-on-surface/40 hover:text-white transition-colors"
+        >
+          查看全部{title}工具 <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
     </div>
   );
 }
 
 function TextGenerator() {
-  const [prompt, setPrompt] = useState("");
-  const [style, setStyle] = useState("general");
+  const [selectedTemplate, setSelectedTemplate] = useState(5); // default to free writing
+  const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
-  const systemPrompts: Record<string, string> = {
-    general: "你是一个专业的写作助手，擅长各种风格的中英文写作。",
-    marketing: "你是一个资深营销文案专家，擅长写吸引眼球的广告文案和营销内容。",
-    academic: "你是一个学术写作专家，擅长严谨、规范的学术论文和报告写作。",
-    creative: "你是一个创意写作大师，擅长故事、诗歌、散文等文学创作。",
-    translate: "你是一个专业翻译，请将用户的内容翻译成对应的语言，保持原意和风格。",
-  };
+  const template = WRITING_TEMPLATES[selectedTemplate];
 
   async function handleGenerate() {
-    if (!prompt.trim()) return;
+    const content = template.prompt ? `${template.prompt}${userInput}` : userInput;
+    if (!content.trim()) return;
     setLoading(true);
     setError("");
     setResult("");
@@ -168,7 +140,7 @@ function TextGenerator() {
       const res = await fetch("/api/generate/text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, systemPrompt: systemPrompts[style] }),
+        body: JSON.stringify({ prompt: content }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -189,39 +161,48 @@ function TextGenerator() {
     }
   }
 
+  function handleCopy() {
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   return (
     <div className="space-y-6">
+      {/* Template selector */}
+      <div className="flex flex-wrap gap-2">
+        {WRITING_TEMPLATES.map((t, i) => (
+          <button
+            key={t.label}
+            onClick={() => { setSelectedTemplate(i); setUserInput(""); setResult(""); }}
+            className={`px-4 py-2 rounded-full text-xs transition-all ${
+              selectedTemplate === i
+                ? "bg-atmospheric/20 text-atmospheric border border-atmospheric/30"
+                : "bg-white/5 text-on-surface/50 border border-white/10 hover:text-white"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
       <div className="liquid-glass-strong rounded-3xl p-8">
-        <label className="block text-xs uppercase tracking-widest text-atmospheric mb-3 font-semibold">
-          输入写作要求
-        </label>
+        {template.prompt && (
+          <p className="text-sm text-atmospheric/60 mb-3">{template.prompt}</p>
+        )}
         <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="例如：帮我写一篇关于 AI 如何改变设计行业的博客文章，800字左右"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder={template.placeholder}
           rows={3}
           className="w-full bg-white/5 text-white rounded-xl border border-white/10 px-4 py-3 text-sm placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 resize-none"
         />
-        <div className="flex items-center gap-4 mt-4">
-          <div>
-            <label className="text-xs text-on-surface/40 mr-2">风格</label>
-            <select
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-              className="bg-white/5 text-white text-sm rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-atmospheric/50"
-            >
-              <option value="general">通用写作</option>
-              <option value="marketing">营销文案</option>
-              <option value="academic">学术写作</option>
-              <option value="creative">创意文学</option>
-              <option value="translate">翻译</option>
-            </select>
-          </div>
+        <div className="flex justify-end mt-4">
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={loading || !prompt.trim()}
-            className="ml-auto px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            disabled={loading || !userInput.trim()}
+            className="px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           >
             {loading ? "生成中..." : "开始写作"}
           </button>
@@ -229,38 +210,23 @@ function TextGenerator() {
       </div>
 
       {error && (
-        <div className="liquid-glass rounded-xl p-4 border-red-500/30">
+        <div className="liquid-glass rounded-xl p-4">
           <p className="text-sm text-red-400">{error}</p>
         </div>
       )}
 
       {result && (
-        <div className="liquid-glass rounded-2xl p-6 border border-white/5">
-          <div className="text-sm text-on-surface/60 leading-relaxed whitespace-pre-wrap">{result}</div>
+        <div className="liquid-glass rounded-2xl p-6">
+          <div className="text-sm text-on-surface/70 leading-relaxed whitespace-pre-wrap">{result}</div>
           <button
             type="button"
-            onClick={() => navigator.clipboard.writeText(result)}
-            className="mt-4 text-sm text-atmospheric hover:text-white transition-colors"
+            onClick={handleCopy}
+            className="mt-4 flex items-center gap-1.5 text-sm text-atmospheric hover:text-white transition-colors"
           >
-            复制全文
+            {copied ? <><Check className="w-3.5 h-3.5" /> 已复制</> : <><Copy className="w-3.5 h-3.5" /> 复制全文</>}
           </button>
         </div>
       )}
-    </div>
-  );
-}
-
-function ComingSoon({ Icon, title, description }: { Icon: React.ElementType; title: string; description: string }) {
-  return (
-    <div className="text-center py-20">
-      <div className="w-20 h-20 rounded-full bg-atmospheric/10 flex items-center justify-center mx-auto mb-6">
-        <Icon className="w-10 h-10 text-atmospheric" />
-      </div>
-      <h3 className="text-2xl text-white mb-2">{title}</h3>
-      <p className="text-on-surface/40 font-light">{description}</p>
-      <div className="mt-6 inline-block px-6 py-2 rounded-full liquid-glass-strong text-sm text-atmospheric">
-        敬请期待
-      </div>
     </div>
   );
 }

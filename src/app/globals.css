@@ -42,7 +42,7 @@
     inset: 0;
     border-radius: inherit;
     border: 1px solid transparent;
-    background: linear-gradient(135deg, rgba(172,202,233,0.15), rgba(172,202,233,0.05)) border-box;
+    background: linear-gradient(135deg, rgba(172,202,233,0.22), rgba(172,202,233,0.08)) border-box;
     -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -51,7 +51,7 @@
   }
 
   .liquid-glass-strong {
-    @apply bg-atmospheric/[0.08] backdrop-blur-[24px];
+    @apply bg-atmospheric/[0.10] backdrop-blur-[24px];
     border: 1px solid transparent;
     position: relative;
   }
@@ -61,7 +61,7 @@
     inset: 0;
     border-radius: inherit;
     border: 1px solid transparent;
-    background: linear-gradient(135deg, rgba(172,202,233,0.30), rgba(172,202,233,0.10)) border-box;
+    background: linear-gradient(135deg, rgba(172,202,233,0.35), rgba(172,202,233,0.12)) border-box;
     -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;

@@ -18,14 +18,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
-        {/* Cinematic Smoke Background */}
-        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-teal-400/30 rounded-full blur-[100px] mix-blend-screen" />
-          <div className="absolute top-[5%] right-[-15%] w-[70%] h-[65%] bg-purple-500/30 rounded-full blur-[120px] mix-blend-screen" />
-          <div className="absolute bottom-[-20%] left-[0%] w-[65%] h-[60%] bg-emerald-400/20 rounded-full blur-[130px] mix-blend-screen" />
-          <div className="absolute top-[25%] left-[20%] w-[50%] h-[50%] bg-fuchsia-500/20 rounded-full blur-[110px] mix-blend-screen" />
-          <div className="absolute top-[-5%] left-[35%] w-[40%] h-[55%] bg-cyan-300/25 rounded-full blur-[90px] mix-blend-screen" />
-          <div className="absolute bottom-[5%] right-[0%] w-[50%] h-[50%] bg-violet-400/18 rounded-full blur-[120px] mix-blend-screen" />
+        {/* Cinematic Smoke Background — GPU accelerated */}
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none will-change-transform">
+          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(45,212,191,0.30) 0%, transparent 70%)" }} />
+          <div className="absolute top-[5%] right-[-15%] w-[70%] h-[65%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(168,85,247,0.30) 0%, transparent 70%)" }} />
+          <div className="absolute bottom-[-20%] left-[0%] w-[65%] h-[60%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.20) 0%, transparent 70%)" }} />
+          <div className="absolute top-[25%] left-[20%] w-[50%] h-[50%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(217,70,239,0.20) 0%, transparent 70%)" }} />
+          <div className="absolute top-[-5%] left-[35%] w-[40%] h-[55%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(103,232,249,0.25) 0%, transparent 70%)" }} />
+          <div className="absolute bottom-[5%] right-[0%] w-[50%] h-[50%] rounded-full mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%)" }} />
         </div>
 
         {/* Navbar */}

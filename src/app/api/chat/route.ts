@@ -127,7 +127,14 @@ export async function POST(req: NextRequest) {
       toolResults,
     });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Chat failed";
-    return Response.json({ error: message }, { status: 500 });
+    const msg = e instanceof Error ? e.message : "Chat failed";
+    // Friendly error messages for common issues
+    if (msg.includes("rate limit") || msg.includes("429")) {
+      return Response.json({ error: "当前模型请求繁忙，请稍后再试或切换其他模型" }, { status: 429 });
+    }
+    if (msg.includes("context length") || msg.includes("too long")) {
+      return Response.json({ error: "对话内容过长，请开启新对话" }, { status: 400 });
+    }
+    return Response.json({ error: `请求失败：${msg}` }, { status: 500 });
   }
 }
