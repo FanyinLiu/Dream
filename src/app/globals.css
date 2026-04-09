@@ -76,6 +76,26 @@
     box-shadow: 0 0 30px -6px rgba(172,202,233,0.12);
   }
 
+  /* Custom scrollbar for dark theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(172,202,233,0.15) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(172,202,233,0.15);
+    border-radius: 3px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(172,202,233,0.3);
+  }
+
   /* English-only serif italic style for brand/decorative text */
   .brand-serif {
     font-family: "Instrument Serif", serif;
