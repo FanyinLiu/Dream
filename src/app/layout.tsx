@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { Chatbox } from "@/components/common";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: siteConfig.name + " - " + siteConfig.tagline,
@@ -53,12 +59,12 @@ export default function RootLayout({
             </div>
 
             {/* Mobile nav */}
-            <div className="md:hidden flex items-center gap-4 px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
-              {siteConfig.navItems.slice(0, 3).map((item) => (
+            <div className="md:hidden flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
+              {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs text-on-surface/60 hover:text-white transition-colors"
+                  className="text-[11px] text-on-surface/60 hover:text-white transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </Link>

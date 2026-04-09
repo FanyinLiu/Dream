@@ -95,22 +95,26 @@ export function Hero() {
   const updateMenuPosition = useCallback(() => {
     if (!modelBtnRef.current) return;
     const rect = modelBtnRef.current.getBoundingClientRect();
+    const menuWidth = 320;
     const menuHeight = 420;
+    const isMobile = window.innerWidth < 640;
     const spaceAbove = rect.top;
     const spaceBelow = window.innerHeight - rect.bottom;
-    // prefer above, fallback to below
+    const rightPos = isMobile
+      ? Math.max(8, (window.innerWidth - menuWidth) / 2)
+      : Math.max(8, window.innerWidth - rect.right);
     if (spaceAbove >= menuHeight || spaceAbove > spaceBelow) {
       setMenuStyle({
         position: "fixed",
         bottom: window.innerHeight - rect.top + 8,
-        right: window.innerWidth - rect.right,
+        right: rightPos,
         maxHeight: Math.min(spaceAbove - 16, menuHeight),
       });
     } else {
       setMenuStyle({
         position: "fixed",
         top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
+        right: rightPos,
         maxHeight: Math.min(spaceBelow - 16, menuHeight),
       });
     }
@@ -205,7 +209,7 @@ export function Hero() {
             </p>
 
             {/* Scene template cards */}
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-8 w-full max-w-lg">
+            <div className="grid grid-cols-3 gap-2 mt-8 w-full max-w-md mx-auto">
               {SCENE_TEMPLATES.map((scene, i) => (
                 <motion.button
                   key={scene.label}
@@ -299,7 +303,7 @@ export function Hero() {
 
           {/* Bottom bar */}
           <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center gap-1.5 overflow-x-auto">
+            <div className="flex items-center gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all shrink-0">
                 <MessageSquare className="w-3 h-3" />
                 对话
