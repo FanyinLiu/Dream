@@ -12,7 +12,7 @@ export default function AboutPage() {
 
       <div className="space-y-6">
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
-          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
             我们是谁？
           </h2>
           <p className="text-on-surface/60 leading-relaxed">
@@ -24,7 +24,7 @@ export default function AboutPage() {
         </div>
 
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
-          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
             我们怎么选工具？
           </h2>
           <ul className="space-y-3 text-on-surface/60">
@@ -35,7 +35,7 @@ export default function AboutPage() {
         </div>
 
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
-          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
             联系我们
           </h2>
           <p className="text-on-surface/60 leading-relaxed">

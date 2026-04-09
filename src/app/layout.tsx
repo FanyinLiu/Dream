@@ -27,7 +27,7 @@ export default function RootLayout({
                   <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
                 </svg>
               </div>
-              <span className="text-2xl font-serif italic text-white tracking-tight">AI Nav</span>
+              <span className="text-2xl brand-serif text-white tracking-tight">AI Nav</span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
@@ -67,7 +67,7 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="px-6 py-20 border-t border-white/5 text-center">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl text-white mb-8 font-serif italic">AI Nav</h2>
+            <h2 className="text-3xl text-white mb-8 brand-serif">AI Nav</h2>
             <div className="flex flex-wrap justify-center gap-8 text-sm text-on-surface/40 mb-12">
               {siteConfig.footerLinks.map((group) =>
                 group.links.map((link) => (

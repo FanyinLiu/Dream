@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Instrument Serif", serif;
+  --font-sans: "Barlow", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Noto Serif SC", serif;
+  --font-display: "Noto Serif SC", "Instrument Serif", serif;
 
   --color-surface: #131313;
   --color-atmospheric: #accae9;
@@ -18,8 +19,12 @@
     @apply bg-surface text-on-surface font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif italic tracking-tight;
+  h1, h2, h3 {
+    @apply font-display font-semibold tracking-tight;
+  }
+
+  h4, h5, h6 {
+    @apply font-sans font-semibold tracking-tight;
   }
 }
 
@@ -34,5 +39,11 @@
 
   .ghost-border {
     @apply border border-atmospheric/15 hover:border-atmospheric/40 transition-colors duration-500;
+  }
+
+  /* English-only serif italic style for brand/decorative text */
+  .brand-serif {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
   }
 }

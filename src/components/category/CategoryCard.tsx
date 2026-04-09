@@ -19,7 +19,7 @@ export function CategoryCard({ category, toolCount, className }: CategoryCardPro
           {category.icon}
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-white group-hover:text-atmospheric transition-colors not-italic">
+          <h3 className="text-lg font-semibold text-white group-hover:text-atmospheric transition-colors">
             {category.name}
           </h3>
           <p className="text-sm text-on-surface/40 mt-0.5">{category.description}</p>

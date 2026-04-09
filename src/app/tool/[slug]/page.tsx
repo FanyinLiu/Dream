@@ -61,7 +61,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {/* Key Features */}
               <div className="p-8 rounded-3xl liquid-glass border border-white/5">
-                <h3 className="text-xl text-white mb-6 flex items-center gap-2 not-italic">
+                <h3 className="text-xl text-white mb-6 flex items-center gap-2">
                   <svg className="w-5 h-5 text-atmospheric" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
                   </svg>
@@ -81,7 +81,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
 
               {/* Info */}
               <div className="p-8 rounded-3xl liquid-glass border border-white/5">
-                <h3 className="text-xl text-white mb-6 flex items-center gap-2 not-italic">
+                <h3 className="text-xl text-white mb-6 flex items-center gap-2">
                   <svg className="w-5 h-5 text-atmospheric" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
                   </svg>
@@ -111,7 +111,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
 
             {/* Score */}
             <div className="p-8 rounded-3xl liquid-glass border border-white/5 mb-12">
-              <h3 className="text-xl text-white mb-6 not-italic">评分维度</h3>
+              <h3 className="text-xl text-white mb-6">评分维度</h3>
               <div className="space-y-4">
                 {[
                   { label: "易用性", value: tool.scoreProfile.easeOfUse },
@@ -140,7 +140,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className="sticky top-32 p-8 rounded-3xl liquid-glass-strong border border-white/10">
               <div className="mb-8">
                 <div className="text-xs text-on-surface/40 uppercase tracking-widest mb-2">定价</div>
-                <div className="text-3xl text-white font-serif italic">{tool.priceNote}</div>
+                <div className="text-3xl text-white font-display font-semibold">{tool.priceNote}</div>
               </div>
 
               <a

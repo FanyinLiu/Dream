@@ -75,7 +75,7 @@ export default function RecommendPage() {
             className="space-y-8"
           >
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-atmospheric font-serif italic text-2xl">
+              <span className="text-atmospheric brand-serif text-2xl">
                 0{currentStep + 1}
               </span>
               <div className="h-px flex-1 bg-white/10" />
@@ -84,7 +84,7 @@ export default function RecommendPage() {
               </span>
             </div>
 
-            <h2 className="text-3xl text-white font-serif italic">{question.question}</h2>
+            <h2 className="text-3xl text-white">{question.question}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {question.options.map((opt) => {

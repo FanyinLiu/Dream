@@ -26,7 +26,7 @@ export function RecommendationCard({ tool, score, matchReasons, rank, className 
             {rank}
           </span>
           <div>
-            <h3 className="text-lg font-semibold text-white not-italic">{tool.name}</h3>
+            <h3 className="text-lg font-semibold text-white">{tool.name}</h3>
             <p className="text-sm text-on-surface/40">{tool.tagline}</p>
           </div>
         </div>
