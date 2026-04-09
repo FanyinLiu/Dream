@@ -8,8 +8,8 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signInWithEmail: (email: string) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<void>;
+  signUpWithPassword: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithPassword: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -17,8 +17,8 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
-  signInWithEmail: async () => ({ error: null }),
-  signInWithGoogle: async () => {},
+  signUpWithPassword: async () => ({ error: null }),
+  signInWithPassword: async () => ({ error: null }),
   signOut: async () => {},
 });
 
@@ -42,19 +42,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  async function signInWithEmail(email: string) {
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/` },
-    });
+  async function signUpWithPassword(email: string, password: string) {
+    const { error } = await supabase.auth.signUp({ email, password });
     return { error: error?.message ?? null };
   }
 
-  async function signInWithGoogle() {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/` },
-    });
+  async function signInWithPassword(email: string, password: string) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return { error: error?.message ?? null };
   }
 
   async function signOut() {
@@ -62,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithEmail, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, signUpWithPassword, signInWithPassword, signOut }}>
       {children}
     </AuthContext.Provider>
   );
