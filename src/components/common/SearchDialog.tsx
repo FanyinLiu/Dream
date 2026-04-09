@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Send, X, Sparkles, ExternalLink } from "lucide-react";
+import {
+  Send, X, Sparkles, ExternalLink, ChevronDown, Check,
+  Image, PenTool, Compass, Wand2, MessageSquare,
+} from "lucide-react";
 import Link from "next/link";
 
 interface ToolResult {
@@ -21,11 +24,46 @@ const categoryLabels: Record<string, string> = {
   coding: "AI 编程", music: "AI 音乐", webdev: "AI 建站", prompt: "提示词",
 };
 
-const SUGGESTIONS = [
-  "帮我画一张赛博朋克风格的城市",
-  "推荐一个 AI 视频生成工具",
-  "帮我写一段产品介绍文案",
-  "哪个编程工具最适合新手？",
+interface Model {
+  id: string;
+  name: string;
+  tier: string;
+  icon: string;
+}
+
+const MODELS: { tier: string; description: string; models: Model[] }[] = [
+  {
+    tier: "快速响应",
+    description: "速度快，适合简单任务",
+    models: [
+      { id: "gpt-4o-mini", name: "GPT-4o mini", tier: "fast", icon: "◎" },
+      { id: "gpt-4.1-mini", name: "GPT-4.1 mini", tier: "fast", icon: "◎" },
+    ],
+  },
+  {
+    tier: "均衡智能",
+    description: "性能与速度兼顾",
+    models: [
+      { id: "gpt-4o", name: "GPT-4o", tier: "balanced", icon: "◎" },
+      { id: "gpt-4.1", name: "GPT-4.1", tier: "balanced", icon: "◎" },
+      { id: "claude-sonnet-4", name: "Claude Sonnet 4", tier: "balanced", icon: "Ⓐ" },
+    ],
+  },
+  {
+    tier: "最强推理",
+    description: "适合复杂任务和深度分析",
+    models: [
+      { id: "gpt-4.5", name: "GPT-4.5", tier: "powerful", icon: "◎" },
+      { id: "claude-opus-4", name: "Claude Opus 4", tier: "powerful", icon: "Ⓐ" },
+    ],
+  },
+];
+
+const QUICK_ACTIONS = [
+  { label: "生成图片", Icon: Image },
+  { label: "AI 写作", Icon: PenTool },
+  { label: "工具推荐", Icon: Compass },
+  { label: "创意灵感", Icon: Wand2 },
 ];
 
 interface SearchDialogProps {
@@ -37,8 +75,11 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].models[0]);
+  const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const modelMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -54,13 +95,32 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (modelMenuOpen) {
+          setModelMenuOpen(false);
+        } else {
+          onClose();
+        }
+      }
     }
     if (open) {
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [open, onClose]);
+  }, [open, onClose, modelMenuOpen]);
+
+  // Close model menu on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (modelMenuRef.current && !modelMenuRef.current.contains(e.target as Node)) {
+        setModelMenuOpen(false);
+      }
+    }
+    if (modelMenuOpen) {
+      document.addEventListener("mousedown", handleClick);
+      return () => document.removeEventListener("mousedown", handleClick);
+    }
+  }, [modelMenuOpen]);
 
   async function handleSend(text?: string) {
     const content = text || input.trim();
@@ -80,7 +140,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: apiMessages }),
+        body: JSON.stringify({ messages: apiMessages, model: selectedModel.id }),
       });
 
       const data = await res.json();
@@ -100,11 +160,12 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
     }
   }
 
+  const hasMessages = messages.length > 0;
+
   return (
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -113,120 +174,179 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
             onClick={onClose}
           />
 
-          {/* Dialog */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[10%] left-1/2 -translate-x-1/2 z-[101] w-full max-w-2xl px-4"
+            className="fixed top-[8%] left-1/2 -translate-x-1/2 z-[101] w-full max-w-2xl px-4"
           >
-            <div className="liquid-glass-strong rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[70vh] max-h-[600px]">
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-atmospheric" />
-                  </div>
-                  <div>
-                    <span className="text-sm font-medium text-white">AI Nav Copilot</span>
-                    <p className="text-[10px] text-on-surface/30">生图 · 写作 · 工具推荐</p>
+            <div className="liquid-glass-strong rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
+
+              {/* Empty state / Copilot header */}
+              {!hasMessages && (
+                <div className="pt-10 pb-4 flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full bg-atmospheric/10 border border-atmospheric/20 flex items-center justify-center mb-6">
+                    <Sparkles className="w-7 h-7 text-atmospheric" />
                   </div>
                 </div>
-                <button onClick={onClose} className="text-on-surface/30 hover:text-white transition-colors">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+              )}
 
-              {/* Messages */}
-              <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4">
-                {messages.length === 0 && (
-                  <div className="pt-6">
-                    <p className="text-on-surface/40 text-sm mb-6 text-center">
-                      你好！我可以帮你生成图片、写作内容，或推荐最适合你的 AI 工具。
-                    </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {SUGGESTIONS.map((s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          onClick={() => handleSend(s)}
-                          className="text-left px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm text-on-surface/60 hover:bg-atmospheric/10 hover:border-atmospheric/30 hover:text-white transition-all"
+              {/* Messages area */}
+              {hasMessages && (
+                <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-atmospheric" />
+                    <span className="text-sm font-medium text-white">AI Nav Copilot</span>
+                  </div>
+                  <button onClick={onClose} className="text-on-surface/30 hover:text-white transition-colors">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              {hasMessages && (
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0">
+                  {messages.map((msg, i) => (
+                    <div key={i}>
+                      <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                        {msg.role === "assistant" && (
+                          <div className="w-6 h-6 rounded-full bg-atmospheric/20 flex items-center justify-center mr-2 mt-1 shrink-0">
+                            <Sparkles className="w-3 h-3 text-atmospheric" />
+                          </div>
+                        )}
+                        <div
+                          className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm ${
+                            msg.role === "user"
+                              ? "bg-atmospheric text-surface font-medium"
+                              : "bg-white/5 text-on-surface/80 border border-white/10"
+                          }`}
                         >
-                          {s}
-                        </button>
+                          <div className="whitespace-pre-wrap">{msg.content}</div>
+                        </div>
+                      </div>
+                      {msg.toolResults?.map((result, j) => (
+                        <div key={j} className="mt-2 ml-8">
+                          <InlineToolResult result={result} onClose={onClose} />
+                        </div>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {messages.map((msg, i) => (
-                  <div key={i}>
-                    <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                      {msg.role === "assistant" && (
-                        <div className="w-7 h-7 rounded-full bg-atmospheric/20 flex items-center justify-center mr-2 mt-1 shrink-0">
-                          <Sparkles className="w-3.5 h-3.5 text-atmospheric" />
+                  ))}
+                  {loading && (
+                    <div className="flex items-start">
+                      <div className="w-6 h-6 rounded-full bg-atmospheric/20 flex items-center justify-center mr-2 shrink-0">
+                        <Sparkles className="w-3 h-3 text-atmospheric" />
+                      </div>
+                      <div className="bg-white/5 px-4 py-3 rounded-2xl border border-white/10">
+                        <div className="flex gap-1">
+                          <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce" />
+                          <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.2s]" />
+                          <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.4s]" />
                         </div>
-                      )}
-                      <div
-                        className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm ${
-                          msg.role === "user"
-                            ? "bg-atmospheric text-surface font-medium"
-                            : "bg-white/5 text-on-surface/80 border border-white/10"
-                        }`}
-                      >
-                        <div className="whitespace-pre-wrap">{msg.content}</div>
                       </div>
                     </div>
+                  )}
+                </div>
+              )}
 
-                    {msg.toolResults?.map((result, j) => (
-                      <div key={j} className="mt-2 ml-9">
-                        <InlineToolResult result={result} onClose={onClose} />
-                      </div>
-                    ))}
-                  </div>
-                ))}
-
-                {loading && (
-                  <div className="flex items-start">
-                    <div className="w-7 h-7 rounded-full bg-atmospheric/20 flex items-center justify-center mr-2 shrink-0">
-                      <Sparkles className="w-3.5 h-3.5 text-atmospheric" />
-                    </div>
-                    <div className="bg-white/5 px-4 py-3 rounded-2xl border border-white/10">
-                      <div className="flex gap-1">
-                        <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce" />
-                        <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.2s]" />
-                        <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.4s]" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Input */}
-              <div className="p-4 border-t border-white/10 bg-white/5">
-                <div className="relative">
+              {/* Input area */}
+              <div className={`p-5 ${hasMessages ? "border-t border-white/10 bg-white/[0.02]" : ""}`}>
+                <div className="relative bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
                   <input
                     ref={inputRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                    placeholder="问我任何关于 AI 工具的问题..."
-                    className="w-full bg-surface/50 border border-white/10 rounded-2xl py-3 pl-5 pr-12 text-sm text-white placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 transition-colors"
+                    placeholder="问我任何问题..."
+                    className="w-full bg-transparent py-4 pl-5 pr-12 text-sm text-white placeholder:text-on-surface/30 focus:outline-none"
                   />
                   <button
                     onClick={() => handleSend()}
                     disabled={loading || !input.trim()}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center text-atmospheric hover:bg-atmospheric/30 transition-colors disabled:opacity-30"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center text-atmospheric hover:bg-atmospheric/30 transition-colors disabled:opacity-30"
                   >
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-[10px] text-on-surface/20 text-center mt-2">
-                  Enter 发送 · ESC 关闭 · 支持生图、写作、工具推荐
-                </p>
+
+                {/* Bottom bar: actions + model selector */}
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center gap-1.5">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all">
+                      <MessageSquare className="w-3 h-3" />
+                      对话
+                    </button>
+                    {QUICK_ACTIONS.map((action) => (
+                      <button
+                        key={action.label}
+                        onClick={() => handleSend(action.label === "生成图片" ? "帮我生成一张图片" : action.label === "AI 写作" ? "帮我写一段文案" : action.label === "工具推荐" ? "推荐适合我的AI工具" : "给我一些创意灵感")}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all"
+                      >
+                        <action.Icon className="w-3 h-3" />
+                        {action.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Model selector */}
+                  <div className="relative" ref={modelMenuRef}>
+                    <button
+                      onClick={() => setModelMenuOpen(!modelMenuOpen)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] text-on-surface/40 hover:text-white transition-colors"
+                    >
+                      {selectedModel.name}
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
+
+                    <AnimatePresence>
+                      {modelMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute bottom-full right-0 mb-2 w-72 liquid-glass-strong rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10"
+                        >
+                          <div className="px-4 pt-4 pb-2">
+                            <h3 className="text-xs font-semibold text-white mb-0.5">Models</h3>
+                          </div>
+                          <div className="max-h-80 overflow-y-auto px-2 pb-2">
+                            {MODELS.map((group) => (
+                              <div key={group.tier} className="mb-2">
+                                <p className="text-[10px] text-on-surface/30 font-medium px-2 pt-2 pb-1">
+                                  {group.tier}
+                                </p>
+                                {group.models.map((model) => (
+                                  <button
+                                    key={model.id}
+                                    onClick={() => {
+                                      setSelectedModel(model);
+                                      setModelMenuOpen(false);
+                                    }}
+                                    className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors text-left group"
+                                  >
+                                    <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] text-on-surface/60 shrink-0">
+                                      {model.icon}
+                                    </span>
+                                    <span className="text-sm text-on-surface/80 group-hover:text-white transition-colors flex-1">
+                                      {model.name}
+                                    </span>
+                                    {selectedModel.id === model.id && (
+                                      <Check className="w-4 h-4 text-atmospheric shrink-0" />
+                                    )}
+                                  </button>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
               </div>
+
             </div>
           </motion.div>
         </>
@@ -240,12 +360,10 @@ function InlineToolResult({ result, onClose }: { result: ToolResult; onClose: ()
     return (
       <div className="rounded-2xl overflow-hidden inline-block max-w-[280px]">
         <img src={result.data.url as string} alt="AI generated" className="w-full rounded-xl" />
-        <div className="flex items-center gap-3 mt-2">
-          <a href={result.data.url as string} target="_blank" rel="noopener noreferrer"
-            className="text-xs text-atmospheric hover:text-white transition-colors">
-            下载原图 ↗
-          </a>
-        </div>
+        <a href={result.data.url as string} target="_blank" rel="noopener noreferrer"
+          className="block mt-2 text-xs text-atmospheric hover:text-white transition-colors">
+          下载原图 ↗
+        </a>
       </div>
     );
   }
