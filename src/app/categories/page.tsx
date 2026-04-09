@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { categories } from "@/data/categories";
 import { getToolsByCategory } from "@/data/tools";
-import { PageHeader } from "@/components/common";
-import { CategoryCard } from "@/components/category";
+import { CategoryGrid } from "@/components/category";
 
 export const metadata: Metadata = {
   title: "AI 工具分类 | AI Nav",
@@ -11,13 +10,12 @@ export const metadata: Metadata = {
 
 export default function CategoriesPage() {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10">
-      <PageHeader title="AI 工具分类" description="按使用场景浏览，找到最适合你的 AI 工具" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {categories.map((cat) => (
-          <CategoryCard key={cat.id} category={cat} toolCount={getToolsByCategory(cat.id).length} />
-        ))}
+    <div>
+      <div className="text-center pt-8 pb-4 px-6">
+        <h1 className="text-4xl md:text-5xl text-white mb-4">AI 工具分类</h1>
+        <p className="text-on-surface/40 font-light">按使用场景浏览，找到最适合你的 AI 工具</p>
       </div>
+      <CategoryGrid categories={categories} />
     </div>
   );
 }

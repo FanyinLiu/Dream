@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { Image, PenTool, Music, Video } from "lucide-react";
 
 const tabs = [
-  { id: "image", label: "AI 绘画", icon: "🎨", description: "输入描述，AI 帮你生成图片" },
-  { id: "text", label: "AI 写作", icon: "✍️", description: "输入主题或要求，AI 帮你写内容" },
-  { id: "music", label: "AI 音乐", icon: "🎵", description: "描述风格和心情，AI 帮你作曲（即将上线）" },
-  { id: "video", label: "AI 视频", icon: "🎬", description: "描述画面，AI 帮你生成视频（即将上线）" },
+  { id: "image", label: "AI 绘画", Icon: Image, description: "输入描述，AI 帮你生成图片" },
+  { id: "text", label: "AI 写作", Icon: PenTool, description: "输入主题或要求，AI 帮你写内容" },
+  { id: "music", label: "AI 音乐", Icon: Music, description: "描述风格和心情，AI 帮你作曲（即将上线）" },
+  { id: "video", label: "AI 视频", Icon: Video, description: "描述画面，AI 帮你生成视频（即将上线）" },
 ];
 
 export default function CreatePage() {
@@ -15,26 +15,26 @@ export default function CreatePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
-      <div className="text-center mb-10">
-        <h1 className="font-serif italic text-4xl text-foreground glow-text">AI 创作工坊</h1>
-        <p className="text-muted mt-2">选择创作类型，输入描述，AI 帮你生成</p>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl text-white mb-4">AI 创作工坊</h1>
+        <p className="text-on-surface/40 font-light">选择创作类型，输入描述，AI 帮你生成</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap justify-center gap-2 mb-10">
+      <div className="flex flex-wrap justify-center gap-3 mb-10">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={cn(
-              "px-5 py-2.5 rounded-full text-sm transition-all",
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm transition-all ${
               activeTab === tab.id
-                ? "glass-strong text-accent font-semibold"
-                : "glass text-muted hover:text-accent",
-            )}
+                ? "liquid-glass-strong text-atmospheric font-semibold"
+                : "liquid-glass text-on-surface/60 hover:text-white"
+            }`}
           >
-            {tab.icon} {tab.label}
+            <tab.Icon className="w-4 h-4" />
+            {tab.label}
           </button>
         ))}
       </div>
@@ -42,13 +42,11 @@ export default function CreatePage() {
       {/* Content */}
       {activeTab === "image" && <ImageGenerator />}
       {activeTab === "text" && <TextGenerator />}
-      {activeTab === "music" && <ComingSoon icon="🎵" title="AI 音乐生成" description="正在接入 Suno / Udio API，即将上线" />}
-      {activeTab === "video" && <ComingSoon icon="🎬" title="AI 视频生成" description="正在接入 Runway / Kling API，即将上线" />}
+      {activeTab === "music" && <ComingSoon Icon={Music} title="AI 音乐生成" description="正在接入 Suno / Udio API，即将上线" />}
+      {activeTab === "video" && <ComingSoon Icon={Video} title="AI 视频生成" description="正在接入 Runway / Kling API，即将上线" />}
     </div>
   );
 }
-
-// ─── Image Generator ───
 
 function ImageGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -81,8 +79,8 @@ function ImageGenerator() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card rounded-xl p-6">
-        <label className="block text-xs uppercase tracking-widest text-accent mb-3 font-semibold">
+      <div className="liquid-glass-strong rounded-3xl p-8">
+        <label className="block text-xs uppercase tracking-widest text-atmospheric mb-3 font-semibold">
           描述你想生成的图片
         </label>
         <textarea
@@ -90,28 +88,26 @@ function ImageGenerator() {
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="例如：一只赛博朋克风格的猫坐在霓虹灯下的东京街头，细节丰富，电影质感"
           rows={3}
-          className="w-full bg-surface text-foreground rounded-lg border border-border px-4 py-3 text-sm placeholder:text-muted/40 focus:outline-none focus:border-accent/50 resize-none"
+          className="w-full bg-white/5 text-white rounded-xl border border-white/10 px-4 py-3 text-sm placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 resize-none"
         />
-
         <div className="flex items-center gap-4 mt-4">
           <div>
-            <label className="text-xs text-muted mr-2">尺寸</label>
+            <label className="text-xs text-on-surface/40 mr-2">尺寸</label>
             <select
               value={size}
               onChange={(e) => setSize(e.target.value)}
-              className="bg-surface-high text-foreground text-sm rounded-lg border border-border px-3 py-1.5 focus:outline-none focus:border-accent/50"
+              className="bg-white/5 text-white text-sm rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-atmospheric/50"
             >
               <option value="1024x1024">1:1 方形</option>
               <option value="1792x1024">16:9 横版</option>
               <option value="1024x1792">9:16 竖版</option>
             </select>
           </div>
-
           <button
             type="button"
             onClick={handleGenerate}
             disabled={loading || !prompt.trim()}
-            className="ml-auto glass-strong px-6 py-2.5 rounded-full text-sm font-semibold text-accent hover:bg-accent/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            className="ml-auto px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           >
             {loading ? "生成中..." : "生成图片"}
           </button>
@@ -119,21 +115,17 @@ function ImageGenerator() {
       </div>
 
       {error && (
-        <div className="glass-card rounded-xl p-4 border-red-500/30">
+        <div className="liquid-glass rounded-xl p-4 border-red-500/30">
           <p className="text-sm text-red-400">{error}</p>
         </div>
       )}
 
       {result && (
-        <div className="glass-card rounded-xl p-6">
-          <img
-            src={result.url}
-            alt={prompt}
-            className="w-full rounded-lg mb-4"
-          />
+        <div className="liquid-glass rounded-2xl p-6 border border-white/5">
+          <img src={result.url} alt={prompt} className="w-full rounded-xl mb-4" />
           {result.revisedPrompt && (
-            <p className="text-xs text-muted">
-              <strong className="text-accent">AI 优化后的提示词：</strong>
+            <p className="text-xs text-on-surface/40">
+              <strong className="text-atmospheric">AI 优化后的提示词：</strong>
               {result.revisedPrompt}
             </p>
           )}
@@ -141,7 +133,7 @@ function ImageGenerator() {
             href={result.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block mt-3 text-sm text-accent hover:text-foreground transition-colors"
+            className="inline-block mt-3 text-sm text-atmospheric hover:text-white transition-colors"
           >
             下载原图 ↗
           </a>
@@ -150,8 +142,6 @@ function ImageGenerator() {
     </div>
   );
 }
-
-// ─── Text Generator ───
 
 function TextGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -180,16 +170,13 @@ function TextGenerator() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, systemPrompt: systemPrompts[style] }),
       });
-
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error);
       }
-
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
       if (!reader) throw new Error("No response body");
-
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -204,8 +191,8 @@ function TextGenerator() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card rounded-xl p-6">
-        <label className="block text-xs uppercase tracking-widest text-accent mb-3 font-semibold">
+      <div className="liquid-glass-strong rounded-3xl p-8">
+        <label className="block text-xs uppercase tracking-widest text-atmospheric mb-3 font-semibold">
           输入写作要求
         </label>
         <textarea
@@ -213,16 +200,15 @@ function TextGenerator() {
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="例如：帮我写一篇关于 AI 如何改变设计行业的博客文章，800字左右"
           rows={3}
-          className="w-full bg-surface text-foreground rounded-lg border border-border px-4 py-3 text-sm placeholder:text-muted/40 focus:outline-none focus:border-accent/50 resize-none"
+          className="w-full bg-white/5 text-white rounded-xl border border-white/10 px-4 py-3 text-sm placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 resize-none"
         />
-
         <div className="flex items-center gap-4 mt-4">
           <div>
-            <label className="text-xs text-muted mr-2">风格</label>
+            <label className="text-xs text-on-surface/40 mr-2">风格</label>
             <select
               value={style}
               onChange={(e) => setStyle(e.target.value)}
-              className="bg-surface-high text-foreground text-sm rounded-lg border border-border px-3 py-1.5 focus:outline-none focus:border-accent/50"
+              className="bg-white/5 text-white text-sm rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-atmospheric/50"
             >
               <option value="general">通用写作</option>
               <option value="marketing">营销文案</option>
@@ -231,12 +217,11 @@ function TextGenerator() {
               <option value="translate">翻译</option>
             </select>
           </div>
-
           <button
             type="button"
             onClick={handleGenerate}
             disabled={loading || !prompt.trim()}
-            className="ml-auto glass-strong px-6 py-2.5 rounded-full text-sm font-semibold text-accent hover:bg-accent/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            className="ml-auto px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           >
             {loading ? "生成中..." : "开始写作"}
           </button>
@@ -244,20 +229,18 @@ function TextGenerator() {
       </div>
 
       {error && (
-        <div className="glass-card rounded-xl p-4 border-red-500/30">
+        <div className="liquid-glass rounded-xl p-4 border-red-500/30">
           <p className="text-sm text-red-400">{error}</p>
         </div>
       )}
 
       {result && (
-        <div className="glass-card rounded-xl p-6">
-          <div className="prose prose-invert max-w-none">
-            <div className="text-sm text-muted leading-relaxed whitespace-pre-wrap">{result}</div>
-          </div>
+        <div className="liquid-glass rounded-2xl p-6 border border-white/5">
+          <div className="text-sm text-on-surface/60 leading-relaxed whitespace-pre-wrap">{result}</div>
           <button
             type="button"
             onClick={() => navigator.clipboard.writeText(result)}
-            className="mt-4 text-sm text-accent hover:text-foreground transition-colors"
+            className="mt-4 text-sm text-atmospheric hover:text-white transition-colors"
           >
             复制全文
           </button>
@@ -267,15 +250,15 @@ function TextGenerator() {
   );
 }
 
-// ─── Coming Soon ───
-
-function ComingSoon({ icon, title, description }: { icon: string; title: string; description: string }) {
+function ComingSoon({ Icon, title, description }: { Icon: React.ElementType; title: string; description: string }) {
   return (
     <div className="text-center py-20">
-      <span className="text-6xl block mb-4">{icon}</span>
-      <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
-      <p className="text-muted">{description}</p>
-      <div className="mt-6 glass-strong inline-block px-6 py-2 rounded-full text-sm text-accent">
+      <div className="w-20 h-20 rounded-full bg-atmospheric/10 flex items-center justify-center mx-auto mb-6">
+        <Icon className="w-10 h-10 text-atmospheric" />
+      </div>
+      <h3 className="text-2xl text-white mb-2">{title}</h3>
+      <p className="text-on-surface/40 font-light">{description}</p>
+      <div className="mt-6 inline-block px-6 py-2 rounded-full liquid-glass-strong text-sm text-atmospheric">
         敬请期待
       </div>
     </div>

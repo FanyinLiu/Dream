@@ -8,9 +8,9 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ title, description, className }: SectionHeaderProps) {
   return (
-    <div className={cn("mb-8", className)}>
-      <h2 className="font-serif italic text-3xl text-foreground">{title}</h2>
-      {description && <p className="text-muted text-sm mt-1">{description}</p>}
+    <div className={cn("mb-10", className)}>
+      <h2 className="text-4xl md:text-5xl text-white">{title}</h2>
+      {description && <p className="text-on-surface/40 font-light mt-2">{description}</p>}
     </div>
   );
 }

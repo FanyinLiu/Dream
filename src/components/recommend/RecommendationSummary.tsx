@@ -11,8 +11,8 @@ const answerLabels: Record<string, Record<string, string>> = {
 
 export function RecommendationSummary({ answers }: RecommendationSummaryProps) {
   return (
-    <div className="glass rounded-xl p-5 mb-8">
-      <h3 className="text-xs uppercase tracking-widest text-accent mb-3 font-semibold">你的选择</h3>
+    <div className="liquid-glass rounded-2xl p-5 mb-8 border border-white/5">
+      <h3 className="text-xs uppercase tracking-widest text-atmospheric mb-3 font-semibold">你的选择</h3>
       <div className="flex flex-wrap gap-2">
         {Object.entries(answers).map(([key, value]) => {
           const labels = answerLabels[key];
@@ -20,7 +20,7 @@ export function RecommendationSummary({ answers }: RecommendationSummaryProps) {
             ? value.map((v) => labels?.[v] ?? v).join("、")
             : labels?.[value] ?? value;
           return (
-            <span key={key} className="text-sm glass px-3 py-1 rounded-full text-muted">
+            <span key={key} className="text-sm px-3 py-1 rounded-full bg-white/5 border border-white/10 text-on-surface/60">
               {displayValue}
             </span>
           );

@@ -1,57 +1,39 @@
 import Link from "next/link";
 import { categories } from "@/data/categories";
-import { tools, getFeaturedTools, getToolsByCategory } from "@/data/tools";
+import { tools, getToolsByCategory } from "@/data/tools";
 import { ToolCard } from "@/components/tool";
+import { CategoryGrid } from "@/components/category";
+import { Hero } from "@/components/common";
 
 export default function Home() {
-  const featuredTools = getFeaturedTools();
-
   return (
     <div>
-      {/* Hero */}
-      <section className="relative py-24 text-center overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
-        <h1 className="font-serif italic text-5xl sm:text-7xl text-foreground glow-text relative">
-          AI 工具聚合导航
-        </h1>
-        <p className="mt-4 text-lg text-muted max-w-2xl mx-auto relative">
-          {tools.length}+ 款精选 AI 工具，一站直达，点击即跳转官网
-        </p>
-      </section>
+      <Hero />
 
-      {/* Category Navigation */}
-      <section className="max-w-6xl mx-auto px-6 mb-8">
-        <div className="flex flex-wrap justify-center gap-2">
-          {categories.map((cat) => (
-            <a
-              key={cat.id}
-              href={`#${cat.id}`}
-              className="glass px-5 py-2.5 rounded-full text-sm text-accent-dim hover:text-accent hover:border-accent/30 transition-all"
-            >
-              {cat.icon} {cat.name}
-              <span className="ml-1 text-muted/50 text-xs">{getToolsByCategory(cat.id).length}</span>
-            </a>
-          ))}
-        </div>
-      </section>
+      <CategoryGrid categories={categories} />
 
       {/* All Categories with Tools */}
       {categories.map((cat) => {
         const catTools = getToolsByCategory(cat.id);
         if (catTools.length === 0) return null;
         return (
-          <section key={cat.id} id={cat.id} className="max-w-6xl mx-auto px-6 py-10 scroll-mt-24">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">{cat.icon}</span>
+          <section key={cat.id} id={cat.id} className="px-6 py-16 max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-10">
               <div>
-                <h2 className="font-serif italic text-2xl text-foreground">{cat.name}</h2>
-                <p className="text-sm text-muted">{cat.description}</p>
+                <h2 className="text-4xl md:text-5xl text-white mb-3">{cat.name}</h2>
+                <p className="text-on-surface/40 font-light">{cat.description}</p>
               </div>
-              <span className="ml-auto glass px-3 py-1 rounded-full text-xs text-accent-dim">
-                {catTools.length} 款
-              </span>
+              <Link
+                href={`/category/${cat.id}`}
+                className="hidden sm:flex items-center gap-2 text-atmospheric hover:gap-3 transition-all text-sm"
+              >
+                查看全部
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {catTools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}
@@ -62,7 +44,7 @@ export default function Home() {
 
       {/* Back to top */}
       <div className="text-center py-12">
-        <a href="#" className="text-sm text-muted hover:text-accent transition-colors">
+        <a href="#" className="text-sm text-on-surface/40 hover:text-white transition-colors">
           ↑ 回到顶部
         </a>
       </div>

@@ -15,32 +15,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="dark antialiased">
-      <body className="min-h-screen flex flex-col">
-        {/* Floating Glass Navbar */}
-        <nav className="fixed top-0 left-0 right-0 z-50 mx-auto mt-4 max-w-5xl px-4">
-          <div className="flex items-center justify-between px-6 py-3 rounded-full glass-strong">
-            <Link href="/" className="text-2xl italic font-serif text-foreground tracking-tighter">
-              AI Nav
+    <html lang="zh-CN" className="dark">
+      <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
+        {/* Navbar */}
+        <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-full bg-atmospheric/10 flex items-center justify-center group-hover:bg-atmospheric/20 transition-colors">
+                <svg className="w-6 h-6 text-atmospheric" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                </svg>
+              </div>
+              <span className="text-2xl font-serif italic text-white tracking-tight">AI Nav</span>
             </Link>
+
             <div className="hidden md:flex items-center gap-8">
               {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors"
+                  className="text-sm font-medium text-on-surface/60 hover:text-white transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
             </div>
-            {/* Mobile menu */}
+
+            {/* Mobile nav */}
             <div className="md:hidden flex items-center gap-4">
               {siteConfig.navItems.slice(0, 3).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors"
+                  className="text-xs text-on-surface/60 hover:text-white transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -55,42 +62,25 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         {/* Footer */}
-        <footer className="border-t border-border mt-20">
-          <div className="max-w-6xl mx-auto px-6 py-12">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mb-10">
-              {siteConfig.footerLinks.map((group) => (
-                <div key={group.title}>
-                  <h4 className="text-xs uppercase tracking-widest text-accent mb-4 font-semibold">
-                    {group.title}
-                  </h4>
-                  <ul className="space-y-2">
-                    {group.links.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="text-sm text-muted hover:text-foreground transition-colors"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              <div>
-                <h4 className="text-xs uppercase tracking-widest text-accent mb-4 font-semibold">
-                  关于
-                </h4>
-                <p className="text-sm text-muted leading-relaxed">
-                  {siteConfig.description}
-                </p>
-              </div>
+        <footer className="px-6 py-20 border-t border-white/5 text-center">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl text-white mb-8 font-serif italic">AI Nav</h2>
+            <div className="flex flex-wrap justify-center gap-8 text-sm text-on-surface/40 mb-12">
+              {siteConfig.footerLinks.map((group) =>
+                group.links.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))
+              )}
             </div>
-            <div className="text-center text-xs text-muted/60 border-t border-border pt-6">
-              <span className="italic font-serif text-lg text-foreground/40">AI Nav</span>
-              <span className="mx-2">·</span>
-              {siteConfig.tagline}
-            </div>
+            <p className="text-xs text-on-surface/20">
+              © 2026 AI Nav. {siteConfig.tagline}
+            </p>
           </div>
         </footer>
       </body>

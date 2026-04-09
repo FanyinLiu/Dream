@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { Send, Bot, X } from "lucide-react";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -93,10 +93,11 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto py-6 space-y-4">
         {messages.length === 0 && (
           <div className="text-center py-16">
-            <h1 className="font-serif italic text-4xl text-foreground glow-text mb-3">
-              AI 创作助手
-            </h1>
-            <p className="text-muted mb-8">
+            <div className="w-16 h-16 rounded-full bg-atmospheric/10 flex items-center justify-center mx-auto mb-6">
+              <Bot className="w-8 h-8 text-atmospheric" />
+            </div>
+            <h1 className="text-4xl md:text-5xl text-white mb-3">AI 创作助手</h1>
+            <p className="text-on-surface/40 mb-8 font-light">
               告诉我你想做什么，我来帮你完成
             </p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
@@ -105,7 +106,7 @@ export default function ChatPage() {
                   key={s}
                   type="button"
                   onClick={() => handleSend(s)}
-                  className="glass px-4 py-2 rounded-full text-sm text-muted hover:text-accent hover:border-accent/30 transition-all text-left"
+                  className="px-4 py-2 rounded-full liquid-glass ghost-border text-sm text-on-surface/60 hover:text-white transition-all text-left"
                 >
                   {s}
                 </button>
@@ -116,26 +117,18 @@ export default function ChatPage() {
 
         {messages.map((msg, i) => (
           <div key={i}>
-            {/* Message bubble */}
-            <div
-              className={cn(
-                "flex",
-                msg.role === "user" ? "justify-end" : "justify-start",
-              )}
-            >
+            <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={cn(
-                  "max-w-[85%] rounded-2xl px-4 py-3 text-sm",
+                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
                   msg.role === "user"
-                    ? "glass-strong text-accent"
-                    : "glass text-foreground",
-                )}
+                    ? "bg-atmospheric text-surface font-medium"
+                    : "bg-white/5 text-on-surface/80 border border-white/10"
+                }`}
               >
                 <div className="whitespace-pre-wrap">{msg.content}</div>
               </div>
             </div>
 
-            {/* Tool results */}
             {msg.toolResults?.map((result, j) => (
               <div key={j} className="mt-3 ml-0">
                 <ToolResultView result={result} />
@@ -146,12 +139,12 @@ export default function ChatPage() {
 
         {loading && (
           <div className="flex justify-start">
-            <div className="glass rounded-2xl px-4 py-3 text-sm text-muted">
-              <span className="inline-flex gap-1">
-                <span className="animate-bounce">·</span>
-                <span className="animate-bounce" style={{ animationDelay: "0.1s" }}>·</span>
-                <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>·</span>
-              </span>
+            <div className="bg-white/5 px-4 py-3 rounded-2xl border border-white/10">
+              <div className="flex gap-1">
+                <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce" />
+                <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <div className="w-1.5 h-1.5 bg-atmospheric/40 rounded-full animate-bounce [animation-delay:0.4s]" />
+              </div>
             </div>
           </div>
         )}
@@ -160,8 +153,8 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="py-4 border-t border-border">
-        <div className="glass-strong rounded-2xl flex items-end p-2">
+      <div className="py-4 border-t border-white/5">
+        <div className="relative">
           <textarea
             ref={inputRef}
             value={input}
@@ -169,18 +162,18 @@ export default function ChatPage() {
             onKeyDown={handleKeyDown}
             placeholder="描述你想创作的内容..."
             rows={1}
-            className="flex-1 bg-transparent text-foreground text-sm px-3 py-2 placeholder:text-muted/40 focus:outline-none resize-none max-h-32"
+            className="w-full bg-surface/50 border border-white/10 rounded-2xl py-4 pl-5 pr-14 text-sm text-white focus:outline-none focus:border-atmospheric/50 transition-colors resize-none"
           />
           <button
             type="button"
             onClick={() => handleSend()}
             disabled={loading || !input.trim()}
-            className="shrink-0 bg-accent/20 hover:bg-accent/30 text-accent px-4 py-2 rounded-xl text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center text-atmospheric hover:bg-atmospheric/30 transition-colors disabled:opacity-50"
           >
-            发送
+            <Send className="w-4 h-4" />
           </button>
         </div>
-        <p className="text-xs text-muted/40 text-center mt-2">
+        <p className="text-xs text-on-surface/20 text-center mt-2">
           Enter 发送 · Shift+Enter 换行 · 支持生图、写作、工具推荐
         </p>
       </div>
@@ -196,13 +189,13 @@ const categoryLabels: Record<string, string> = {
 function ToolResultView({ result }: { result: ToolResult }) {
   if (result.type === "image" && result.data.success) {
     return (
-      <div className="glass-card rounded-xl p-4 max-w-md">
+      <div className="liquid-glass rounded-xl p-4 max-w-md border border-white/5">
         <img src={result.data.url as string} alt="AI generated" className="w-full rounded-lg" />
         {result.data.revisedPrompt ? (
-          <p className="text-xs text-muted mt-2 line-clamp-2">{result.data.revisedPrompt as string}</p>
+          <p className="text-xs text-on-surface/40 mt-2 line-clamp-2">{result.data.revisedPrompt as string}</p>
         ) : null}
         <a href={result.data.url as string} target="_blank" rel="noopener noreferrer"
-          className="inline-block mt-2 text-xs text-accent hover:text-foreground transition-colors">
+          className="inline-block mt-2 text-xs text-atmospheric hover:text-white transition-colors">
           下载原图 ↗
         </a>
       </div>
@@ -211,12 +204,12 @@ function ToolResultView({ result }: { result: ToolResult }) {
 
   if (result.type === "text" && result.data.success) {
     return (
-      <div className="glass-card rounded-xl p-4 max-w-lg">
-        <div className="text-sm text-muted leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+      <div className="liquid-glass rounded-xl p-4 max-w-lg border border-white/5">
+        <div className="text-sm text-on-surface/60 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
           {result.data.text as string}
         </div>
         <button type="button" onClick={() => navigator.clipboard.writeText(result.data.text as string)}
-          className="mt-2 text-xs text-accent hover:text-foreground transition-colors">
+          className="mt-2 text-xs text-atmospheric hover:text-white transition-colors">
           复制全文
         </button>
       </div>
@@ -225,10 +218,10 @@ function ToolResultView({ result }: { result: ToolResult }) {
 
   if (result.type === "recommend" && result.data.success) {
     return (
-      <div className="glass-card rounded-xl p-4 max-w-sm">
-        <p className="text-xs text-accent mb-2">推荐工具</p>
+      <div className="liquid-glass rounded-xl p-4 max-w-sm border border-white/5">
+        <p className="text-xs text-atmospheric mb-2">推荐工具</p>
         <Link href={`/category/${result.data.category}`}
-          className="text-sm text-foreground hover:text-accent transition-colors">
+          className="text-sm text-white hover:text-atmospheric transition-colors">
           查看 {categoryLabels[result.data.category as string] ?? "工具"} →
         </Link>
       </div>

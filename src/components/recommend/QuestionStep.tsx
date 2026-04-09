@@ -20,19 +20,19 @@ export function QuestionStep({
     <div className={cn("max-w-2xl mx-auto", className)}>
       {/* Progress */}
       <div className="mb-8">
-        <div className="flex items-center justify-between text-sm text-muted mb-2">
+        <div className="flex items-center justify-between text-sm text-on-surface/40 mb-2">
           <span>第 {currentStep} / {totalSteps} 步</span>
-          <span className="text-accent">{Math.round((currentStep / totalSteps) * 100)}%</span>
+          <span className="text-atmospheric">{Math.round((currentStep / totalSteps) * 100)}%</span>
         </div>
-        <div className="w-full bg-surface-high rounded-full h-1.5">
+        <div className="w-full bg-white/5 rounded-full h-1.5">
           <div
-            className="bg-accent h-1.5 rounded-full transition-all duration-500"
+            className="bg-atmospheric h-1.5 rounded-full transition-all duration-500"
             style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
         </div>
       </div>
 
-      <h2 className="font-serif italic text-3xl text-foreground mb-8">
+      <h2 className="text-3xl text-white mb-8">
         {question.question}
       </h2>
 

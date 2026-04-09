@@ -8,34 +8,40 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="font-serif italic text-4xl text-foreground glow-text mb-8">关于 AI Nav</h1>
+      <h1 className="text-4xl md:text-5xl text-white mb-8">关于 AI Nav</h1>
 
       <div className="space-y-6">
-        <div className="glass-card rounded-xl p-6">
-          <h2 className="text-xs uppercase tracking-widest text-accent mb-3 font-semibold">我们是谁？</h2>
-          <p className="text-muted leading-relaxed">
+        <div className="p-8 rounded-3xl liquid-glass border border-white/5">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+            我们是谁？
+          </h2>
+          <p className="text-on-surface/60 leading-relaxed">
             AI Nav 是一个精选 AI 工具导航站。每天都有大量新的 AI 工具诞生，但大多数人不知道该用哪个、怎么选。
           </p>
-          <p className="text-muted leading-relaxed mt-3">
+          <p className="text-on-surface/60 leading-relaxed mt-3">
             我们的目标很简单：帮你按使用场景，快速找到最适合的 AI 工具，不花冤枉钱，不浪费时间。
           </p>
         </div>
 
-        <div className="glass-card rounded-xl p-6">
-          <h2 className="text-xs uppercase tracking-widest text-accent mb-3 font-semibold">我们怎么选工具？</h2>
-          <ul className="space-y-2 text-muted">
-            <li><strong className="text-foreground">亲自体验</strong> — 每个工具都经过实际使用测试</li>
-            <li><strong className="text-foreground">真实评价</strong> — 不收取工具方的上架费用</li>
-            <li><strong className="text-foreground">持续更新</strong> — 定期更新工具信息和新增优质工具</li>
+        <div className="p-8 rounded-3xl liquid-glass border border-white/5">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+            我们怎么选工具？
+          </h2>
+          <ul className="space-y-3 text-on-surface/60">
+            <li><strong className="text-white">亲自体验</strong> — 每个工具都经过实际使用测试</li>
+            <li><strong className="text-white">真实评价</strong> — 不收取工具方的上架费用</li>
+            <li><strong className="text-white">持续更新</strong> — 定期更新工具信息和新增优质工具</li>
           </ul>
         </div>
 
-        <div className="glass-card rounded-xl p-6">
-          <h2 className="text-xs uppercase tracking-widest text-accent mb-3 font-semibold">联系我们</h2>
-          <p className="text-muted leading-relaxed">
+        <div className="p-8 rounded-3xl liquid-glass border border-white/5">
+          <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold not-italic">
+            联系我们
+          </h2>
+          <p className="text-on-surface/60 leading-relaxed">
             如果你有任何建议，或者想推荐一款好用的 AI 工具，欢迎联系我们。
           </p>
-          <p className="text-muted leading-relaxed mt-2">
+          <p className="text-on-surface/60 leading-relaxed mt-2">
             我们也欢迎 AI 工具开发者主动提交自己的产品。
           </p>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import type { RecommendOption } from "@/types/tool";
 
 interface QuestionOptionProps {
@@ -15,29 +16,27 @@ export function QuestionOption({ option, selected, onSelect }: QuestionOptionPro
       type="button"
       onClick={onSelect}
       className={cn(
-        "w-full text-left p-4 rounded-xl transition-all",
+        "group w-full text-left p-5 rounded-2xl transition-all",
         selected
-          ? "glass-strong text-accent"
-          : "glass-card text-foreground",
+          ? "bg-atmospheric/10 border border-atmospheric/30"
+          : "bg-white/5 border border-white/10 hover:bg-atmospheric/10 hover:border-atmospheric/30",
       )}
     >
-      <div className="flex items-center gap-3">
-        <div
-          className={cn(
-            "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
-            selected ? "border-accent" : "border-muted/40",
-          )}
-        >
-          {selected && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
-        </div>
+      <div className="flex items-center justify-between">
         <div>
-          <p className={cn("font-medium", selected ? "text-accent" : "text-foreground")}>
+          <p className={cn("font-medium text-lg", selected ? "text-white" : "text-on-surface/80 group-hover:text-white")}>
             {option.label}
           </p>
           {option.description && (
-            <p className="text-sm text-muted mt-0.5">{option.description}</p>
+            <p className="text-sm text-on-surface/40 mt-0.5">{option.description}</p>
           )}
         </div>
+        <ArrowRight className={cn(
+          "w-5 h-5 transition-all",
+          selected
+            ? "text-atmospheric translate-x-0 opacity-100"
+            : "text-on-surface/20 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:text-atmospheric",
+        )} />
       </div>
     </button>
   );

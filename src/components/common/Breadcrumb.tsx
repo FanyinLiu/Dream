@@ -11,16 +11,16 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav className="text-sm text-muted mb-8">
+    <nav className="text-sm text-on-surface/40 mb-8">
       {items.map((item, index) => (
         <span key={item.label}>
-          {index > 0 && <span className="mx-2 text-muted/40">/</span>}
+          {index > 0 && <span className="mx-2 text-on-surface/20">/</span>}
           {item.href ? (
-            <Link href={item.href} className="hover:text-accent transition-colors">
+            <Link href={item.href} className="hover:text-white transition-colors">
               {item.label}
             </Link>
           ) : (
-            <span className="text-foreground">{item.label}</span>
+            <span className="text-on-surface/80">{item.label}</span>
           )}
         </span>
       ))}

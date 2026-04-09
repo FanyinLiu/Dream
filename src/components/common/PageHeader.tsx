@@ -10,12 +10,12 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, icon, className, children }: PageHeaderProps) {
   return (
-    <div className={cn("mb-10", className)}>
+    <div className={cn("mb-12", className)}>
       <div className="flex items-center gap-3 mb-2">
         {icon && <span className="text-4xl">{icon}</span>}
-        <h1 className="font-serif italic text-4xl text-foreground glow-text">{title}</h1>
+        <h1 className="text-4xl md:text-5xl text-white">{title}</h1>
       </div>
-      {description && <p className="text-muted mt-1">{description}</p>}
+      {description && <p className="text-on-surface/40 font-light mt-2">{description}</p>}
       {children}
     </div>
   );

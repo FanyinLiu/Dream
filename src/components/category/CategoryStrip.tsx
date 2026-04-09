@@ -10,16 +10,16 @@ interface CategoryStripProps {
 
 export function CategoryStrip({ categories, activeCategoryId, className }: CategoryStripProps) {
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
+    <div className={cn("flex flex-wrap gap-3", className)}>
       {categories.map((cat) => (
         <Link
           key={cat.id}
           href={`/category/${cat.id}`}
           className={cn(
-            "px-4 py-2 rounded-full text-sm transition-all",
+            "px-5 py-2.5 rounded-full text-sm transition-all",
             cat.id === activeCategoryId
-              ? "glass-strong text-accent font-semibold"
-              : "glass text-muted hover:text-accent",
+              ? "liquid-glass-strong text-atmospheric font-semibold"
+              : "liquid-glass text-on-surface/60 hover:text-white ghost-border",
           )}
         >
           {cat.icon} {cat.name}
