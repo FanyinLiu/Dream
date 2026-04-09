@@ -10,6 +10,7 @@ export const siteConfig = {
     { label: "创作", href: "/create" },
     { label: "分类", href: "/categories" },
     { label: "推荐", href: "/recommend" },
+    { label: "定价", href: "/pricing" },
     { label: "关于", href: "/about" },
   ],
 

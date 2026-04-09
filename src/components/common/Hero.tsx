@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { MODELS, DEFAULT_MODEL } from "@/lib/models";
+import { useMembership } from "@/lib/useMembership";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -26,43 +28,6 @@ const categoryLabels: Record<string, string> = {
   image: "AI 绘画", video: "AI 视频", writing: "AI 写作",
   coding: "AI 编程", music: "AI 音乐", webdev: "AI 建站", prompt: "提示词",
 };
-
-interface Model {
-  id: string;
-  name: string;
-  icon: string;
-  free?: boolean;
-}
-
-const MODELS: { tier: string; models: Model[] }[] = [
-  {
-    tier: "免费模型",
-    models: [
-      { id: "openai/gpt-4o-mini", name: "GPT-4o mini", icon: "◎", free: true },
-      { id: "qwen/qwen3-235b-a22b-2507", name: "Qwen3 235B", icon: "◈", free: true },
-      { id: "z-ai/glm-4.5-air:free", name: "GLM-4.5 Air", icon: "◆", free: true },
-      { id: "google/gemini-2.0-flash-001", name: "Gemini 2.0 Flash", icon: "◆", free: true },
-    ],
-  },
-  {
-    tier: "进阶模型",
-    models: [
-      { id: "deepseek/deepseek-chat", name: "DeepSeek V3", icon: "◈" },
-      { id: "openai/gpt-4.1-mini", name: "GPT-4.1 mini", icon: "◎" },
-      { id: "google/gemini-2.5-flash", name: "Gemini 2.5 Flash", icon: "◆" },
-      { id: "anthropic/claude-3-haiku", name: "Claude 3 Haiku", icon: "Ⓐ" },
-      { id: "deepseek/deepseek-r1", name: "DeepSeek R1", icon: "◈" },
-    ],
-  },
-  {
-    tier: "旗舰模型",
-    models: [
-      { id: "openai/gpt-4.1", name: "GPT-4.1", icon: "◎" },
-      { id: "google/gemini-2.5-pro", name: "Gemini 2.5 Pro", icon: "◆" },
-      { id: "anthropic/claude-sonnet-4-6", name: "Claude Sonnet 4.6", icon: "Ⓐ" },
-    ],
-  },
-];
 
 const SCENE_TEMPLATES = [
   { icon: FileText, label: "写周报", prompt: "帮我推荐一个能快速写工作周报的AI工具", color: "from-blue-500/20 to-blue-600/5" },
@@ -84,7 +49,8 @@ export function Hero() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(MODELS[0].models[0]);
+  const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL);
+  const { isPro } = useMembership();
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
@@ -368,28 +334,40 @@ export function Hero() {
                     <p className="text-[10px] text-on-surface/30 font-medium px-2 pt-2 pb-1">{group.tier}</p>
                     {group.models.map((model) => {
                       const isPaid = !model.free;
+                      const locked = isPaid && !isPro;
                       return (
                         <button
                           key={model.id}
-                          onClick={() => { setSelectedModel(model); setModelMenuOpen(false); }}
+                          onClick={() => {
+                            if (locked) {
+                              window.location.href = "/pricing";
+                            } else {
+                              setSelectedModel(model);
+                              setModelMenuOpen(false);
+                            }
+                          }}
                           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-left group"
                         >
                           <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[11px] text-on-surface/60 shrink-0">{model.icon}</span>
-                          <span className="text-sm text-on-surface/80 group-hover:text-white transition-colors flex-1">{model.name}</span>
-                          {isPaid && <Lock className="w-3 h-3 text-on-surface/20 shrink-0" />}
-                          {selectedModel.id === model.id && <Check className="w-4 h-4 text-atmospheric shrink-0" />}
+                          <span className={`text-sm transition-colors flex-1 ${locked ? "text-on-surface/30" : "text-on-surface/80 group-hover:text-white"}`}>{model.name}</span>
+                          {locked && <Lock className="w-3 h-3 text-on-surface/20 shrink-0" />}
+                          {!locked && selectedModel.id === model.id && <Check className="w-4 h-4 text-atmospheric shrink-0" />}
                         </button>
                       );
                     })}
                   </div>
                 ))}
               </div>
-              <div className="px-4 py-3 border-t border-white/5">
-                <p className="text-[10px] text-on-surface/30">
+              {!isPro && (
+                <Link
+                  href="/pricing"
+                  onClick={() => setModelMenuOpen(false)}
+                  className="block px-4 py-3 border-t border-white/5 text-[10px] text-atmospheric hover:text-white transition-colors"
+                >
                   <Lock className="w-2.5 h-2.5 inline mr-1 -mt-0.5" />
-                  标记的模型需要开通会员使用
-                </p>
-              </div>
+                  升级 Pro 解锁全部模型 →
+                </Link>
+              )}
             </motion.div>
           )}
         </AnimatePresence>,
