@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
+import { Chatbox } from "@/components/common";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -60,6 +61,8 @@ export default function RootLayout({
         <div className="h-20" />
 
         <main className="flex-1">{children}</main>
+
+        <Chatbox />
 
         {/* Footer */}
         <footer className="px-6 py-20 border-t border-white/5 text-center">
