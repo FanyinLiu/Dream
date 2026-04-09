@@ -281,7 +281,7 @@ export function Hero() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="group/card relative liquid-glass-strong rounded-3xl p-5 overflow-visible"
         >
-          <div className="relative bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
+          <div className="bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -293,15 +293,8 @@ export function Hero() {
               }}
               placeholder="问我任何问题..."
               rows={3}
-              className="w-full bg-transparent py-4 pl-5 pr-14 text-sm text-white placeholder:text-on-surface/30 focus:outline-none resize-none"
+              className="w-full bg-transparent py-4 pl-5 pr-5 text-sm text-white placeholder:text-on-surface/30 focus:outline-none resize-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             />
-            <button
-              onClick={() => handleSend()}
-              disabled={loading || !input.trim()}
-              className="absolute right-3 bottom-3 w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center text-atmospheric hover:bg-atmospheric/30 transition-colors disabled:opacity-30"
-            >
-              <Send className="w-4 h-4" />
-            </button>
           </div>
 
           {/* Bottom bar */}
@@ -323,15 +316,26 @@ export function Hero() {
               ))}
             </div>
 
-            {/* Model selector */}
-            <div className="shrink-0 ml-2" ref={modelMenuRef}>
+            <div className="flex items-center gap-2 shrink-0 ml-2">
+              {/* Model selector */}
+              <div ref={modelMenuRef}>
+                <button
+                  ref={modelBtnRef}
+                  onClick={handleModelToggle}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] text-on-surface/40 hover:text-white transition-colors"
+                >
+                  {selectedModel.name}
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+              </div>
+
+              {/* Send button */}
               <button
-                ref={modelBtnRef}
-                onClick={handleModelToggle}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] text-on-surface/40 hover:text-white transition-colors"
+                onClick={() => handleSend()}
+                disabled={loading || !input.trim()}
+                className="w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center text-atmospheric hover:bg-atmospheric/30 transition-colors disabled:opacity-30"
               >
-                {selectedModel.name}
-                <ChevronDown className="w-3 h-3" />
+                <Send className="w-4 h-4" />
               </button>
             </div>
           </div>
