@@ -33,7 +33,7 @@ interface Model {
 
 const MODELS: { tier: string; models: Model[] }[] = [
   {
-    tier: "免费",
+    tier: "免费模型",
     models: [
       { id: "openai/gpt-4o-mini", name: "GPT-4o mini", icon: "◎", free: true },
       { id: "qwen/qwen3-235b-a22b-2507", name: "Qwen3 235B", icon: "◈", free: true },
@@ -42,7 +42,7 @@ const MODELS: { tier: string; models: Model[] }[] = [
     ],
   },
   {
-    tier: "进阶",
+    tier: "进阶模型",
     models: [
       { id: "deepseek/deepseek-chat", name: "DeepSeek V3", icon: "◈" },
       { id: "openai/gpt-4.1-mini", name: "GPT-4.1 mini", icon: "◎" },
@@ -52,7 +52,7 @@ const MODELS: { tier: string; models: Model[] }[] = [
     ],
   },
   {
-    tier: "旗舰",
+    tier: "旗舰模型",
     models: [
       { id: "openai/gpt-4.1", name: "GPT-4.1", icon: "◎" },
       { id: "google/gemini-2.5-pro", name: "Gemini 2.5 Pro", icon: "◆" },
