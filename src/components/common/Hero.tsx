@@ -185,9 +185,6 @@ export function Hero() {
 
   return (
     <section className="relative pt-8 pb-16 px-6">
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-atmospheric/5 blur-[120px] rounded-full -z-10" />
-
       <div className="max-w-2xl mx-auto">
         {/* Copilot header */}
         {!hasMessages && (
@@ -282,7 +279,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="liquid-glass-strong rounded-3xl p-5 overflow-visible"
+          className="group/card relative liquid-glass-strong rounded-3xl p-5 overflow-visible"
         >
           <div className="relative bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
             <input

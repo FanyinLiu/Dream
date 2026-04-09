@@ -24,9 +24,12 @@ export function ToolCard({ tool, className }: ToolCardProps) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`group liquid-glass rounded-2xl p-6 flex flex-col h-full ghost-border ${className || ""}`}
+      className={`group relative rounded-2xl p-6 flex flex-col h-full bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5)] transition-all duration-500 ${className || ""}`}
     >
-      <div className="flex items-start justify-between mb-6">
+      {/* Hover gradient glow */}
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-atmospheric/0 to-atmospheric/0 group-hover:from-atmospheric/[0.08] group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+      <div className="flex items-start justify-between mb-6 relative z-10">
         <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-atmospheric/10 transition-colors">
           <span className="text-on-surface/60 group-hover:text-atmospheric transition-colors text-lg font-bold">
             {tool.logoText}
@@ -35,7 +38,7 @@ export function ToolCard({ tool, className }: ToolCardProps) {
         <PricingBadge priceType={tool.priceType} />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 relative z-10">
         <div className="flex items-center gap-2 mb-2">
           <h3 className="text-2xl text-white">{tool.name}</h3>
         </div>
@@ -53,7 +56,7 @@ export function ToolCard({ tool, className }: ToolCardProps) {
         </div>
       </div>
 
-      <div className="mt-auto space-y-3">
+      <div className="mt-auto space-y-3 relative z-10">
         <Link
           href={`/tool/${tool.slug}`}
           className="w-full py-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center gap-2 text-sm font-medium text-white hover:bg-white/10 transition-all"

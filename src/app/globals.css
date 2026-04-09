@@ -39,7 +39,24 @@
   }
 
   .ghost-border {
-    @apply border border-atmospheric/15 hover:border-atmospheric/40 transition-colors duration-500;
+    @apply border border-white/10 hover:border-atmospheric/40 transition-all duration-500;
+    position: relative;
+  }
+  .ghost-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(172,202,233,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+  .ghost-border:hover::before {
+    opacity: 1;
+  }
+  .ghost-border:hover {
+    box-shadow: 0 0 24px -8px rgba(172,202,233,0.15);
   }
 
   /* English-only serif italic style for brand/decorative text */

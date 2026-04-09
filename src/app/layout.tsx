@@ -18,6 +18,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
+        {/* Cinematic Background */}
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-teal-500/[0.07] rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-purple-600/[0.06] rounded-full blur-[140px]" />
+          <div className="absolute bottom-[-20%] left-[10%] w-[70%] h-[70%] bg-cyan-500/[0.05] rounded-full blur-[150px]" />
+          <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] bg-blue-500/[0.04] rounded-full blur-[100px]" />
+        </div>
+
         {/* Navbar */}
         <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -30,7 +38,7 @@ export default function RootLayout({
               <span className="text-2xl brand-serif text-white tracking-tight">AI Nav</span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-8 px-8 py-3 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.5)]">
               {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -43,7 +51,7 @@ export default function RootLayout({
             </div>
 
             {/* Mobile nav */}
-            <div className="md:hidden flex items-center gap-4">
+            <div className="md:hidden flex items-center gap-4 px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
               {siteConfig.navItems.slice(0, 3).map((item) => (
                 <Link
                   key={item.href}
@@ -60,12 +68,12 @@ export default function RootLayout({
         {/* Spacer for fixed nav */}
         <div className="h-20" />
 
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 relative z-10">{children}</main>
 
         <Chatbox />
 
         {/* Footer */}
-        <footer className="px-6 py-20 border-t border-white/5 text-center">
+        <footer className="px-6 py-20 border-t border-white/5 text-center relative z-10">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl text-white mb-8 brand-serif">AI Nav</h2>
             <div className="flex flex-wrap justify-center gap-8 text-sm text-on-surface/40 mb-12">
