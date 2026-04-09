@@ -78,6 +78,7 @@ export function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const modelBtnRef = useRef<HTMLButtonElement>(null);
+  const modelPanelRef = useRef<HTMLDivElement>(null);
   const [menuPos, setMenuPos] = useState<{ bottom: number; right: number } | null>(null);
 
   useEffect(() => {
@@ -88,7 +89,11 @@ export function Hero() {
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (modelMenuRef.current && !modelMenuRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        modelMenuRef.current && !modelMenuRef.current.contains(target) &&
+        modelPanelRef.current && !modelPanelRef.current.contains(target)
+      ) {
         setModelMenuOpen(false);
       }
     }
@@ -278,6 +283,7 @@ export function Hero() {
               <AnimatePresence>
                 {modelMenuOpen && menuPos && (
                   <motion.div
+                    ref={modelPanelRef}
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
