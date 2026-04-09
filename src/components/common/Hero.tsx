@@ -184,8 +184,8 @@ export function Hero() {
   const hasMessages = messages.length > 0;
 
   return (
-    <section className="relative pt-8 pb-16 px-6">
-      <div className="max-w-2xl mx-auto">
+    <section className="relative pt-12 pb-16 px-6 min-h-[calc(100vh-5rem)] flex items-center">
+      <div className="max-w-3xl mx-auto w-full">
         {/* Copilot header */}
         {!hasMessages && (
           <motion.div
@@ -197,7 +197,7 @@ export function Hero() {
             <div className="w-14 h-14 rounded-full bg-atmospheric/10 border border-atmospheric/20 flex items-center justify-center mb-6">
               <Sparkles className="w-7 h-7 text-atmospheric" />
             </div>
-            <h1 className="text-3xl md:text-4xl text-white text-center mb-2">
+            <h1 className="text-4xl md:text-5xl text-white text-center mb-3">
               发现最好用的 <span className="text-atmospheric">AI 工具</span>
             </h1>
             <p className="text-on-surface/40 text-center font-light">
@@ -225,7 +225,7 @@ export function Hero() {
 
         {/* Messages */}
         {hasMessages && (
-          <div ref={scrollRef} className="mb-4 max-h-[40vh] overflow-y-auto space-y-4 px-1">
+          <div ref={scrollRef} className="mb-4 max-h-[50vh] overflow-y-auto space-y-4 px-1">
             {messages.map((msg, i) => (
               <div key={i}>
                 <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -279,7 +279,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="group/card relative liquid-glass-strong rounded-3xl p-5 overflow-visible"
+          className="group/card relative liquid-glass-strong rounded-3xl p-6 overflow-visible"
         >
           <div className="relative bg-white/5 border border-white/10 rounded-2xl focus-within:border-atmospheric/40 transition-colors">
             <input
