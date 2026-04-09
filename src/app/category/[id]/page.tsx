@@ -13,8 +13,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const category = getCategoryById(id);
   if (!category) return {};
   return {
-    title: `${category.name} - AI 工具推荐 | AI Nav`,
+    title: `${category.name} - AI 工具推荐`,
     description: `精选${category.name}类 AI 工具：${category.description}。免费、付费、中文友好，按需筛选。`,
+    openGraph: { title: `${category.name} - AI 工具推荐`, description: category.description },
+    alternates: { canonical: `https://www.ainav.my/category/${id}` },
   };
 }
 

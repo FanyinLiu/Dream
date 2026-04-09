@@ -12,7 +12,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const tool = getToolBySlug(slug);
   if (!tool) return {};
-  return { title: `${tool.name} - ${tool.tagline} | AI Nav`, description: tool.description };
+  return {
+    title: `${tool.name} - ${tool.tagline}`,
+    description: tool.description,
+    openGraph: {
+      title: `${tool.name} - ${tool.tagline}`,
+      description: tool.description,
+      type: "article",
+    },
+    alternates: { canonical: `https://www.ainav.my/tool/${slug}` },
+  };
 }
 
 const skillLabels: Record<string, string> = {
@@ -29,8 +38,31 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
   const category = getCategoryById(tool.categories[0]);
   const alternatives = getAlternativeTools(tool);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: tool.name,
+    description: tool.description,
+    url: tool.officialUrl,
+    applicationCategory: "AI Tool",
+    operatingSystem: tool.platforms.join(", "),
+    offers: {
+      "@type": "Offer",
+      price: tool.priceType === "free" ? "0" : undefined,
+      priceCurrency: "USD",
+      description: tool.priceNote,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: tool.rating,
+      bestRating: 5,
+      worstRating: 1,
+    },
+  };
+
   return (
     <main className="pt-8 pb-20 px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-5xl mx-auto">
         <Link
           href="/"

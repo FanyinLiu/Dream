@@ -4,6 +4,8 @@ import { siteConfig } from "@/data/site";
 import { Chatbox } from "@/components/common";
 import { NavBar } from "@/components/common/NavBar";
 import { AuthProvider } from "@/lib/AuthContext";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -13,9 +15,21 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: siteConfig.name + " - " + siteConfig.tagline,
+  title: {
+    default: siteConfig.name + " - " + siteConfig.tagline,
+    template: `%s | ${siteConfig.name}`,
+  },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
+  metadataBase: new URL("https://www.ainav.my"),
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
+    title: siteConfig.name + " - " + siteConfig.tagline,
+    description: siteConfig.description,
+  },
+  robots: { index: true, follow: true },
+  alternates: { canonical: "https://www.ainav.my" },
 };
 
 export default function RootLayout({
@@ -68,6 +82,8 @@ export default function RootLayout({
               </p>
             </div>
           </footer>
+          <Analytics />
+          <SpeedInsights />
         </AuthProvider>
       </body>
     </html>
