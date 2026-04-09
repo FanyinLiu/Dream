@@ -2,9 +2,9 @@ import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: "OPENAI_API_KEY not configured" }), {
+    return new Response(JSON.stringify({ error: "API key not configured" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const openai = new OpenAI({ apiKey });
+    const openai = new OpenAI({ apiKey, baseURL: "https://openrouter.ai/api/v1" });
     const stream = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "openai/gpt-4o-mini",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt },

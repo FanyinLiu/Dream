@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "OPENAI_API_KEY not configured" }, { status: 500 });
+    return NextResponse.json({ error: "API key not configured" }, { status: 500 });
   }
 
   const { prompt, size = "1024x1024" } = await req.json();
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const openai = new OpenAI({ apiKey });
+    const openai = new OpenAI({ apiKey, baseURL: "https://openrouter.ai/api/v1" });
     const response = await openai.images.generate({
       model: "dall-e-3",
       prompt,

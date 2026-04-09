@@ -2,6 +2,25 @@ import { NextRequest } from "next/server";
 import OpenAI from "openai";
 import type { ChatCompletionMessageParam, ChatCompletionTool } from "openai/resources/chat/completions";
 
+const ALLOWED_MODELS = new Set([
+  // 免费
+  "qwen/qwen3-235b-a22b-2507",
+  "z-ai/glm-4.5-air:free",
+  "google/gemini-2.0-flash-001",
+  "openai/gpt-4o-mini",
+  // 付费
+  "deepseek/deepseek-chat",
+  "deepseek/deepseek-r1",
+  "google/gemini-2.5-flash",
+  "openai/gpt-4.1-mini",
+  "anthropic/claude-3-haiku",
+  "openai/gpt-4.1",
+  "google/gemini-2.5-pro",
+  "anthropic/claude-sonnet-4-6",
+]);
+
+const DEFAULT_MODEL = "openai/gpt-4o-mini";
+
 const tools: ChatCompletionTool[] = [
   {
     type: "function",
@@ -12,7 +31,7 @@ const tools: ChatCompletionTool[] = [
         type: "object",
         properties: {
           prompt: { type: "string", description: "Detailed English prompt for DALL-E image generation" },
-          size: { type: "string", enum: ["1024x1024", "1792x1024", "1024x1792"], description: "Image size. Square by default, landscape for wide scenes, portrait for tall images" },
+          size: { type: "string", enum: ["1024x1024", "1792x1024", "1024x1792"], description: "Image size" },
         },
         required: ["prompt"],
       },
@@ -54,7 +73,7 @@ const SYSTEM_PROMPT = `你是 AI Nav 的智能助手。你的工作是帮用户�
 
 你有以下能力：
 1. **generate_image** - 用 DALL-E 3 生成图片（绘画、海报、Logo、插画等）
-2. **generate_text** - 用 GPT 写文章、文案、翻译、邮件等
+2. **generate_text** - 用 AI 写文章、文案、翻译、邮件等
 3. **recommend_tool** - 推荐外部 AI 工具（视频、音乐、编程等我们暂时不能直接生成的）
 
 规则：
@@ -64,19 +83,33 @@ const SYSTEM_PROMPT = `你是 AI Nav 的智能助手。你的工作是帮用户�
 - 如果不确定用户要什么，先问清楚再执行
 - 保持友好简洁，像一个专业的 AI 创作助手`;
 
+function createClient() {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error("OPENROUTER_API_KEY not configured");
+  return new OpenAI({
+    apiKey,
+    baseURL: "https://openrouter.ai/api/v1",
+  });
+}
+
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return Response.json({ error: "OPENAI_API_KEY not configured" }, { status: 500 });
+  let openai: OpenAI;
+  try {
+    openai = createClient();
+  } catch {
+    return Response.json({ error: "API key not configured" }, { status: 500 });
   }
 
-  const { messages } = await req.json() as { messages: ChatCompletionMessageParam[] };
-  const openai = new OpenAI({ apiKey });
+  const { messages, model } = await req.json() as {
+    messages: ChatCompletionMessageParam[];
+    model?: string;
+  };
+
+  const resolvedModel = model && ALLOWED_MODELS.has(model) ? model : DEFAULT_MODEL;
 
   try {
-    // First call - may return tool calls
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: resolvedModel,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
       tools,
       tool_choice: "auto",
@@ -85,15 +118,10 @@ export async function POST(req: NextRequest) {
     const choice = response.choices[0];
     const assistantMessage = choice.message;
 
-    // No tool calls - just return the text response
     if (!assistantMessage.tool_calls?.length) {
-      return Response.json({
-        reply: assistantMessage.content,
-        toolResults: [],
-      });
+      return Response.json({ reply: assistantMessage.content, toolResults: [] });
     }
 
-    // Process tool calls
     const toolResults: Array<{ type: string; data: Record<string, unknown> }> = [];
     const toolMessages: ChatCompletionMessageParam[] = [
       ...messages,
@@ -115,11 +143,7 @@ export async function POST(req: NextRequest) {
             quality: "standard",
           });
           const image = imgResponse.data?.[0];
-          result = {
-            success: true,
-            url: image?.url ?? "",
-            revisedPrompt: image?.revised_prompt ?? "",
-          };
+          result = { success: true, url: image?.url ?? "", revisedPrompt: image?.revised_prompt ?? "" };
           toolResults.push({ type: "image", data: result });
         } catch (e: unknown) {
           result = { success: false, error: e instanceof Error ? e.message : "Image generation failed" };
@@ -135,27 +159,20 @@ export async function POST(req: NextRequest) {
             translate: "你是专业翻译。",
           };
           const textResponse = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: resolvedModel,
             messages: [
               { role: "system", content: stylePrompts[args.style] || stylePrompts.general },
               { role: "user", content: args.prompt },
             ],
           });
-          result = {
-            success: true,
-            text: textResponse.choices[0].message.content,
-          };
+          result = { success: true, text: textResponse.choices[0].message.content };
           toolResults.push({ type: "text", data: result });
         } catch (e: unknown) {
           result = { success: false, error: e instanceof Error ? e.message : "Text generation failed" };
           toolResults.push({ type: "text", data: result });
         }
       } else if (toolCall.function.name === "recommend_tool") {
-        result = {
-          success: true,
-          task: args.task,
-          category: args.category,
-        };
+        result = { success: true, task: args.task, category: args.category };
         toolResults.push({ type: "recommend", data: result });
       }
 
@@ -166,9 +183,8 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Second call - get final response after tool execution
     const finalResponse = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: resolvedModel,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...toolMessages],
     });
 
