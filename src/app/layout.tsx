@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/data/site";
 import { Chatbox } from "@/components/common";
 import "./globals.css";
@@ -79,6 +80,7 @@ export default function RootLayout({
         <main className="flex-1 relative z-10">{children}</main>
 
         <Chatbox />
+        <Analytics />
 
         {/* Footer */}
         <footer className="px-6 py-20 border-t border-white/5 text-center relative z-10">
