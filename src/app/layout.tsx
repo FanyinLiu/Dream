@@ -4,6 +4,7 @@ import { siteConfig } from "@/data/site";
 import { Chatbox } from "@/components/common";
 import { NavBar } from "@/components/common/NavBar";
 import { AuthProvider } from "@/lib/AuthContext";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -69,6 +70,7 @@ export default function RootLayout({
             </div>
           </footer>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
