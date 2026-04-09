@@ -7,7 +7,7 @@
   --font-serif: "Instrument Serif", "Noto Serif SC", serif;
   --font-display: "Noto Serif SC", "Instrument Serif", serif;
 
-  --color-surface: #0f1117;
+  --color-surface: #131313;
   --color-atmospheric: #accae9;
   --color-on-surface: #e2e2e2;
 
@@ -31,32 +31,49 @@
 
 @layer components {
   .liquid-glass {
-    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.12];
-  }
-
-  .liquid-glass-strong {
-    @apply bg-white/[0.08] backdrop-blur-2xl border border-white/[0.18] shadow-[0_0_40px_rgba(172,202,233,0.08)];
-  }
-
-  .ghost-border {
-    @apply border border-white/10 hover:border-atmospheric/40 transition-all duration-500;
+    @apply bg-white/[0.05] backdrop-blur-[24px];
+    border: 1px solid transparent;
+    background-clip: padding-box;
     position: relative;
   }
-  .ghost-border::before {
+  .liquid-glass::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(172,202,233,0.08), transparent);
-    opacity: 0;
-    transition: opacity 0.5s;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(172,202,233,0.15), rgba(172,202,233,0.05)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
     pointer-events: none;
   }
-  .ghost-border:hover::before {
-    opacity: 1;
+
+  .liquid-glass-strong {
+    @apply bg-atmospheric/[0.08] backdrop-blur-[24px];
+    border: 1px solid transparent;
+    position: relative;
+  }
+  .liquid-glass-strong::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(172,202,233,0.30), rgba(172,202,233,0.10)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .ghost-border {
+    @apply border border-atmospheric/[0.15] hover:border-atmospheric/40 transition-all duration-500;
   }
   .ghost-border:hover {
-    box-shadow: 0 0 24px -8px rgba(172,202,233,0.15);
+    box-shadow: 0 0 30px -6px rgba(172,202,233,0.12);
   }
 
   /* English-only serif italic style for brand/decorative text */

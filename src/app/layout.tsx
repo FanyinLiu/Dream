@@ -20,12 +20,12 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
         {/* Cinematic Smoke Background */}
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-15%] left-[-15%] w-[55%] h-[55%] bg-teal-400/25 rounded-full blur-[100px]" />
-          <div className="absolute top-[10%] right-[-10%] w-[65%] h-[65%] bg-purple-500/20 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-15%] left-[5%] w-[60%] h-[60%] bg-emerald-500/15 rounded-full blur-[130px]" />
-          <div className="absolute top-[30%] left-[25%] w-[45%] h-[45%] bg-fuchsia-500/15 rounded-full blur-[110px]" />
-          <div className="absolute top-[5%] left-[40%] w-[35%] h-[50%] bg-cyan-400/18 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[10%] right-[5%] w-[40%] h-[40%] bg-violet-500/12 rounded-full blur-[120px]" />
+          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-teal-400/30 rounded-full blur-[100px] mix-blend-screen" />
+          <div className="absolute top-[5%] right-[-15%] w-[70%] h-[65%] bg-purple-500/30 rounded-full blur-[120px] mix-blend-screen" />
+          <div className="absolute bottom-[-20%] left-[0%] w-[65%] h-[60%] bg-emerald-400/20 rounded-full blur-[130px] mix-blend-screen" />
+          <div className="absolute top-[25%] left-[20%] w-[50%] h-[50%] bg-fuchsia-500/20 rounded-full blur-[110px] mix-blend-screen" />
+          <div className="absolute top-[-5%] left-[35%] w-[40%] h-[55%] bg-cyan-300/25 rounded-full blur-[90px] mix-blend-screen" />
+          <div className="absolute bottom-[5%] right-[0%] w-[50%] h-[50%] bg-violet-400/18 rounded-full blur-[120px] mix-blend-screen" />
         </div>
 
         {/* Navbar */}
@@ -40,7 +40,7 @@ export default function RootLayout({
               <span className="text-2xl brand-serif text-white tracking-tight">AI Nav</span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-8 px-8 py-3 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.5)]">
+            <div className="hidden md:flex items-center gap-8 px-8 py-3 rounded-full bg-white/[0.04] backdrop-blur-xl border border-white/[0.12] shadow-[0_4px_24px_-4px_rgba(172,202,233,0.06)]">
               {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
