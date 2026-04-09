@@ -18,6 +18,7 @@ export const imageTools: Tool[] = [
     featured: true, status: "active", rating: 4.8, logoText: "MJ",
     scoreProfile: { easeOfUse: 6, outputQuality: 10, costEfficiency: 6, chineseFriendly: 3, featureRichness: 8 },
     alternatives: ["leonardo-ai", "dall-e", "ideogram"],
+    realTalk: "画手偶尔六指，但做概念图氛围感目前没对手。",
   },
   {
     id: "leonardo-ai", slug: "leonardo-ai", name: "Leonardo AI",
@@ -36,6 +37,7 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "Leo",
     scoreProfile: { easeOfUse: 7, outputQuality: 8, costEfficiency: 9, chineseFriendly: 3, featureRichness: 8 },
     alternatives: ["midjourney", "dreamstudio"],
+    realTalk: "免费额度给得很大方，批量出图性价比之王。",
   },
   {
     id: "adobe-firefly", slug: "adobe-firefly", name: "Adobe Firefly",
@@ -54,6 +56,7 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 4.2, logoText: "Ff",
     scoreProfile: { easeOfUse: 9, outputQuality: 7, costEfficiency: 5, chineseFriendly: 8, featureRichness: 7 },
     alternatives: ["canva", "midjourney"],
+    realTalk: "做商用素材最安心，版权问题直接免疫。",
   },
   {
     id: "canva", slug: "canva", name: "Canva",
@@ -72,6 +75,7 @@ export const imageTools: Tool[] = [
     featured: true, status: "active", rating: 4.5, logoText: "Ca",
     scoreProfile: { easeOfUse: 10, outputQuality: 6, costEfficiency: 8, chineseFriendly: 9, featureRichness: 8 },
     alternatives: ["adobe-firefly", "midjourney"],
+    realTalk: "不会设计也能出好看的图，模板真的太多了。",
   },
   {
     id: "ideogram", slug: "ideogram", name: "Ideogram",
@@ -90,6 +94,7 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 4.1, logoText: "Id",
     scoreProfile: { easeOfUse: 8, outputQuality: 7, costEfficiency: 9, chineseFriendly: 4, featureRichness: 6 },
     alternatives: ["midjourney", "canva"],
+    realTalk: "需要在图上打字？别犹豫，直接用这个。",
   },
   {
     id: "dreamstudio", slug: "dreamstudio", name: "DreamStudio",
@@ -108,6 +113,7 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 3.8, logoText: "DS",
     scoreProfile: { easeOfUse: 6, outputQuality: 7, costEfficiency: 7, chineseFriendly: 2, featureRichness: 7 },
     alternatives: ["leonardo-ai", "midjourney"],
+    realTalk: "开发者友好，有 API 就是香，但界面确实糙。",
   },
   {
     id: "dall-e", slug: "dall-e", name: "DALL-E 3",
@@ -126,6 +132,7 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "DE",
     scoreProfile: { easeOfUse: 10, outputQuality: 7, costEfficiency: 6, chineseFriendly: 8, featureRichness: 6 },
     alternatives: ["midjourney", "ideogram"],
+    realTalk: "跟 ChatGPT 说句话就出图，零门槛体验最好。",
   },
   {
     id: "remove-bg", slug: "remove-bg", name: "Remove.bg",
@@ -144,5 +151,6 @@ export const imageTools: Tool[] = [
     featured: false, status: "active", rating: 4.4, logoText: "Rb",
     scoreProfile: { easeOfUse: 10, outputQuality: 8, costEfficiency: 7, chineseFriendly: 8, featureRichness: 4 },
     alternatives: ["canva"],
+    realTalk: "电商抠图神器，5 秒搞定，就是免费版分辨率低了点。",
   },
 ];

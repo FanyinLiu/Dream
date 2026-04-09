@@ -18,6 +18,7 @@ export const videoTools: Tool[] = [
     featured: true, status: "active", rating: 4.7, logoText: "Rw",
     scoreProfile: { easeOfUse: 6, outputQuality: 10, costEfficiency: 5, chineseFriendly: 3, featureRichness: 9 },
     alternatives: ["pika", "kling"],
+    realTalk: "视频质量确实最强，但烧钱速度也是最强的。",
   },
   {
     id: "pika", slug: "pika", name: "Pika",
@@ -36,6 +37,7 @@ export const videoTools: Tool[] = [
     featured: false, status: "active", rating: 4.2, logoText: "Pk",
     scoreProfile: { easeOfUse: 9, outputQuality: 7, costEfficiency: 8, chineseFriendly: 3, featureRichness: 5 },
     alternatives: ["runway", "kling"],
+    realTalk: "拿来玩很开心，做正经项目还是差点意思。",
   },
   {
     id: "kling", slug: "kling", name: "Kling",
@@ -54,6 +56,7 @@ export const videoTools: Tool[] = [
     featured: true, status: "active", rating: 4.5, logoText: "KL",
     scoreProfile: { easeOfUse: 8, outputQuality: 8, costEfficiency: 9, chineseFriendly: 10, featureRichness: 7 },
     alternatives: ["runway", "pika"],
+    realTalk: "国产之光，中文支持好价格还便宜，必须推。",
   },
   {
     id: "heygen", slug: "heygen", name: "HeyGen",
@@ -72,6 +75,7 @@ export const videoTools: Tool[] = [
     featured: false, status: "active", rating: 4.4, logoText: "HG",
     scoreProfile: { easeOfUse: 9, outputQuality: 8, costEfficiency: 5, chineseFriendly: 8, featureRichness: 7 },
     alternatives: ["synthesia", "runway"],
+    realTalk: "数字人效果很唬人，做产品介绍视频真的省事。",
   },
   {
     id: "synthesia", slug: "synthesia", name: "Synthesia",
@@ -90,6 +94,7 @@ export const videoTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "Sy",
     scoreProfile: { easeOfUse: 8, outputQuality: 8, costEfficiency: 4, chineseFriendly: 7, featureRichness: 8 },
     alternatives: ["heygen"],
+    realTalk: "企业培训视频神器，但个人用户别看价格了。",
   },
   {
     id: "capcut", slug: "capcut", name: "CapCut",
@@ -108,6 +113,7 @@ export const videoTools: Tool[] = [
     featured: true, status: "active", rating: 4.6, logoText: "CC",
     scoreProfile: { easeOfUse: 10, outputQuality: 7, costEfficiency: 10, chineseFriendly: 10, featureRichness: 8 },
     alternatives: ["runway"],
+    realTalk: "剪视频加字幕一条龙，免费功能就够用了。",
   },
   {
     id: "luma", slug: "luma", name: "Luma Dream Machine",
@@ -126,5 +132,6 @@ export const videoTools: Tool[] = [
     featured: false, status: "active", rating: 4.2, logoText: "LM",
     scoreProfile: { easeOfUse: 8, outputQuality: 8, costEfficiency: 7, chineseFriendly: 2, featureRichness: 5 },
     alternatives: ["runway", "pika"],
+    realTalk: "物理运动最自然，就是功能还比较少。",
   },
 ];

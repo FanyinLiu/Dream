@@ -18,6 +18,7 @@ export const promptTools: Tool[] = [
     featured: true, status: "active", rating: 4.2, logoText: "PP",
     scoreProfile: { easeOfUse: 9, outputQuality: 8, costEfficiency: 7, chineseFriendly: 7, featureRichness: 7 },
     alternatives: ["flowgpt"],
+    realTalk: "提示词写不好？丢进去自动优化，确实有用。",
   },
   {
     id: "flowgpt", slug: "flowgpt", name: "FlowGPT",
@@ -36,6 +37,7 @@ export const promptTools: Tool[] = [
     featured: false, status: "active", rating: 4.0, logoText: "FG",
     scoreProfile: { easeOfUse: 9, outputQuality: 6, costEfficiency: 10, chineseFriendly: 3, featureRichness: 6 },
     alternatives: ["promptperfect", "promptbase"],
+    realTalk: "提示词版的应用商店，免费淘到好东西。",
   },
   {
     id: "promptbase", slug: "promptbase", name: "PromptBase",
@@ -54,6 +56,7 @@ export const promptTools: Tool[] = [
     featured: false, status: "active", rating: 3.9, logoText: "PB",
     scoreProfile: { easeOfUse: 8, outputQuality: 7, costEfficiency: 6, chineseFriendly: 2, featureRichness: 5 },
     alternatives: ["flowgpt"],
+    realTalk: "花几块钱买个好提示词，省下自己调半天。",
   },
   {
     id: "prompthero", slug: "prompthero", name: "PromptHero",
@@ -72,6 +75,7 @@ export const promptTools: Tool[] = [
     featured: false, status: "active", rating: 4.1, logoText: "PH",
     scoreProfile: { easeOfUse: 9, outputQuality: 7, costEfficiency: 10, chineseFriendly: 2, featureRichness: 5 },
     alternatives: ["flowgpt", "promptbase"],
+    realTalk: "学 MJ 提示词的最佳途径，看图猜词很上瘾。",
   },
   {
     id: "chatgpt-prompts", slug: "awesome-chatgpt-prompts", name: "Awesome ChatGPT Prompts",
@@ -90,5 +94,6 @@ export const promptTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "AP",
     scoreProfile: { easeOfUse: 8, outputQuality: 8, costEfficiency: 10, chineseFriendly: 7, featureRichness: 5 },
     alternatives: ["flowgpt"],
+    realTalk: "GitHub 上的宝藏项目，角色扮演提示词大全。",
   },
 ];

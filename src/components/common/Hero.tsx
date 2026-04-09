@@ -5,7 +5,8 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Send, Sparkles, ChevronDown, Check, Lock,
-  PenTool, Compass, Wand2, MessageSquare, GitCompareArrows, Lightbulb,
+  PenTool, Compass, MessageSquare, GitCompareArrows, Lightbulb,
+  FileText, ImageIcon, Video, Code, Music,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -60,6 +61,15 @@ const MODELS: { tier: string; models: Model[] }[] = [
       { id: "anthropic/claude-sonnet-4-6", name: "Claude Sonnet 4.6", icon: "Ⓐ" },
     ],
   },
+];
+
+const SCENE_TEMPLATES = [
+  { icon: FileText, label: "写周报", prompt: "帮我推荐一个能快速写工作周报的AI工具", color: "from-blue-500/20 to-blue-600/5" },
+  { icon: ImageIcon, label: "做海报", prompt: "我想做一张活动宣传海报，有没有好用的AI设计工具？", color: "from-pink-500/20 to-pink-600/5" },
+  { icon: Video, label: "剪视频", prompt: "我想把长视频自动剪辑成短视频片段，推荐用哪个AI工具？", color: "from-purple-500/20 to-purple-600/5" },
+  { icon: Code, label: "写代码", prompt: "推荐一个适合我的AI编程助手", color: "from-green-500/20 to-green-600/5" },
+  { icon: Music, label: "做音乐", prompt: "我想用AI生成一首歌，有什么好用的工具？", color: "from-orange-500/20 to-orange-600/5" },
+  { icon: Compass, label: "建网站", prompt: "我想快速搭建一个网站，有什么AI建站工具推荐？", color: "from-cyan-500/20 to-cyan-600/5" },
 ];
 
 const QUICK_ACTIONS = [
@@ -193,8 +203,25 @@ export function Hero() {
               发现最好用的 <span className="text-atmospheric">AI 工具</span>
             </h1>
             <p className="text-on-surface/40 text-center font-light">
-              问我任何关于 AI 工具的问题，或直接开始创作
+              告诉我你想做什么，帮你找到最趁手的 AI 工具
             </p>
+
+            {/* Scene template cards */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-8 w-full max-w-lg">
+              {SCENE_TEMPLATES.map((scene, i) => (
+                <motion.button
+                  key={scene.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.05 }}
+                  onClick={() => handleSend(scene.prompt)}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-2xl bg-gradient-to-b ${scene.color} border border-white/5 hover:border-atmospheric/30 transition-all group`}
+                >
+                  <scene.icon className="w-5 h-5 text-on-surface/40 group-hover:text-atmospheric transition-colors" />
+                  <span className="text-[11px] text-on-surface/50 group-hover:text-white transition-colors">{scene.label}</span>
+                </motion.button>
+              ))}
+            </div>
           </motion.div>
         )}
 

@@ -18,6 +18,7 @@ export const codingTools: Tool[] = [
     featured: true, status: "active", rating: 4.6, logoText: "GC",
     scoreProfile: { easeOfUse: 8, outputQuality: 8, costEfficiency: 7, chineseFriendly: 4, featureRichness: 8 },
     alternatives: ["cursor", "tabnine"],
+    realTalk: "写代码有它在旁边，效率至少翻倍。",
   },
   {
     id: "cursor", slug: "cursor", name: "Cursor",
@@ -36,6 +37,7 @@ export const codingTools: Tool[] = [
     featured: true, status: "active", rating: 4.7, logoText: "Cu",
     scoreProfile: { easeOfUse: 7, outputQuality: 9, costEfficiency: 7, chineseFriendly: 5, featureRichness: 9 },
     alternatives: ["github-copilot", "windsurf"],
+    realTalk: "用过就回不去了，理解整个项目的能力太强。",
   },
   {
     id: "windsurf", slug: "windsurf", name: "Windsurf",
@@ -54,6 +56,7 @@ export const codingTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "Ws",
     scoreProfile: { easeOfUse: 7, outputQuality: 8, costEfficiency: 9, chineseFriendly: 4, featureRichness: 8 },
     alternatives: ["cursor", "github-copilot"],
+    realTalk: "Cursor 的平替，免费额度多，够学生党用了。",
   },
   {
     id: "replit", slug: "replit", name: "Replit",
@@ -72,6 +75,7 @@ export const codingTools: Tool[] = [
     featured: false, status: "active", rating: 4.1, logoText: "Re",
     scoreProfile: { easeOfUse: 10, outputQuality: 7, costEfficiency: 8, chineseFriendly: 3, featureRichness: 7 },
     alternatives: ["cursor"],
+    realTalk: "学编程的天堂，打开浏览器就能写代码。",
   },
   {
     id: "tabnine", slug: "tabnine", name: "Tabnine",
@@ -90,6 +94,7 @@ export const codingTools: Tool[] = [
     featured: false, status: "active", rating: 3.9, logoText: "Tn",
     scoreProfile: { easeOfUse: 8, outputQuality: 6, costEfficiency: 7, chineseFriendly: 3, featureRichness: 5 },
     alternatives: ["github-copilot"],
+    realTalk: "公司不让代码上云的，选它准没错。",
   },
   {
     id: "devin", slug: "devin", name: "Devin",
@@ -108,5 +113,6 @@ export const codingTools: Tool[] = [
     featured: false, status: "active", rating: 3.8, logoText: "Dv",
     scoreProfile: { easeOfUse: 6, outputQuality: 7, costEfficiency: 3, chineseFriendly: 2, featureRichness: 8 },
     alternatives: ["cursor"],
+    realTalk: "概念很酷但还不成熟，500 刀/月劝退大多数人。",
   },
 ];

@@ -18,6 +18,7 @@ export const musicTools: Tool[] = [
     featured: true, status: "active", rating: 4.5, logoText: "Su",
     scoreProfile: { easeOfUse: 10, outputQuality: 7, costEfficiency: 9, chineseFriendly: 7, featureRichness: 7 },
     alternatives: ["udio"],
+    realTalk: "随便写两句歌词就能出歌，派对神器。",
   },
   {
     id: "udio", slug: "udio", name: "Udio",
@@ -36,6 +37,7 @@ export const musicTools: Tool[] = [
     featured: false, status: "active", rating: 4.4, logoText: "Ud",
     scoreProfile: { easeOfUse: 9, outputQuality: 9, costEfficiency: 8, chineseFriendly: 3, featureRichness: 7 },
     alternatives: ["suno"],
+    realTalk: "音质比 Suno 细腻，专业音乐人也在偷偷用。",
   },
   {
     id: "aiva", slug: "aiva", name: "AIVA",
@@ -54,6 +56,7 @@ export const musicTools: Tool[] = [
     featured: false, status: "active", rating: 4.2, logoText: "AV",
     scoreProfile: { easeOfUse: 6, outputQuality: 9, costEfficiency: 7, chineseFriendly: 2, featureRichness: 8 },
     alternatives: ["soundraw", "suno"],
+    realTalk: "做影视配乐很专业，但普通用户上手有门槛。",
   },
   {
     id: "soundraw", slug: "soundraw", name: "Soundraw",
@@ -72,6 +75,7 @@ export const musicTools: Tool[] = [
     featured: false, status: "active", rating: 4.0, logoText: "SR",
     scoreProfile: { easeOfUse: 8, outputQuality: 7, costEfficiency: 6, chineseFriendly: 2, featureRichness: 7 },
     alternatives: ["aiva", "suno"],
+    realTalk: "做视频背景音乐很方便，可惜没有免费版。",
   },
   {
     id: "elevenlabs", slug: "elevenlabs", name: "ElevenLabs",
@@ -90,5 +94,6 @@ export const musicTools: Tool[] = [
     featured: true, status: "active", rating: 4.7, logoText: "EL",
     scoreProfile: { easeOfUse: 8, outputQuality: 10, costEfficiency: 7, chineseFriendly: 7, featureRichness: 9 },
     alternatives: ["suno"],
+    realTalk: "声音克隆太逼真了，用来做播客配音绝了。",
   },
 ];

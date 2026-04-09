@@ -18,6 +18,7 @@ export const writingTools: Tool[] = [
     featured: true, status: "active", rating: 4.8, logoText: "GP",
     scoreProfile: { easeOfUse: 9, outputQuality: 9, costEfficiency: 7, chineseFriendly: 9, featureRichness: 10 },
     alternatives: ["claude", "gemini"],
+    realTalk: "万能选手，什么都能干，但什么都不是最强的。",
   },
   {
     id: "claude", slug: "claude", name: "Claude",
@@ -36,6 +37,7 @@ export const writingTools: Tool[] = [
     featured: true, status: "active", rating: 4.7, logoText: "Cl",
     scoreProfile: { easeOfUse: 9, outputQuality: 9, costEfficiency: 7, chineseFriendly: 9, featureRichness: 8 },
     alternatives: ["chatgpt", "gemini"],
+    realTalk: "长文写作之王，给它一万字的材料也不怕。",
   },
   {
     id: "gemini", slug: "gemini", name: "Gemini",
@@ -54,6 +56,7 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.3, logoText: "Ge",
     scoreProfile: { easeOfUse: 9, outputQuality: 8, costEfficiency: 9, chineseFriendly: 7, featureRichness: 8 },
     alternatives: ["chatgpt", "claude"],
+    realTalk: "免费版就很强，搜索能力是真的好用。",
   },
   {
     id: "jasper", slug: "jasper", name: "Jasper",
@@ -72,6 +75,7 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.1, logoText: "Ja",
     scoreProfile: { easeOfUse: 8, outputQuality: 7, costEfficiency: 4, chineseFriendly: 3, featureRichness: 8 },
     alternatives: ["copy-ai", "chatgpt"],
+    realTalk: "营销团队的生产力工具，就是价格不太友好。",
   },
   {
     id: "copy-ai", slug: "copy-ai", name: "Copy.ai",
@@ -90,6 +94,7 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.0, logoText: "Co",
     scoreProfile: { easeOfUse: 8, outputQuality: 7, costEfficiency: 6, chineseFriendly: 3, featureRichness: 7 },
     alternatives: ["jasper", "chatgpt"],
+    realTalk: "写电商文案很顺手，但别指望它写小说。",
   },
   {
     id: "notion-ai", slug: "notion-ai", name: "Notion AI",
@@ -108,6 +113,7 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.2, logoText: "No",
     scoreProfile: { easeOfUse: 9, outputQuality: 7, costEfficiency: 5, chineseFriendly: 8, featureRichness: 7 },
     alternatives: ["chatgpt", "claude"],
+    realTalk: "用 Notion 的必开，不用 Notion 的没必要。",
   },
   {
     id: "grammarly", slug: "grammarly", name: "Grammarly",
@@ -126,6 +132,7 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.5, logoText: "Gr",
     scoreProfile: { easeOfUse: 10, outputQuality: 8, costEfficiency: 8, chineseFriendly: 1, featureRichness: 7 },
     alternatives: ["chatgpt"],
+    realTalk: "写英文邮件的救星，免费版就够日常用了。",
   },
   {
     id: "deepl", slug: "deepl", name: "DeepL",
@@ -144,5 +151,6 @@ export const writingTools: Tool[] = [
     featured: false, status: "active", rating: 4.6, logoText: "DL",
     scoreProfile: { easeOfUse: 10, outputQuality: 9, costEfficiency: 8, chineseFriendly: 9, featureRichness: 6 },
     alternatives: ["chatgpt"],
+    realTalk: "翻译质量真的甩 Google 翻译几条街。",
   },
 ];

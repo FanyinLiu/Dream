@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { tools, getToolBySlug, getAlternativeTools } from "@/data/tools";
+import { tools, getToolBySlug, getToolById, getAlternativeTools } from "@/data/tools";
 import { getCategoryById } from "@/data/categories";
 import { ToolCard } from "@/components/tool";
 
@@ -133,6 +133,18 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                 ))}
               </div>
             </div>
+
+            {/* Real Talk */}
+            {tool.realTalk && (
+              <div className="p-6 rounded-3xl liquid-glass border border-white/5 mb-12">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl leading-none text-atmospheric/40 shrink-0">&ldquo;</span>
+                  <p className="text-on-surface/70 text-sm italic leading-relaxed pt-1">{tool.realTalk}</p>
+                  <span className="text-2xl leading-none text-atmospheric/40 shrink-0">&rdquo;</span>
+                </div>
+                <p className="text-[10px] text-on-surface/20 mt-2 text-right">—— 编辑点评</p>
+              </div>
+            )}
           </div>
 
           {/* Right Column: CTA */}
@@ -168,6 +180,54 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   ))}
                 </div>
               </div>
+
+              {/* Quick Comparison */}
+              {tool.alternatives.length > 0 && (() => {
+                const alts = tool.alternatives.slice(0, 3).map(getToolById).filter(Boolean);
+                if (alts.length === 0) return null;
+                const dims = [
+                  { key: "easeOfUse" as const, label: "易用" },
+                  { key: "outputQuality" as const, label: "质量" },
+                  { key: "costEfficiency" as const, label: "性价比" },
+                  { key: "chineseFriendly" as const, label: "中文" },
+                ];
+                return (
+                  <div className="mt-8 pt-8 border-t border-white/5">
+                    <h4 className="text-xs font-semibold text-white mb-4">平替对比</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-[11px]">
+                        <thead>
+                          <tr className="text-on-surface/30">
+                            <th className="text-left pb-2 font-medium"></th>
+                            <th className="text-center pb-2 font-medium text-atmospheric">{tool.name}</th>
+                            {alts.map(a => (
+                              <th key={a!.id} className="text-center pb-2 font-medium">{a!.name}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="text-on-surface/50">
+                          {dims.map(d => (
+                            <tr key={d.key} className="border-t border-white/5">
+                              <td className="py-2 text-on-surface/30">{d.label}</td>
+                              <td className="py-2 text-center text-atmospheric font-medium">{tool.scoreProfile[d.key]}</td>
+                              {alts.map(a => (
+                                <td key={a!.id} className="py-2 text-center">{a!.scoreProfile[d.key]}</td>
+                              ))}
+                            </tr>
+                          ))}
+                          <tr className="border-t border-white/5">
+                            <td className="py-2 text-on-surface/30">价格</td>
+                            <td className="py-2 text-center text-atmospheric font-medium text-[10px]">{tool.priceNote.split("，")[0]}</td>
+                            {alts.map(a => (
+                              <td key={a!.id} className="py-2 text-center text-[10px]">{a!.priceNote.split("，")[0]}</td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>

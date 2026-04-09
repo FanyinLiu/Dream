@@ -18,6 +18,7 @@ export const webdevTools: Tool[] = [
     featured: true, status: "active", rating: 4.6, logoText: "v0",
     scoreProfile: { easeOfUse: 7, outputQuality: 9, costEfficiency: 7, chineseFriendly: 3, featureRichness: 7 },
     alternatives: ["bolt", "framer"],
+    realTalk: "生成的 React 组件质量很高，直接复制就能用。",
   },
   {
     id: "bolt", slug: "bolt", name: "Bolt.new",
@@ -36,6 +37,7 @@ export const webdevTools: Tool[] = [
     featured: true, status: "active", rating: 4.4, logoText: "Bt",
     scoreProfile: { easeOfUse: 9, outputQuality: 7, costEfficiency: 8, chineseFriendly: 3, featureRichness: 8 },
     alternatives: ["v0", "replit"],
+    realTalk: "从零到部署一条龙，适合快速验证想法。",
   },
   {
     id: "framer", slug: "framer", name: "Framer",
@@ -54,6 +56,7 @@ export const webdevTools: Tool[] = [
     featured: false, status: "active", rating: 4.4, logoText: "Fr",
     scoreProfile: { easeOfUse: 8, outputQuality: 9, costEfficiency: 7, chineseFriendly: 3, featureRichness: 7 },
     alternatives: ["webflow", "v0"],
+    realTalk: "设计师最爱，动画效果开箱即用。",
   },
   {
     id: "webflow", slug: "webflow", name: "Webflow",
@@ -72,6 +75,7 @@ export const webdevTools: Tool[] = [
     featured: false, status: "active", rating: 4.5, logoText: "Wf",
     scoreProfile: { easeOfUse: 5, outputQuality: 9, costEfficiency: 5, chineseFriendly: 3, featureRichness: 9 },
     alternatives: ["framer"],
+    realTalk: "功能最强但学习曲线也最陡，适合专业选手。",
   },
   {
     id: "dora", slug: "dora", name: "Dora AI",
@@ -90,6 +94,7 @@ export const webdevTools: Tool[] = [
     featured: false, status: "active", rating: 4.1, logoText: "Da",
     scoreProfile: { easeOfUse: 9, outputQuality: 8, costEfficiency: 7, chineseFriendly: 8, featureRichness: 5 },
     alternatives: ["framer", "v0"],
+    realTalk: "3D 效果是真的炫，适合做作品集展示。",
   },
   {
     id: "wix-ai", slug: "wix-ai", name: "Wix AI",
@@ -108,5 +113,6 @@ export const webdevTools: Tool[] = [
     featured: false, status: "active", rating: 4.0, logoText: "Wx",
     scoreProfile: { easeOfUse: 10, outputQuality: 6, costEfficiency: 6, chineseFriendly: 8, featureRichness: 8 },
     alternatives: ["framer", "webflow"],
+    realTalk: "小企业建站最省心的选择，别想太多直接用。",
   },
 ];

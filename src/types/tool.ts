@@ -69,6 +69,7 @@ export interface Tool {
   logoText: string;
   scoreProfile: ToolScoreProfile;
   alternatives: string[]; // tool ids
+  realTalk?: string; // 一句真实体验点评
 }
 
 // ─── 推荐系统 ───

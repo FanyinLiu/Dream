@@ -4,9 +4,40 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { motion } from "motion/react";
-import { RotateCcw, Sparkles, ExternalLink } from "lucide-react";
+import { RotateCcw, Sparkles, ExternalLink, Workflow } from "lucide-react";
 import { getRecommendations, type RecommendAnswers } from "@/lib/recommendationEngine";
 import { getToolById } from "@/data/tools";
+
+const WORKFLOWS: Record<string, { title: string; steps: string[] }> = {
+  image: {
+    title: "AI 绘画创作流程",
+    steps: ["用 Midjourney / Leonardo 生成初稿", "用 Canva 排版加文字", "用 Remove.bg 抠图合成"],
+  },
+  video: {
+    title: "AI 视频创作流程",
+    steps: ["用 Runway / Kling 生成视频素材", "用 CapCut 剪辑加字幕", "用 ElevenLabs 配音旁白"],
+  },
+  writing: {
+    title: "AI 写作工作流",
+    steps: ["用 ChatGPT / Claude 生成初稿", "用 DeepL 翻译多语言版本", "用 Grammarly 润色英文"],
+  },
+  coding: {
+    title: "AI 编程工作流",
+    steps: ["用 Cursor 编写核心代码", "用 GitHub Copilot 补全细节", "用 v0 生成前端 UI"],
+  },
+  music: {
+    title: "AI 音乐创作流程",
+    steps: ["用 Suno / Udio 生成歌曲", "用 AIVA 制作配乐", "用 ElevenLabs 生成配音"],
+  },
+  webdev: {
+    title: "AI 建站工作流",
+    steps: ["用 v0 / Bolt 搭建原型", "用 Framer 设计页面", "用 Webflow 发布上线"],
+  },
+  prompt: {
+    title: "提示词优化流程",
+    steps: ["在 PromptHero 找灵感参考", "用 PromptPerfect 自动优化", "在 FlowGPT 分享和迭代"],
+  },
+};
 
 function ResultContent() {
   const searchParams = useSearchParams();
@@ -31,6 +62,32 @@ function ResultContent() {
         <h1 className="text-4xl md:text-5xl text-white mb-4">为你精选的工具</h1>
         <p className="text-on-surface/40 font-light">根据你的需求，为你推荐以下 AI 工具</p>
       </div>
+
+      {/* Workflow suggestion */}
+      {answers.category && WORKFLOWS[answers.category] && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-8 p-6 rounded-2xl liquid-glass-strong border border-atmospheric/20"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <Workflow className="w-4 h-4 text-atmospheric" />
+            <h3 className="text-sm font-semibold text-white">{WORKFLOWS[answers.category].title}</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            {WORKFLOWS[answers.category].steps.map((step, i) => (
+              <div key={i} className="flex items-center gap-3">
+                {i > 0 && <span className="text-atmospheric/30">→</span>}
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/5">
+                  <span className="w-5 h-5 rounded-full bg-atmospheric/20 flex items-center justify-center text-[10px] text-atmospheric font-bold shrink-0">{i + 1}</span>
+                  <span className="text-xs text-on-surface/60">{step}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {topResults.length > 0 ? (
         <div className="space-y-4">
