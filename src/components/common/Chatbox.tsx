@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare, Send, X, Bot } from "lucide-react";
 import Link from "next/link";
@@ -29,7 +30,11 @@ const categoryLabels: Record<string, string> = {
 };
 
 export function Chatbox() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Hide on homepage (Hero already has chat) and chat page
+  if (pathname === "/" || pathname === "/chat") return null;
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
