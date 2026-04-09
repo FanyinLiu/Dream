@@ -6,3 +6,5 @@ export { EmptyState } from "./EmptyState";
 export { Hero } from "./Hero";
 export { Chatbox } from "./Chatbox";
 export { SearchDialog } from "./SearchDialog";
+export { NavBar } from "./NavBar";
+export { AuthDialog } from "./AuthDialog";
