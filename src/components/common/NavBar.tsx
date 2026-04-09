@@ -16,12 +16,12 @@ export function NavBar() {
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-atmospheric/10 flex items-center justify-center group-hover:bg-atmospheric/20 transition-colors">
-              <svg className="w-6 h-6 text-atmospheric" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-atmospheric/10 flex items-center justify-center group-hover:bg-atmospheric/20 transition-colors shrink-0">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-atmospheric" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
               </svg>
             </div>
-            <span className="text-2xl brand-serif text-white tracking-tight">AI Nav</span>
+            <span className="hidden sm:inline text-2xl brand-serif text-white tracking-tight">AI Nav</span>
           </Link>
 
           {/* Desktop nav */}
@@ -40,7 +40,7 @@ export function NavBar() {
           {/* Auth button */}
           <div className="flex items-center gap-3">
             {/* Mobile nav */}
-            <div className="md:hidden flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
+            <div className="md:hidden flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
               {siteConfig.navItems.map((item) => (
                 <Link
                   key={item.href}
