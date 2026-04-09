@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Send, X, Sparkles, ExternalLink, ChevronDown, Check, Lock,
-  Image, PenTool, Compass, Wand2, MessageSquare,
+  Send, X, Sparkles, ChevronDown, Check, Lock,
+  PenTool, Compass, Lightbulb, GitCompareArrows, MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -62,10 +62,10 @@ const MODELS: { tier: string; models: Model[] }[] = [
 ];
 
 const QUICK_ACTIONS = [
-  { label: "生成图片", Icon: Image },
-  { label: "AI 写作", Icon: PenTool },
-  { label: "工具推荐", Icon: Compass },
-  { label: "创意灵感", Icon: Wand2 },
+  { label: "工具推荐", Icon: Compass, prompt: "根据我的需求推荐合适的AI工具" },
+  { label: "工具对比", Icon: GitCompareArrows, prompt: "帮我对比几款热门的AI工具，分析各自优缺点" },
+  { label: "AI 写作", Icon: PenTool, prompt: "帮我写一段文案" },
+  { label: "创意灵感", Icon: Lightbulb, prompt: "给我一些AI创作的灵感和点子" },
 ];
 
 interface SearchDialogProps {
@@ -282,7 +282,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
                     {QUICK_ACTIONS.map((action) => (
                       <button
                         key={action.label}
-                        onClick={() => handleSend(action.label === "生成图片" ? "帮我生成一张图片" : action.label === "AI 写作" ? "帮我写一段文案" : action.label === "工具推荐" ? "推荐适合我的AI工具" : "给我一些创意灵感")}
+                        onClick={() => handleSend(action.prompt)}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all"
                       >
                         <action.Icon className="w-3 h-3" />

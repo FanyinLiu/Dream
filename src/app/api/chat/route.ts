@@ -25,38 +25,8 @@ const tools: ChatCompletionTool[] = [
   {
     type: "function",
     function: {
-      name: "generate_image",
-      description: "Generate an image based on a text description. Use when the user wants to create, draw, design any kind of image, illustration, poster, logo, photo, etc.",
-      parameters: {
-        type: "object",
-        properties: {
-          prompt: { type: "string", description: "Detailed English prompt for DALL-E image generation" },
-          size: { type: "string", enum: ["1024x1024", "1792x1024", "1024x1792"], description: "Image size" },
-        },
-        required: ["prompt"],
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "generate_text",
-      description: "Generate long-form text content. Use when the user wants to write an article, essay, email, marketing copy, story, translation, or any substantial text content.",
-      parameters: {
-        type: "object",
-        properties: {
-          prompt: { type: "string", description: "The writing task description" },
-          style: { type: "string", enum: ["general", "marketing", "academic", "creative", "translate"], description: "Writing style" },
-        },
-        required: ["prompt"],
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
       name: "recommend_tool",
-      description: "Recommend an AI tool for tasks we can't do directly (video, music, 3D, etc). Use when the user wants something we can't generate in-house.",
+      description: "Recommend AI tools from our site's database. Use when users ask about AI tools, want recommendations, comparisons, or need help choosing the right tool for their task. Categories: image (AI绘画), video (AI视频), writing (AI写作), coding (AI编程), music (AI音乐), webdev (AI建站), prompt (提示词).",
       parameters: {
         type: "object",
         properties: {
@@ -69,19 +39,21 @@ const tools: ChatCompletionTool[] = [
   },
 ];
 
-const SYSTEM_PROMPT = `你是 AI Nav 的智能助手。你的工作是帮用户完成 AI 创作任务。
+const SYSTEM_PROMPT = `你是 AI Nav 的智能助手，一个 AI 工具导航网站的 Copilot。
 
-你有以下能力：
-1. **generate_image** - 用 DALL-E 3 生成图片（绘画、海报、Logo、插画等）
-2. **generate_text** - 用 AI 写文章、文案、翻译、邮件等
-3. **recommend_tool** - 推荐外部 AI 工具（视频、音乐、编程等我们暂时不能直接生成的）
+你的核心能力：
+1. **推荐 AI 工具** - 根据用户需求推荐站内收录的 AI 工具（调用 recommend_tool）
+2. **对比分析** - 帮用户对比不同 AI 工具的优缺点、价格、适用场景
+3. **AI 写作** - 帮用户写文案、文章、翻译等文本内容
+4. **创意灵感** - 提供 AI 创作思路和灵感
+5. **答疑解惑** - 解答关于 AI 工具使用的问题
 
 规则：
-- 用中文和用户交流
-- 当用户描述需求时，主动调用对应的工具帮他完成
-- 生成图片时，把用户的中文描述翻译成详细的英文 prompt 再调用
-- 如果不确定用户要什么，先问清楚再执行
-- 保持友好简洁，像一个专业的 AI 创作助手`;
+- 用中文和用户交流，保持友好专业
+- 当用户想生成图片/视频/音乐时，推荐站内对应的工具而不是自己生成
+- 对比工具时要客观，列出各自优缺点
+- 推荐工具时调用 recommend_tool 让用户可以直接跳转到工具页面
+- 保持简洁，不要长篇大论`;
 
 function createClient() {
   const apiKey = process.env.OPENROUTER_API_KEY;
@@ -133,45 +105,7 @@ export async function POST(req: NextRequest) {
       const args = JSON.parse(toolCall.function.arguments);
       let result: Record<string, unknown> = {};
 
-      if (toolCall.function.name === "generate_image") {
-        try {
-          const imgResponse = await openai.images.generate({
-            model: "dall-e-3",
-            prompt: args.prompt,
-            n: 1,
-            size: args.size || "1024x1024",
-            quality: "standard",
-          });
-          const image = imgResponse.data?.[0];
-          result = { success: true, url: image?.url ?? "", revisedPrompt: image?.revised_prompt ?? "" };
-          toolResults.push({ type: "image", data: result });
-        } catch (e: unknown) {
-          result = { success: false, error: e instanceof Error ? e.message : "Image generation failed" };
-          toolResults.push({ type: "image", data: result });
-        }
-      } else if (toolCall.function.name === "generate_text") {
-        try {
-          const stylePrompts: Record<string, string> = {
-            general: "你是一个专业写作助手。",
-            marketing: "你是资深营销文案专家。",
-            academic: "你是学术写作专家。",
-            creative: "你是创意写作大师。",
-            translate: "你是专业翻译。",
-          };
-          const textResponse = await openai.chat.completions.create({
-            model: resolvedModel,
-            messages: [
-              { role: "system", content: stylePrompts[args.style] || stylePrompts.general },
-              { role: "user", content: args.prompt },
-            ],
-          });
-          result = { success: true, text: textResponse.choices[0].message.content };
-          toolResults.push({ type: "text", data: result });
-        } catch (e: unknown) {
-          result = { success: false, error: e instanceof Error ? e.message : "Text generation failed" };
-          toolResults.push({ type: "text", data: result });
-        }
-      } else if (toolCall.function.name === "recommend_tool") {
+      if (toolCall.function.name === "recommend_tool") {
         result = { success: true, task: args.task, category: args.category };
         toolResults.push({ type: "recommend", data: result });
       }
