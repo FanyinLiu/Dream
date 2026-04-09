@@ -49,6 +49,22 @@ export default function CategoriesPage() {
         );
       })}
 
+      {/* 智能推荐入口 */}
+      <section className="px-6 py-16 max-w-4xl mx-auto">
+        <div className="liquid-glass-strong rounded-3xl p-10 text-center">
+          <h2 className="text-3xl md:text-4xl text-white mb-4">不知道用哪个？</h2>
+          <p className="text-on-surface/40 font-light mb-8 max-w-lg mx-auto">
+            回答 5 个问题，AI 帮你从 45 款工具中找到最适合你的
+          </p>
+          <Link
+            href="/recommend"
+            className="inline-block px-8 py-4 rounded-2xl bg-atmospheric text-surface font-bold hover:scale-[1.02] transition-all text-sm"
+          >
+            开始智能推荐
+          </Link>
+        </div>
+      </section>
+
       <div className="text-center py-12">
         <a href="#" className="text-sm text-on-surface/40 hover:text-white transition-colors">
           ↑ 回到顶部
