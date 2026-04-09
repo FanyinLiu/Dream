@@ -24,14 +24,22 @@ export function getRecommendations(answers: RecommendAnswers): RecommendScoreRes
     // 用户类型匹配
     if (answers.userType && tool.targetUsers.includes(answers.userType as Tool["targetUsers"][number])) {
       score += 15;
-      matchReasons.push("适合你的身份");
+      const userLabels: Record<string, string> = {
+        creator: "适合内容创作者", marketer: "适合营销人员", developer: "适合开发者",
+        designer: "适合设计师", student: "适合学生", business: "适合企业用户",
+      };
+      matchReasons.push(userLabels[answers.userType] ?? "适合你的身份");
     }
 
     // 预算匹配
     if (answers.budget) {
       const budgetScore = calcBudgetScore(tool, answers.budget);
       score += budgetScore;
-      if (budgetScore > 0) matchReasons.push("符合预算");
+      if (budgetScore > 0) {
+        if (tool.priceType === "free") matchReasons.push("完全免费");
+        else if (tool.priceType === "freemium") matchReasons.push("免费可试用");
+        else matchReasons.push("符合预算");
+      }
     }
 
     // 优先级匹配
@@ -43,10 +51,15 @@ export function getRecommendations(answers: RecommendAnswers): RecommendScoreRes
 
     // 特殊需求匹配
     if (answers.requirements?.length) {
-      const reqScore = calcRequirementsScore(tool, answers.requirements);
-      score += reqScore;
-      if (reqScore > 0) matchReasons.push("满足特殊需求");
+      const reqResults = calcRequirementsDetail(tool, answers.requirements);
+      score += reqResults.score;
+      matchReasons.push(...reqResults.reasons);
     }
+
+    // 具体优势标签
+    if (tool.scoreProfile.chineseFriendly >= 8 && answers.priority !== "chinese") matchReasons.push("中文体验好");
+    if (tool.scoreProfile.easeOfUse >= 9 && answers.priority !== "ease") matchReasons.push("新手友好");
+    if (tool.platforms.includes("api") && !answers.requirements?.includes("api")) matchReasons.push("支持 API");
 
     // Featured 加分
     if (tool.featured) {
@@ -109,23 +122,24 @@ function getPriorityLabel(priority: string): string {
   return labels[priority] ?? "";
 }
 
-function calcRequirementsScore(tool: Tool, requirements: string[]): number {
+function calcRequirementsDetail(tool: Tool, requirements: string[]): { score: number; reasons: string[] } {
   let score = 0;
+  const reasons: string[] = [];
   for (const req of requirements) {
     switch (req) {
       case "api":
-        if (tool.platforms.includes("api")) score += 10;
+        if (tool.platforms.includes("api")) { score += 10; reasons.push("支持 API 接入"); }
         break;
       case "team":
-        if (tool.targetUsers.includes("business")) score += 10;
+        if (tool.targetUsers.includes("business")) { score += 10; reasons.push("适合团队协作"); }
         break;
       case "mobile":
-        if (tool.platforms.includes("mobile")) score += 10;
+        if (tool.platforms.includes("mobile")) { score += 10; reasons.push("手机端可用"); }
         break;
       case "offline":
-        if (tool.platforms.includes("desktop")) score += 5;
+        if (tool.platforms.includes("desktop")) { score += 5; reasons.push("支持桌面端"); }
         break;
     }
   }
-  return score;
+  return { score, reasons };
 }

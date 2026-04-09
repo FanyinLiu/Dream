@@ -70,6 +70,7 @@ export interface Tool {
   scoreProfile: ToolScoreProfile;
   alternatives: string[]; // tool ids
   realTalk?: string; // 一句真实体验点评
+  lastUpdated?: string; // YYYY-MM-DD
 }
 
 // ─── 推荐系统 ───

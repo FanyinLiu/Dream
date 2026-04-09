@@ -78,14 +78,35 @@ export async function POST(req: NextRequest) {
   };
 
   const resolvedModel = model && ALLOWED_MODELS.has(model) ? model : DEFAULT_MODEL;
+  const FALLBACK_MODELS = ["openai/gpt-4o-mini", "qwen/qwen3-235b-a22b-2507", "google/gemini-2.0-flash-001"];
 
-  try {
-    const response = await openai.chat.completions.create({
-      model: resolvedModel,
+  async function tryChat(chatModel: string) {
+    return openai.chat.completions.create({
+      model: chatModel,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
       tools,
       tool_choice: "auto",
     });
+  }
+
+  try {
+    let response;
+    let usedModel = resolvedModel;
+    try {
+      response = await tryChat(resolvedModel);
+    } catch {
+      // Auto-fallback to backup models
+      for (const fb of FALLBACK_MODELS) {
+        if (fb === resolvedModel) continue;
+        try {
+          response = await tryChat(fb);
+          usedModel = fb;
+          break;
+        } catch { continue; }
+      }
+      if (!response) throw new Error("所有模型均不可用，请稍后再试");
+    }
+    void usedModel; // may use later for UI feedback
 
     const choice = response.choices[0];
     const assistantMessage = choice.message;
@@ -118,7 +139,7 @@ export async function POST(req: NextRequest) {
     }
 
     const finalResponse = await openai.chat.completions.create({
-      model: resolvedModel,
+      model: usedModel,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...toolMessages],
     });
 

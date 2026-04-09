@@ -111,7 +111,13 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
 
             {/* Score */}
             <div className="p-8 rounded-3xl liquid-glass border border-white/5 mb-12">
-              <h3 className="text-xl text-white mb-6">评分维度</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl text-white">评分维度</h3>
+                <span className="text-[10px] text-on-surface/20">基于编辑实际体验评分，1-10 分</span>
+              </div>
+              {tool.lastUpdated && (
+                <p className="text-[10px] text-on-surface/20 mb-4">最近更新：{tool.lastUpdated}</p>
+              )}
               <div className="space-y-4">
                 {[
                   { label: "易用性", value: tool.scoreProfile.easeOfUse },
