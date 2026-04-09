@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Send, Sparkles, ChevronDown, Check,
+  Send, Sparkles, ChevronDown, Check, Lock,
   Image, PenTool, Compass, Wand2, MessageSquare, ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,29 +28,36 @@ interface Model {
   id: string;
   name: string;
   icon: string;
+  free?: boolean;
 }
 
 const MODELS: { tier: string; models: Model[] }[] = [
   {
-    tier: "快速响应",
+    tier: "免费模型",
     models: [
-      { id: "gpt-4o-mini", name: "GPT-4o mini", icon: "◎" },
-      { id: "gpt-4.1-mini", name: "GPT-4.1 mini", icon: "◎" },
+      { id: "gpt-4o-mini", name: "GPT-4o mini", icon: "◎", free: true },
+      { id: "gpt-4.1-mini", name: "GPT-4.1 mini", icon: "◎", free: true },
+      { id: "gemini-2.0-flash", name: "Gemini 2.0 Flash", icon: "◆", free: true },
+      { id: "deepseek-v3", name: "DeepSeek V3", icon: "◈", free: true },
     ],
   },
   {
-    tier: "均衡智能",
+    tier: "进阶模型",
     models: [
       { id: "gpt-4o", name: "GPT-4o", icon: "◎" },
       { id: "gpt-4.1", name: "GPT-4.1", icon: "◎" },
       { id: "claude-sonnet-4", name: "Claude Sonnet 4", icon: "Ⓐ" },
+      { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", icon: "◆" },
+      { id: "deepseek-r1", name: "DeepSeek R1", icon: "◈" },
     ],
   },
   {
-    tier: "最强推理",
+    tier: "旗舰模型",
     models: [
       { id: "gpt-4.5", name: "GPT-4.5", icon: "◎" },
       { id: "claude-opus-4", name: "Claude Opus 4", icon: "Ⓐ" },
+      { id: "o3", name: "OpenAI o3", icon: "◎" },
+      { id: "gemini-2.5-ultra", name: "Gemini 2.5 Ultra", icon: "◆" },
     ],
   },
 ];
@@ -70,6 +77,8 @@ export function Hero() {
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
+  const modelBtnRef = useRef<HTMLButtonElement>(null);
+  const [menuPos, setMenuPos] = useState<{ bottom: number; right: number } | null>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -250,9 +259,16 @@ export function Hero() {
             </div>
 
             {/* Model selector */}
-            <div className="relative shrink-0 ml-2" ref={modelMenuRef}>
+            <div className="shrink-0 ml-2" ref={modelMenuRef}>
               <button
-                onClick={() => setModelMenuOpen(!modelMenuOpen)}
+                ref={modelBtnRef}
+                onClick={() => {
+                  if (!modelMenuOpen && modelBtnRef.current) {
+                    const rect = modelBtnRef.current.getBoundingClientRect();
+                    setMenuPos({ bottom: window.innerHeight - rect.top + 8, right: window.innerWidth - rect.right });
+                  }
+                  setModelMenuOpen(!modelMenuOpen);
+                }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] text-on-surface/40 hover:text-white transition-colors"
               >
                 {selectedModel.name}
@@ -260,34 +276,45 @@ export function Hero() {
               </button>
 
               <AnimatePresence>
-                {modelMenuOpen && (
+                {modelMenuOpen && menuPos && (
                   <motion.div
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute bottom-full right-0 mb-2 w-72 liquid-glass-strong rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10"
+                    style={{ bottom: menuPos.bottom, right: menuPos.right }}
+                    className="fixed w-80 bg-surface/95 backdrop-blur-2xl rounded-2xl overflow-hidden shadow-2xl border border-white/15 z-[200]"
                   >
                     <div className="px-4 pt-4 pb-2">
-                      <h3 className="text-xs font-semibold text-white">Models</h3>
+                      <h3 className="text-xs font-semibold text-white">选择模型</h3>
                     </div>
-                    <div className="max-h-80 overflow-y-auto px-2 pb-2">
+                    <div className="max-h-96 overflow-y-auto px-2 pb-2">
                       {MODELS.map((group) => (
-                        <div key={group.tier} className="mb-2">
+                        <div key={group.tier} className="mb-1">
                           <p className="text-[10px] text-on-surface/30 font-medium px-2 pt-2 pb-1">{group.tier}</p>
-                          {group.models.map((model) => (
-                            <button
-                              key={model.id}
-                              onClick={() => { setSelectedModel(model); setModelMenuOpen(false); }}
-                              className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors text-left group"
-                            >
-                              <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] text-on-surface/60 shrink-0">{model.icon}</span>
-                              <span className="text-sm text-on-surface/80 group-hover:text-white transition-colors flex-1">{model.name}</span>
-                              {selectedModel.id === model.id && <Check className="w-4 h-4 text-atmospheric shrink-0" />}
-                            </button>
-                          ))}
+                          {group.models.map((model) => {
+                            const isPaid = !model.free;
+                            return (
+                              <button
+                                key={model.id}
+                                onClick={() => { setSelectedModel(model); setModelMenuOpen(false); }}
+                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-left group"
+                              >
+                                <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[11px] text-on-surface/60 shrink-0">{model.icon}</span>
+                                <span className="text-sm text-on-surface/80 group-hover:text-white transition-colors flex-1">{model.name}</span>
+                                {isPaid && <Lock className="w-3 h-3 text-on-surface/20 shrink-0" />}
+                                {selectedModel.id === model.id && <Check className="w-4 h-4 text-atmospheric shrink-0" />}
+                              </button>
+                            );
+                          })}
                         </div>
                       ))}
+                    </div>
+                    <div className="px-4 py-3 border-t border-white/5">
+                      <p className="text-[10px] text-on-surface/30">
+                        <Lock className="w-2.5 h-2.5 inline mr-1 -mt-0.5" />
+                        标记的模型需要开通会员使用
+                      </p>
                     </div>
                   </motion.div>
                 )}
