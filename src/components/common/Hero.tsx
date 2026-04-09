@@ -9,6 +9,7 @@ import {
   FileText, ImageIcon, Video, Code, Music,
 } from "lucide-react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -243,7 +244,13 @@ export function Hero() {
                         : "bg-white/5 text-on-surface/80 border border-white/10"
                     }`}
                   >
-                    <div className="whitespace-pre-wrap">{msg.content}</div>
+                    {msg.role === "user" ? (
+                      <div className="whitespace-pre-wrap">{msg.content}</div>
+                    ) : (
+                      <div className="prose-sm prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-2 prose-headings:text-white max-w-none">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {msg.toolResults?.map((result, j) => (

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare, Send, X, Bot } from "lucide-react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -148,7 +149,13 @@ export function Chatbox() {
                         ? "bg-atmospheric text-surface font-medium"
                         : "bg-white/5 text-on-surface/80 border border-white/10"
                     }`}>
-                      <div className="whitespace-pre-wrap">{msg.content}</div>
+                      {msg.role === "user" ? (
+                        <div className="whitespace-pre-wrap">{msg.content}</div>
+                      ) : (
+                        <div className="prose-sm prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 max-w-none">
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        </div>
+                      )}
                     </div>
                   </div>
 
