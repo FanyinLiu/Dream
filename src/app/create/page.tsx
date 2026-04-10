@@ -3,13 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Image, PenTool, Music, Video, ArrowRight, Sparkles, Copy, Check } from "lucide-react";
-
-const tabs = [
-  { id: "text", label: "AI 写作", Icon: PenTool },
-  { id: "image", label: "AI 绘画", Icon: Image },
-  { id: "music", label: "AI 音乐", Icon: Music },
-  { id: "video", label: "AI 视频", Icon: Video },
-];
+import { useI18n } from "@/lib/i18n";
 
 const WRITING_TEMPLATES = [
   { label: "小红书文案", prompt: "帮我写一篇小红书风格的种草文案，主题是：", placeholder: "输入产品或主题，如：夏日防晒霜推荐" },
@@ -22,12 +16,20 @@ const WRITING_TEMPLATES = [
 
 export default function CreatePage() {
   const [activeTab, setActiveTab] = useState("text");
+  const { t } = useI18n();
+
+  const tabs = [
+    { id: "text", label: t("create.writingTab"), Icon: PenTool },
+    { id: "image", label: t("create.imageTab"), Icon: Image },
+    { id: "music", label: t("create.musicTab"), Icon: Music },
+    { id: "video", label: t("create.videoTab"), Icon: Video },
+  ];
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl text-white mb-4">AI 创作工坊</h1>
-        <p className="text-on-surface/40 font-light">选择创作类型，让 AI 帮你完成</p>
+        <h1 className="text-4xl md:text-5xl text-white mb-4">{t("create.title")}</h1>
+        <p className="text-on-surface/40 font-light">{t("create.subtitle")}</p>
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -49,9 +51,9 @@ export default function CreatePage() {
       </div>
 
       {activeTab === "text" && <TextGenerator />}
-      {activeTab === "image" && <ToolGuide category="image" title="AI 绘画" tools={IMAGE_TOOLS} />}
-      {activeTab === "music" && <ToolGuide category="music" title="AI 音乐" tools={MUSIC_TOOLS} />}
-      {activeTab === "video" && <ToolGuide category="video" title="AI 视频" tools={VIDEO_TOOLS} />}
+      {activeTab === "image" && <ToolGuide category="image" titleKey="create.imageTab" tools={IMAGE_TOOLS} />}
+      {activeTab === "music" && <ToolGuide category="music" titleKey="create.musicTab" tools={MUSIC_TOOLS} />}
+      {activeTab === "video" && <ToolGuide category="video" titleKey="create.videoTab" tools={VIDEO_TOOLS} />}
     </div>
   );
 }
@@ -77,14 +79,17 @@ const VIDEO_TOOLS = [
   { name: "HeyGen", slug: "heygen", desc: "AI 数字人口播视频，100+ 语言", tag: "数字人" },
 ];
 
-function ToolGuide({ category, title, tools }: { category: string; title: string; tools: { name: string; slug: string; desc: string; tag: string }[] }) {
+function ToolGuide({ category, titleKey, tools }: { category: string; titleKey: string; tools: { name: string; slug: string; desc: string; tag: string }[] }) {
+  const { t } = useI18n();
+  const title = t(titleKey);
+
   return (
     <div>
       <div className="liquid-glass-strong rounded-3xl p-8 mb-6 text-center">
         <Sparkles className="w-8 h-8 text-atmospheric mx-auto mb-4" />
-        <h3 className="text-xl text-white mb-2">{title}推荐</h3>
+        <h3 className="text-xl text-white mb-2">{title} {t("create.recommend")}</h3>
         <p className="text-sm text-on-surface/40 mb-1">
-          以下是我们精选的{title}工具，点击直达详情
+          {t("create.curated")}{title}{t("create.curatedSuffix")}
         </p>
       </div>
 
@@ -101,7 +106,7 @@ function ToolGuide({ category, title, tools }: { category: string; title: string
             </div>
             <p className="text-sm text-on-surface/50 mb-3">{tool.desc}</p>
             <span className="text-xs text-atmospheric flex items-center gap-1">
-              查看详情 <ArrowRight className="w-3 h-3" />
+              {t("tool.details")} <ArrowRight className="w-3 h-3" />
             </span>
           </Link>
         ))}
@@ -112,7 +117,7 @@ function ToolGuide({ category, title, tools }: { category: string; title: string
           href={`/category/${category}`}
           className="inline-flex items-center gap-2 text-sm text-on-surface/40 hover:text-white transition-colors"
         >
-          查看全部{title}工具 <ArrowRight className="w-4 h-4" />
+          {t("create.viewAllTools")}{title}{t("create.tools")} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>
@@ -120,6 +125,7 @@ function ToolGuide({ category, title, tools }: { category: string; title: string
 }
 
 function TextGenerator() {
+  const { t } = useI18n();
   const [selectedTemplate, setSelectedTemplate] = useState(5); // default to free writing
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -155,7 +161,7 @@ function TextGenerator() {
         setResult((prev) => prev + decoder.decode(value));
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "生成失败，请重试");
+      setError(e instanceof Error ? e.message : "Generation failed");
     } finally {
       setLoading(false);
     }
@@ -171,9 +177,9 @@ function TextGenerator() {
     <div className="space-y-6">
       {/* Template selector */}
       <div className="flex flex-wrap gap-2">
-        {WRITING_TEMPLATES.map((t, i) => (
+        {WRITING_TEMPLATES.map((tmpl, i) => (
           <button
-            key={t.label}
+            key={tmpl.label}
             onClick={() => { setSelectedTemplate(i); setUserInput(""); setResult(""); }}
             className={`px-4 py-2 rounded-full text-xs transition-all ${
               selectedTemplate === i
@@ -181,7 +187,7 @@ function TextGenerator() {
                 : "bg-white/5 text-on-surface/50 border border-white/10 hover:text-white"
             }`}
           >
-            {t.label}
+            {tmpl.label}
           </button>
         ))}
       </div>
@@ -204,7 +210,7 @@ function TextGenerator() {
             disabled={loading || !userInput.trim()}
             className="px-6 py-3 rounded-2xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           >
-            {loading ? "生成中..." : "开始写作"}
+            {loading ? t("create.generating") : t("create.generate")}
           </button>
         </div>
       </div>
@@ -223,7 +229,7 @@ function TextGenerator() {
             onClick={handleCopy}
             className="mt-4 flex items-center gap-1.5 text-sm text-atmospheric hover:text-white transition-colors"
           >
-            {copied ? <><Check className="w-3.5 h-3.5" /> 已复制</> : <><Copy className="w-3.5 h-3.5" /> 复制全文</>}
+            {copied ? <><Check className="w-3.5 h-3.5" /> {t("create.copied")}</> : <><Copy className="w-3.5 h-3.5" /> {t("create.copy")}</>}
           </button>
         </div>
       )}

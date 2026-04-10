@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Image, Video, PenTool, Code2, Music, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import type { Category } from "@/types/tool";
+import { useI18n } from "@/lib/i18n";
 
 const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string }> = {
   image:  { icon: Image,     color: "from-purple-500/20 to-pink-500/20" },
@@ -20,18 +21,20 @@ interface CategoryGridProps {
 }
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
+  const { t } = useI18n();
+
   return (
     <section className="px-6 py-20 max-w-7xl mx-auto">
       <div className="flex items-end justify-between mb-12">
         <div>
-          <h2 className="text-4xl md:text-5xl text-white mb-4">按分类浏览</h2>
-          <p className="text-on-surface/40 font-light">找到适合你场景的专属 AI 工具。</p>
+          <h2 className="text-4xl md:text-5xl text-white mb-4">{t("cat.browse")}</h2>
+          <p className="text-on-surface/40 font-light">{t("cat.browseDesc")}</p>
         </div>
         <Link
           href="/categories"
           className="hidden sm:flex items-center gap-2 text-atmospheric hover:gap-3 transition-all text-sm"
         >
-          全部分类 <ArrowRight className="w-4 h-4" />
+          {t("cat.all")} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 

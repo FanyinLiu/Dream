@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Tool } from "@/types/tool";
+import { useI18n } from "@/lib/i18n";
 
 interface ToolCardProps {
   tool: Tool;
@@ -19,6 +20,8 @@ function PricingBadge({ priceType }: { priceType: Tool["priceType"] }) {
 }
 
 export function ToolCard({ tool, className }: ToolCardProps) {
+  const { t } = useI18n();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -61,7 +64,7 @@ export function ToolCard({ tool, className }: ToolCardProps) {
           href={`/tool/${tool.slug}`}
           className="w-full py-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center gap-2 text-sm font-medium text-white hover:bg-white/10 transition-all"
         >
-          查看详情 <ArrowRight className="w-4 h-4" />
+          {t("toolcard.details")} <ArrowRight className="w-4 h-4" />
         </Link>
         <a
           href={tool.officialUrl}
@@ -69,7 +72,7 @@ export function ToolCard({ tool, className }: ToolCardProps) {
           rel="noopener noreferrer"
           className="w-full py-3 rounded-xl bg-atmospheric text-surface flex items-center justify-center gap-2 text-sm font-bold hover:scale-[1.02] transition-all"
         >
-          直达官网 <ExternalLink className="w-4 h-4" />
+          {t("toolcard.visitSite")} <ExternalLink className="w-4 h-4" />
         </a>
       </div>
     </motion.div>

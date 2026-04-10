@@ -5,14 +5,7 @@ import Link from "next/link";
 import { X, Plus, ArrowRight } from "lucide-react";
 import { tools } from "@/data/tools";
 import type { Tool } from "@/types/tool";
-
-const COMPARE_DIMS = [
-  { key: "easeOfUse" as const, label: "易用性" },
-  { key: "outputQuality" as const, label: "输出质量" },
-  { key: "costEfficiency" as const, label: "性价比" },
-  { key: "chineseFriendly" as const, label: "中文友好" },
-  { key: "featureRichness" as const, label: "功能丰富度" },
-];
+import { useI18n } from "@/lib/i18n";
 
 const POPULAR_COMPARISONS = [
   { a: "chatgpt", b: "claude", label: "ChatGPT vs Claude" },
@@ -24,29 +17,38 @@ const POPULAR_COMPARISONS = [
 ];
 
 export default function ComparePage() {
+  const { t } = useI18n();
   const [selected, setSelected] = useState<Tool[]>([]);
   const [search, setSearch] = useState("");
 
+  const COMPARE_DIMS = [
+    { key: "easeOfUse" as const, label: t("tool.ease") },
+    { key: "outputQuality" as const, label: t("tool.quality") },
+    { key: "costEfficiency" as const, label: t("tool.cost") },
+    { key: "chineseFriendly" as const, label: t("tool.chinese") },
+    { key: "featureRichness" as const, label: t("tool.features") },
+  ];
+
   const filtered = search.trim()
-    ? tools.filter((t) =>
-        t.name.toLowerCase().includes(search.toLowerCase()) ||
-        t.tagline.includes(search)
+    ? tools.filter((tool) =>
+        tool.name.toLowerCase().includes(search.toLowerCase()) ||
+        tool.tagline.includes(search)
       ).slice(0, 8)
     : [];
 
   function addTool(tool: Tool) {
-    if (selected.length >= 3 || selected.find((t) => t.id === tool.id)) return;
+    if (selected.length >= 3 || selected.find((s) => s.id === tool.id)) return;
     setSelected([...selected, tool]);
     setSearch("");
   }
 
   function removeTool(id: string) {
-    setSelected(selected.filter((t) => t.id !== id));
+    setSelected(selected.filter((s) => s.id !== id));
   }
 
   function loadComparison(aSlug: string, bSlug: string) {
-    const a = tools.find((t) => t.slug === aSlug);
-    const b = tools.find((t) => t.slug === bSlug);
+    const a = tools.find((tool) => tool.slug === aSlug);
+    const b = tools.find((tool) => tool.slug === bSlug);
     if (a && b) setSelected([a, b]);
   }
 
@@ -54,8 +56,8 @@ export default function ComparePage() {
     <main className="pt-8 pb-20 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl text-white mb-4">工具对比</h1>
-          <p className="text-on-surface/40 font-light">最多选 3 款工具，直观对比差异</p>
+          <h1 className="text-4xl md:text-5xl text-white mb-4">{t("compare.title")}</h1>
+          <p className="text-on-surface/40 font-light">{t("compare.subtitle")}</p>
         </div>
 
         {/* Search to add */}
@@ -63,7 +65,7 @@ export default function ComparePage() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="搜索工具名称..."
+            placeholder={t("compare.search")}
             className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/40"
           />
           {filtered.length > 0 && (
@@ -72,7 +74,7 @@ export default function ComparePage() {
                 <button
                   key={tool.id}
                   onClick={() => addTool(tool)}
-                  disabled={!!selected.find((t) => t.id === tool.id)}
+                  disabled={!!selected.find((s) => s.id === tool.id)}
                   className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left disabled:opacity-30"
                 >
                   <Plus className="w-4 h-4 text-atmospheric shrink-0" />
@@ -87,7 +89,7 @@ export default function ComparePage() {
         {/* Popular comparisons */}
         {selected.length === 0 && (
           <div className="mb-12">
-            <p className="text-xs text-on-surface/30 text-center mb-4">热门对比</p>
+            <p className="text-xs text-on-surface/30 text-center mb-4">{t("compare.popular")}</p>
             <div className="flex flex-wrap justify-center gap-2">
               {POPULAR_COMPARISONS.map((c) => (
                 <button
@@ -118,7 +120,7 @@ export default function ComparePage() {
                 onClick={() => document.querySelector("input")?.focus()}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-dashed border-white/20 text-xs text-on-surface/30 hover:text-white transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" /> 添加
+                <Plus className="w-3.5 h-3.5" /> {t("compare.add")}
               </button>
             )}
           </div>
@@ -141,33 +143,33 @@ export default function ComparePage() {
               </thead>
               <tbody>
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">价格</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center text-on-surface/70">{t.priceNote}</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.price")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center text-on-surface/70">{tool.priceNote}</td>)}
                 </tr>
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">评分</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center text-atmospheric font-bold">{t.rating}/5</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.rating")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center text-atmospheric font-bold">{tool.rating}/5</td>)}
                 </tr>
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">中文支持</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center">{t.chineseSupport ? "✓" : "✗"}</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.chineseSupport")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center">{tool.chineseSupport ? "✓" : "✗"}</td>)}
                 </tr>
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">难度</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center text-on-surface/70">{{ beginner: "新手", intermediate: "进阶", advanced: "高阶" }[t.skillLevel]}</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.difficulty")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center text-on-surface/70">{{ beginner: t("compare.beginner"), intermediate: t("compare.intermediate"), advanced: t("compare.advanced") }[tool.skillLevel]}</td>)}
                 </tr>
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">平台</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center text-on-surface/70 text-xs">{t.platforms.join(" / ")}</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.platforms")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center text-on-surface/70 text-xs">{tool.platforms.join(" / ")}</td>)}
                 </tr>
                 {COMPARE_DIMS.map((dim) => (
                   <tr key={dim.key} className="border-t border-white/5">
                     <td className="py-3 px-4 text-on-surface/40">{dim.label}</td>
-                    {selected.map((t) => {
-                      const val = t.scoreProfile[dim.key];
+                    {selected.map((tool) => {
+                      const val = tool.scoreProfile[dim.key];
                       const isMax = val === Math.max(...selected.map((s) => s.scoreProfile[dim.key]));
                       return (
-                        <td key={t.id} className="py-3 px-4 text-center">
+                        <td key={tool.id} className="py-3 px-4 text-center">
                           <span className={isMax ? "text-atmospheric font-bold" : "text-on-surface/50"}>{val}/10</span>
                         </td>
                       );
@@ -175,15 +177,15 @@ export default function ComparePage() {
                   </tr>
                 ))}
                 <tr className="border-t border-white/5">
-                  <td className="py-3 px-4 text-on-surface/40">编辑点评</td>
-                  {selected.map((t) => <td key={t.id} className="py-3 px-4 text-center text-xs text-on-surface/50 italic">{t.realTalk ?? "-"}</td>)}
+                  <td className="py-3 px-4 text-on-surface/40">{t("compare.editorTake")}</td>
+                  {selected.map((tool) => <td key={tool.id} className="py-3 px-4 text-center text-xs text-on-surface/50 italic">{tool.realTalk ?? "-"}</td>)}
                 </tr>
                 <tr className="border-t border-white/5">
                   <td className="py-3 px-4"></td>
-                  {selected.map((t) => (
-                    <td key={t.id} className="py-3 px-4 text-center">
-                      <Link href={`/tool/${t.slug}`} className="text-xs text-atmospheric hover:text-white transition-colors inline-flex items-center gap-1">
-                        查看详情 <ArrowRight className="w-3 h-3" />
+                  {selected.map((tool) => (
+                    <td key={tool.id} className="py-3 px-4 text-center">
+                      <Link href={`/tool/${tool.slug}`} className="text-xs text-atmospheric hover:text-white transition-colors inline-flex items-center gap-1">
+                        {t("tool.details")} <ArrowRight className="w-3 h-3" />
                       </Link>
                     </td>
                   ))}

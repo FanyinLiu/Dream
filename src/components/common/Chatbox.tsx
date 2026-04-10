@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare, Send, X, Bot } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { useI18n } from "@/lib/i18n";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -32,6 +33,7 @@ const categoryLabels: Record<string, string> = {
 export function Chatbox() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useI18n();
 
   // Hide on homepage (Hero already has chat) and chat page
   if (pathname === "/" || pathname === "/chat") return null;
@@ -83,7 +85,7 @@ export function Chatbox() {
         ...prev,
         {
           role: "assistant",
-          content: `抱歉，出错了：${e instanceof Error ? e.message : "请重试"}`,
+          content: `${t("chat.sorry")}${e instanceof Error ? e.message : t("chat.retry")}`,
         },
       ]);
     } finally {
@@ -107,7 +109,7 @@ export function Chatbox() {
                 <div className="w-8 h-8 rounded-full bg-atmospheric/20 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-atmospheric" />
                 </div>
-                <span className="font-medium text-white text-sm">AI 助手</span>
+                <span className="font-medium text-white text-sm">{t("chat.assistant")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Link
@@ -115,7 +117,7 @@ export function Chatbox() {
                   onClick={() => setIsOpen(false)}
                   className="text-[10px] text-on-surface/30 hover:text-atmospheric transition-colors px-2 py-1 rounded-full border border-white/10 hover:border-atmospheric/30"
                 >
-                  全屏
+                  {t("chat.fullscreen")}
                 </Link>
                 <button onClick={() => setIsOpen(false)} className="text-on-surface/40 hover:text-white transition-colors">
                   <X className="w-5 h-5" />
@@ -130,7 +132,7 @@ export function Chatbox() {
                   <div className="w-12 h-12 rounded-full bg-atmospheric/10 flex items-center justify-center mx-auto mb-4">
                     <Bot className="w-6 h-6 text-atmospheric" />
                   </div>
-                  <p className="text-sm text-on-surface/40 mb-4">你好！我是 AI 助手，可以帮你生图、写作、推荐工具。</p>
+                  <p className="text-sm text-on-surface/40 mb-4">{t("chat.greeting")}</p>
                   <div className="flex flex-col gap-2">
                     {SUGGESTIONS.map((s) => (
                       <button
@@ -193,7 +195,7 @@ export function Chatbox() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  placeholder="输入你的问题..."
+                  placeholder={t("chat.placeholder")}
                   className="w-full bg-surface/50 border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-white placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/50 transition-colors"
                 />
                 <button
@@ -227,7 +229,8 @@ function MiniToolResult({ result }: { result: ToolResult }) {
         <img src={result.data.url as string} alt="AI generated" className="w-full rounded-lg" />
         <a href={result.data.url as string} target="_blank" rel="noopener noreferrer"
           className="block mt-1 text-[10px] text-atmospheric hover:text-white transition-colors">
-          查看大图 ↗
+          {/* Keep short link text */}
+          ↗
         </a>
       </div>
     );
@@ -248,7 +251,7 @@ function MiniToolResult({ result }: { result: ToolResult }) {
       <div className="bg-white/5 rounded-xl p-3 border border-white/10 inline-block">
         <Link href={`/category/${result.data.category}`}
           className="text-xs text-atmospheric hover:text-white transition-colors">
-          查看 {categoryLabels[result.data.category as string] ?? "工具"} →
+          {categoryLabels[result.data.category as string] ?? result.data.category as string} &rarr;
         </Link>
       </div>
     );

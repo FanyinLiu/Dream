@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { recommendQuestions } from "@/data/recommendQuestions";
+import { useI18n } from "@/lib/i18n";
 
 export default function RecommendPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
 
@@ -59,10 +61,10 @@ export default function RecommendPage() {
     <div className="max-w-4xl mx-auto px-6 py-10">
       <div className="text-center mb-16">
         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-atmospheric/10 text-atmospheric text-sm font-medium mb-4">
-          <Sparkles className="w-4 h-4" /> 智能推荐
+          <Sparkles className="w-4 h-4" /> {t("rec.title")}
         </div>
-        <h1 className="text-4xl md:text-5xl text-white mb-4">不知道用什么？</h1>
-        <p className="text-on-surface/40 font-light">回答几个简单问题，帮你找到最合适的 AI 工具。</p>
+        <h1 className="text-4xl md:text-5xl text-white mb-4">{t("rec.dontKnow")}</h1>
+        <p className="text-on-surface/40 font-light">{t("rec.dontKnowDesc")}</p>
       </div>
 
       <div className="liquid-glass-strong rounded-3xl p-8 md:p-12 min-h-[400px] flex flex-col justify-center">
@@ -80,7 +82,7 @@ export default function RecommendPage() {
               </span>
               <div className="h-px flex-1 bg-white/10" />
               <span className="text-on-surface/30 text-sm uppercase tracking-widest">
-                第 {currentStep + 1} / {recommendQuestions.length} 步
+                {t("rec.step")} {currentStep + 1} / {recommendQuestions.length}
               </span>
             </div>
 
@@ -130,7 +132,7 @@ export default function RecommendPage() {
           disabled={currentStep === 0}
           className="text-sm text-on-surface/40 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
         >
-          ← 上一步
+          {t("rec.prev")}
         </button>
 
         {question.type === "multi" && (
@@ -139,7 +141,7 @@ export default function RecommendPage() {
             onClick={handleNext}
             className="px-6 py-2 rounded-full liquid-glass-strong text-sm font-semibold text-atmospheric hover:bg-white/20 transition-all"
           >
-            {isLastStep ? "查看推荐结果" : "下一步 →"}
+            {isLastStep ? t("rec.viewResults") : t("rec.next")}
           </button>
         )}
       </div>

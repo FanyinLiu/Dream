@@ -188,6 +188,93 @@ const translations: Record<Locale, Record<string, string>> = {
 
     // Footer
     "footer.tagline": "Find the Best AI Tools",
+
+    // About
+    "about.title": "About AI Nav",
+    "about.whoTitle": "Who Are We?",
+    "about.whoP1": "AI Nav is a curated AI tool directory. New AI tools launch every day, but most people don't know which to use or how to choose.",
+    "about.whoP2": "Our goal is simple: help you find the best AI tool for your use case, without wasting money or time.",
+    "about.howTitle": "How We Pick Tools",
+    "about.howHands": "Hands-on testing",
+    "about.howHandsDesc": " \u2014 Every tool is tested through real usage",
+    "about.howHonest": "Honest reviews",
+    "about.howHonestDesc": " \u2014 We don't charge listing fees",
+    "about.howUpdated": "Regular updates",
+    "about.howUpdatedDesc": " \u2014 Tool info and new tools are updated regularly",
+    "about.contactTitle": "Contact Us",
+    "about.contactP1": "If you have suggestions or want to recommend a great AI tool, feel free to reach out.",
+    "about.contactP2": "We also welcome AI tool developers to submit their products.",
+
+    // Chatbox
+    "chat.assistant": "AI Assistant",
+    "chat.fullscreen": "Fullscreen",
+    "chat.greeting": "Hi! I'm your AI assistant. I can help with image generation, writing, and tool recommendations.",
+    "chat.placeholder": "Type your question...",
+    "chat.viewFull": "View full image",
+    "chat.viewCategory": "View",
+    "chat.sorry": "Sorry, an error occurred:",
+    "chat.retry": "Please try again",
+
+    // Recommend extra
+    "rec.dontKnow": "Not sure what to use?",
+    "rec.dontKnowDesc": "Answer a few simple questions to find the best AI tool for you.",
+    "rec.step": "Step",
+    "rec.prev": "\u2190 Previous",
+    "rec.viewResults": "View Results",
+    "rec.next": "Next \u2192",
+    "rec.noResults": "No matching results",
+    "rec.adjustFilters": "Try adjusting your selection criteria",
+    "rec.match": "Match",
+    "rec.visitSite": "Visit Site",
+    "rec.site": "Site",
+
+    // Compare extra
+    "compare.rating": "Rating",
+    "compare.chineseSupport": "Chinese",
+    "compare.difficulty": "Difficulty",
+    "compare.platforms": "Platforms",
+    "compare.beginner": "Beginner",
+    "compare.intermediate": "Intermediate",
+    "compare.advanced": "Advanced",
+
+    // Tool detail extra
+    "tool.skillBeginner": "Beginner Friendly",
+    "tool.skillIntermediate": "Some Experience Needed",
+    "tool.skillAdvanced": "Advanced Users",
+
+    // Create extra
+    "create.writingTab": "AI Writing",
+    "create.imageTab": "AI Image",
+    "create.musicTab": "AI Music",
+    "create.videoTab": "AI Video",
+    "create.recommend": "Picks",
+    "create.curated": "Here are our curated",
+    "create.curatedSuffix": "tools, click for details",
+    "create.viewAllTools": "View all",
+    "create.tools": "tools",
+
+    // Category page extra
+    "cat.total": "total",
+    "cat.toolsCount": "tools",
+
+    // ToolCard
+    "toolcard.details": "Details",
+    "toolcard.visitSite": "Visit Site",
+
+    // Pricing features (keep short)
+    "pricing.freeFeature1": "4 free AI models",
+    "pricing.freeFeature2": "GPT-4o mini / Qwen3 / GLM / Gemini",
+    "pricing.freeFeature3": "Tool recommendations & comparisons",
+    "pricing.freeFeature4": "Smart recommendation quiz",
+    "pricing.freeFeature5": "Unlimited conversations",
+    "pricing.proFeature1": "All 12 AI models",
+    "pricing.proFeature2": "GPT-4.1 / Claude Sonnet 4.6 / Gemini 2.5 Pro",
+    "pricing.proFeature3": "DeepSeek R1 deep reasoning",
+    "pricing.proFeature4": "Priority response speed",
+    "pricing.proFeature5": "Favorites & history sync",
+    "pricing.proFeature6": "First access to new models",
+    "pricing.recommended": "Recommended",
+    "pricing.paymentSoon": "Payment feature coming soon",
   },
   zh: {
     "nav.home": "首页",
@@ -357,6 +444,84 @@ const translations: Record<Locale, Record<string, string>> = {
     "common.notSureDesc": "回答 5 个问题，AI 帮你从 45 款工具中找到最适合你的",
 
     "footer.tagline": "发现最好用的 AI 工具",
+
+    "about.title": "关于 AI Nav",
+    "about.whoTitle": "我们是谁？",
+    "about.whoP1": "AI Nav 是一个精选 AI 工具导航站。每天都有大量新的 AI 工具诞生，但大多数人不知道该用哪个、怎么选。",
+    "about.whoP2": "我们的目标很简单：帮你按使用场景，快速找到最适合的 AI 工具，不花冤枉钱，不浪费时间。",
+    "about.howTitle": "我们怎么选工具？",
+    "about.howHands": "亲自体验",
+    "about.howHandsDesc": " — 每个工具都经过实际使用测试",
+    "about.howHonest": "真实评价",
+    "about.howHonestDesc": " — 不收取工具方的上架费用",
+    "about.howUpdated": "持续更新",
+    "about.howUpdatedDesc": " — 定期更新工具信息和新增优质工具",
+    "about.contactTitle": "联系我们",
+    "about.contactP1": "如果你有任何建议，或者想推荐一款好用的 AI 工具，欢迎联系我们。",
+    "about.contactP2": "我们也欢迎 AI 工具开发者主动提交自己的产品。",
+
+    "chat.assistant": "AI 助手",
+    "chat.fullscreen": "全屏",
+    "chat.greeting": "你好！我是 AI 助手，可以帮你生图、写作、推荐工具。",
+    "chat.placeholder": "输入你的问题...",
+    "chat.viewFull": "查看大图 ↗",
+    "chat.viewCategory": "查看",
+    "chat.sorry": "抱歉，出错了：",
+    "chat.retry": "请重试",
+
+    "rec.dontKnow": "不知道用什么？",
+    "rec.dontKnowDesc": "回答几个简单问题，帮你找到最合适的 AI 工具。",
+    "rec.step": "步",
+    "rec.prev": "← 上一步",
+    "rec.viewResults": "查看推荐结果",
+    "rec.next": "下一步 →",
+    "rec.noResults": "暂无匹配结果",
+    "rec.adjustFilters": "试试调整选择条件",
+    "rec.match": "匹配度",
+    "rec.visitSite": "访问官网",
+    "rec.site": "官网",
+
+    "compare.rating": "评分",
+    "compare.chineseSupport": "中文支持",
+    "compare.difficulty": "难度",
+    "compare.platforms": "平台",
+    "compare.beginner": "新手",
+    "compare.intermediate": "进阶",
+    "compare.advanced": "高阶",
+
+    "tool.skillBeginner": "新手友好",
+    "tool.skillIntermediate": "需要一定基础",
+    "tool.skillAdvanced": "进阶用户",
+
+    "create.writingTab": "AI 写作",
+    "create.imageTab": "AI 绘画",
+    "create.musicTab": "AI 音乐",
+    "create.videoTab": "AI 视频",
+    "create.recommend": "推荐",
+    "create.curated": "以下是我们精选的",
+    "create.curatedSuffix": "工具，点击直达详情",
+    "create.viewAllTools": "查看全部",
+    "create.tools": "工具",
+
+    "cat.total": "共",
+    "cat.toolsCount": "款工具",
+
+    "toolcard.details": "查看详情",
+    "toolcard.visitSite": "直达官网",
+
+    "pricing.freeFeature1": "4 个免费 AI 模型",
+    "pricing.freeFeature2": "GPT-4o mini / Qwen3 / GLM / Gemini",
+    "pricing.freeFeature3": "工具推荐和对比",
+    "pricing.freeFeature4": "智能推荐问卷",
+    "pricing.freeFeature5": "无限次对话",
+    "pricing.proFeature1": "全部 12 个 AI 模型",
+    "pricing.proFeature2": "GPT-4.1 / Claude Sonnet 4.6 / Gemini 2.5 Pro",
+    "pricing.proFeature3": "DeepSeek R1 深度推理",
+    "pricing.proFeature4": "优先响应速度",
+    "pricing.proFeature5": "收藏和历史记录同步",
+    "pricing.proFeature6": "未来新模型第一时间解锁",
+    "pricing.recommended": "推荐",
+    "pricing.paymentSoon": "支付功能即将上线",
   },
 };
 

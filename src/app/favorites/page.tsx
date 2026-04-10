@@ -6,18 +6,20 @@ import { useAuth } from "@/lib/AuthContext";
 import { useFavorites } from "@/lib/useFavorites";
 import { getToolById } from "@/data/tools";
 import { ToolCard } from "@/components/tool";
+import { useI18n } from "@/lib/i18n";
 
 export default function FavoritesPage() {
   const { user } = useAuth();
   const { favorites, loading } = useFavorites();
+  const { t } = useI18n();
 
   if (!user) {
     return (
       <div className="max-w-4xl mx-auto px-6 py-20 text-center">
         <Heart className="w-12 h-12 text-atmospheric/40 mx-auto mb-6" />
-        <h1 className="text-3xl text-white mb-4">我的收藏</h1>
-        <p className="text-on-surface/40 mb-8">登录后即可收藏工具，随时查看</p>
-        <p className="text-sm text-on-surface/30">请先登录</p>
+        <h1 className="text-3xl text-white mb-4">{t("fav.title")}</h1>
+        <p className="text-on-surface/40 mb-8">{t("fav.loginPrompt")}</p>
+        <p className="text-sm text-on-surface/30">{t("nav.login")}</p>
       </div>
     );
   }
@@ -27,9 +29,9 @@ export default function FavoritesPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       <div className="mb-10">
-        <h1 className="text-4xl md:text-5xl text-white mb-3">我的收藏</h1>
+        <h1 className="text-4xl md:text-5xl text-white mb-3">{t("fav.title")}</h1>
         <p className="text-on-surface/40 font-light">
-          {loading ? "加载中..." : `共收藏 ${tools.length} 款工具`}
+          {loading ? t("fav.loading") : `${tools.length} ${t("fav.count")}`}
         </p>
       </div>
 
@@ -42,9 +44,9 @@ export default function FavoritesPage() {
       ) : (
         !loading && (
           <div className="text-center py-20">
-            <p className="text-xl text-on-surface/40 mb-4">还没有收藏</p>
+            <p className="text-xl text-on-surface/40 mb-4">{t("fav.empty")}</p>
             <Link href="/categories" className="text-sm text-atmospheric hover:text-white transition-colors">
-              去发现工具 →
+              {t("fav.discover")}
             </Link>
           </div>
         )

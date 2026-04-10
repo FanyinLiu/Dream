@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { categories } from "@/data/categories";
 import { getToolsByCategory } from "@/data/tools";
 import { CategoryGrid } from "@/components/category";
 import { ToolCard } from "@/components/tool";
-
-export const metadata: Metadata = {
-  title: "AI 工具分类 | AI Nav",
-  description: "按场景分类浏览 AI 工具：绘画、视频、写作、编程、音乐、建站、提示词。",
-};
+import { useI18n } from "@/lib/i18n";
 
 export default function CategoriesPage() {
+  const { t } = useI18n();
+
   return (
     <div>
       <div className="text-center pt-8 pb-4 px-6">
-        <h1 className="text-4xl md:text-5xl text-white mb-4">AI 工具分类</h1>
-        <p className="text-on-surface/40 font-light">按使用场景浏览，找到最适合你的 AI 工具</p>
+        <h1 className="text-4xl md:text-5xl text-white mb-4">{t("cat.all")}</h1>
+        <p className="text-on-surface/40 font-light">{t("cat.browseDesc")}</p>
       </div>
 
       <CategoryGrid categories={categories} />
@@ -34,7 +33,7 @@ export default function CategoriesPage() {
                 href={`/category/${cat.id}`}
                 className="hidden sm:flex items-center gap-2 text-atmospheric hover:gap-3 transition-all text-sm"
               >
-                查看全部
+                {t("cat.viewAll")}
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                 </svg>
@@ -49,25 +48,25 @@ export default function CategoriesPage() {
         );
       })}
 
-      {/* 智能推荐入口 */}
+      {/* Smart Recommend Entry */}
       <section className="px-6 py-16 max-w-4xl mx-auto">
         <div className="liquid-glass-strong rounded-3xl p-10 text-center">
-          <h2 className="text-3xl md:text-4xl text-white mb-4">不知道用哪个？</h2>
+          <h2 className="text-3xl md:text-4xl text-white mb-4">{t("common.notSure")}</h2>
           <p className="text-on-surface/40 font-light mb-8 max-w-lg mx-auto">
-            回答 5 个问题，AI 帮你从 45 款工具中找到最适合你的
+            {t("common.notSureDesc")}
           </p>
           <Link
             href="/recommend"
             className="inline-block px-8 py-4 rounded-2xl bg-atmospheric text-surface font-bold hover:scale-[1.02] transition-all text-sm"
           >
-            开始智能推荐
+            {t("rec.start")}
           </Link>
         </div>
       </section>
 
       <div className="text-center py-12">
         <a href="#" className="text-sm text-on-surface/40 hover:text-white transition-colors">
-          ↑ 回到顶部
+          {t("common.backToTop")}
         </a>
       </div>
     </div>

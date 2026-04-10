@@ -4,23 +4,7 @@ import { useState, useMemo } from "react";
 import { ToolCard } from "@/components/tool";
 import Link from "next/link";
 import type { Tool } from "@/types/tool";
-
-const FILTERS = [
-  { key: "all", label: "全部" },
-  { key: "free", label: "免费" },
-  { key: "freemium", label: "免费试用" },
-  { key: "chinese", label: "中文友好" },
-  { key: "beginner", label: "新手友好" },
-  { key: "api", label: "支持 API" },
-  { key: "mobile", label: "手机可用" },
-];
-
-const SORTS = [
-  { key: "recommend", label: "推荐优先" },
-  { key: "rating", label: "评分优先" },
-  { key: "free", label: "免费优先" },
-  { key: "easy", label: "易用优先" },
-];
+import { useI18n } from "@/lib/i18n";
 
 interface ToolFilterProps {
   tools: Tool[];
@@ -28,8 +12,26 @@ interface ToolFilterProps {
 }
 
 export function ToolFilter({ tools, categoryId }: ToolFilterProps) {
+  const { t } = useI18n();
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeSort, setActiveSort] = useState("recommend");
+
+  const FILTERS = [
+    { key: "all", label: t("cat.filter.all") },
+    { key: "free", label: t("cat.filter.free") },
+    { key: "freemium", label: t("cat.filter.freemium") },
+    { key: "chinese", label: t("cat.filter.chinese") },
+    { key: "beginner", label: t("cat.filter.beginner") },
+    { key: "api", label: t("cat.filter.api") },
+    { key: "mobile", label: t("cat.filter.mobile") },
+  ];
+
+  const SORTS = [
+    { key: "recommend", label: t("cat.sort.recommend") },
+    { key: "rating", label: t("cat.sort.rating") },
+    { key: "free", label: t("cat.sort.free") },
+    { key: "easy", label: t("cat.sort.easy") },
+  ];
 
   const filtered = useMemo(() => {
     let result = [...tools];
@@ -37,22 +39,22 @@ export function ToolFilter({ tools, categoryId }: ToolFilterProps) {
     // Filter
     switch (activeFilter) {
       case "free":
-        result = result.filter((t) => t.priceType === "free");
+        result = result.filter((item) => item.priceType === "free");
         break;
       case "freemium":
-        result = result.filter((t) => t.priceType === "free" || t.priceType === "freemium");
+        result = result.filter((item) => item.priceType === "free" || item.priceType === "freemium");
         break;
       case "chinese":
-        result = result.filter((t) => t.scoreProfile.chineseFriendly >= 7);
+        result = result.filter((item) => item.scoreProfile.chineseFriendly >= 7);
         break;
       case "beginner":
-        result = result.filter((t) => t.skillLevel === "beginner");
+        result = result.filter((item) => item.skillLevel === "beginner");
         break;
       case "api":
-        result = result.filter((t) => t.platforms.includes("api"));
+        result = result.filter((item) => item.platforms.includes("api"));
         break;
       case "mobile":
-        result = result.filter((t) => t.platforms.includes("mobile"));
+        result = result.filter((item) => item.platforms.includes("mobile"));
         break;
     }
 
@@ -96,7 +98,7 @@ export function ToolFilter({ tools, categoryId }: ToolFilterProps) {
         ))}
 
         <div className="ml-auto flex items-center gap-2">
-          <span className="text-[10px] text-on-surface/30">排序</span>
+          <span className="text-[10px] text-on-surface/30">{t("cat.sort")}</span>
           {SORTS.map((s) => (
             <button
               key={s.key}
@@ -119,7 +121,7 @@ export function ToolFilter({ tools, categoryId }: ToolFilterProps) {
           href={`/recommend?category=${categoryId}`}
           className="inline-flex items-center gap-2 text-xs text-atmospheric/60 hover:text-atmospheric transition-colors"
         >
-          不知道怎么选？去做智能推荐 →
+          {t("cat.smartRecommend")}
         </Link>
       </div>
 
@@ -132,9 +134,9 @@ export function ToolFilter({ tools, categoryId }: ToolFilterProps) {
         </div>
       ) : (
         <div className="text-center py-16">
-          <p className="text-on-surface/40">没有符合条件的工具</p>
+          <p className="text-on-surface/40">{t("cat.noresult")}</p>
           <button onClick={() => setActiveFilter("all")} className="text-sm text-atmospheric mt-2 hover:text-white transition-colors">
-            清除筛选
+            {t("cat.clearFilter")}
           </button>
         </div>
       )}

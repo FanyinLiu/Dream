@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { RotateCcw, Sparkles, ExternalLink, Workflow, Crown, ArrowRight, MessageSquare } from "lucide-react";
 import { getRecommendations, type RecommendAnswers } from "@/lib/recommendationEngine";
 import { getToolById } from "@/data/tools";
+import { useI18n } from "@/lib/i18n";
 
 const ANSWER_LABELS: Record<string, Record<string, string>> = {
   category: { image: "AI 绘画", video: "AI 视频", writing: "AI 写作", coding: "AI 编程", music: "AI 音乐", webdev: "AI 建站", prompt: "提示词" },
@@ -27,6 +28,7 @@ const WORKFLOWS: Record<string, { title: string; steps: string[] }> = {
 
 function ResultContent() {
   const searchParams = useSearchParams();
+  const { t } = useI18n();
 
   const answers: RecommendAnswers = {
     category: searchParams.get("category") ?? undefined,
@@ -47,16 +49,16 @@ function ResultContent() {
   if (answers.category) summaryParts.push(ANSWER_LABELS.category[answers.category] ?? answers.category);
   if (answers.userType) summaryParts.push(ANSWER_LABELS.userType[answers.userType] ?? answers.userType);
   if (answers.budget) summaryParts.push(ANSWER_LABELS.budget[answers.budget] ?? answers.budget);
-  if (answers.priority) summaryParts.push("看重" + (ANSWER_LABELS.priority[answers.priority] ?? answers.priority));
+  if (answers.priority) summaryParts.push(ANSWER_LABELS.priority[answers.priority] ?? answers.priority);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       {/* Header */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-atmospheric/10 text-atmospheric text-sm font-medium mb-4">
-          <Sparkles className="w-4 h-4" /> 推荐结果
+          <Sparkles className="w-4 h-4" /> {t("rec.result")}
         </div>
-        <h1 className="text-4xl md:text-5xl text-white mb-4">为你精选的工具</h1>
+        <h1 className="text-4xl md:text-5xl text-white mb-4">{t("rec.resultTitle")}</h1>
       </div>
 
       {/* User needs summary */}
@@ -66,7 +68,7 @@ function ResultContent() {
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap justify-center gap-2 mb-8"
         >
-          <span className="text-sm text-on-surface/30">你的需求：</span>
+          <span className="text-sm text-on-surface/30">{t("rec.yourNeeds")}</span>
           {summaryParts.map((part) => (
             <span key={part} className="text-sm px-3 py-1 rounded-full bg-white/5 border border-white/10 text-on-surface/60">{part}</span>
           ))}
@@ -84,8 +86,8 @@ function ResultContent() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <Crown className="w-5 h-5 text-atmospheric" />
-                <span className="text-sm font-semibold text-atmospheric">最佳推荐</span>
-                <span className="text-xs text-on-surface/30 ml-auto">匹配度 {firstPick.score}%</span>
+                <span className="text-sm font-semibold text-atmospheric">{t("rec.bestPick")}</span>
+                <span className="text-xs text-on-surface/30 ml-auto">{t("rec.match")} {firstPick.score}%</span>
               </div>
               <div className="flex items-start gap-5">
                 <div className="w-16 h-16 rounded-2xl bg-atmospheric/20 flex items-center justify-center text-atmospheric font-bold text-xl shrink-0">
@@ -107,11 +109,11 @@ function ResultContent() {
                   {/* Suitable / not suitable */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 text-sm">
                     <div>
-                      <p className="text-on-surface/30 text-xs mb-1">适合</p>
+                      <p className="text-on-surface/30 text-xs mb-1">{t("rec.suitable")}</p>
                       <p className="text-on-surface/60">{firstTool.bestFor}</p>
                     </div>
                     <div>
-                      <p className="text-on-surface/30 text-xs mb-1">局限</p>
+                      <p className="text-on-surface/30 text-xs mb-1">{t("rec.limitation")}</p>
                       <p className="text-on-surface/60">{firstTool.cons[0]}</p>
                     </div>
                   </div>
@@ -125,7 +127,7 @@ function ResultContent() {
                       href={`/tool/${firstTool.slug}`}
                       className="px-5 py-2.5 rounded-xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] transition-all"
                     >
-                      查看详情
+                      {t("tool.details")}
                     </Link>
                     <a
                       href={firstTool.officialUrl}
@@ -133,7 +135,7 @@ function ResultContent() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white hover:bg-white/10 transition-all"
                     >
-                      访问官网 <ExternalLink className="w-3.5 h-3.5" />
+                      {t("rec.visitSite")} <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 </div>
@@ -144,7 +146,7 @@ function ResultContent() {
           {/* Rest of top 5 */}
           {restResults.length > 0 && (
             <div>
-              <h3 className="text-lg text-on-surface/40 mb-4">其他推荐</h3>
+              <h3 className="text-lg text-on-surface/40 mb-4">{t("rec.others")}</h3>
               <div className="space-y-3">
                 {restResults.map((result, index) => {
                   const tool = getToolById(result.toolId);
@@ -176,11 +178,11 @@ function ResultContent() {
                           </div>
                           <div className="flex gap-3">
                             <Link href={`/tool/${tool.slug}`} className="text-sm text-white hover:text-atmospheric transition-colors flex items-center gap-1">
-                              查看详情 <ArrowRight className="w-3 h-3" />
+                              {t("tool.details")} <ArrowRight className="w-3 h-3" />
                             </Link>
                             <a href={tool.officialUrl} target="_blank" rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-sm text-on-surface/40 hover:text-white transition-colors">
-                              官网 <ExternalLink className="w-3 h-3" />
+                              {t("rec.site")} <ExternalLink className="w-3 h-3" />
                             </a>
                           </div>
                         </div>
@@ -207,7 +209,7 @@ function ResultContent() {
               <div className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:gap-3">
                 {WORKFLOWS[answers.category].steps.map((step, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    {i > 0 && <span className="hidden sm:inline text-atmospheric/30">→</span>}
+                    {i > 0 && <span className="hidden sm:inline text-atmospheric/30">&rarr;</span>}
                     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/5">
                       <span className="w-5 h-5 rounded-full bg-atmospheric/20 flex items-center justify-center text-[10px] text-atmospheric font-bold shrink-0">{i + 1}</span>
                       <span className="text-xs text-on-surface/60">{step}</span>
@@ -220,21 +222,21 @@ function ResultContent() {
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-xl text-on-surface/40">暂无匹配结果</p>
-          <p className="text-sm text-on-surface/20 mt-2">试试调整选择条件</p>
+          <p className="text-xl text-on-surface/40">{t("rec.noResults")}</p>
+          <p className="text-sm text-on-surface/20 mt-2">{t("rec.adjustFilters")}</p>
         </div>
       )}
 
       {/* Bottom actions */}
       <div className="flex flex-wrap gap-6 justify-center mt-12">
         <Link href="/recommend" className="flex items-center gap-2 text-on-surface/40 hover:text-white transition-colors text-sm">
-          <RotateCcw className="w-4 h-4" /> 重新选择
+          <RotateCcw className="w-4 h-4" /> {t("rec.retry")}
         </Link>
         <Link href="/categories" className="text-sm text-atmospheric hover:text-white transition-colors">
-          浏览全部分类
+          {t("rec.browseAll")}
         </Link>
         <Link href="/" className="flex items-center gap-2 text-sm text-on-surface/40 hover:text-white transition-colors">
-          <MessageSquare className="w-4 h-4" /> 问 AI 助手
+          <MessageSquare className="w-4 h-4" /> {t("rec.askAI")}
         </Link>
       </div>
     </div>
@@ -242,8 +244,9 @@ function ResultContent() {
 }
 
 export default function RecommendResultPage() {
+  const { t } = useI18n();
   return (
-    <Suspense fallback={<div className="text-center py-20 text-on-surface/40">加载中...</div>}>
+    <Suspense fallback={<div className="text-center py-20 text-on-surface/40">{t("fav.loading")}</div>}>
       <ResultContent />
     </Suspense>
   );

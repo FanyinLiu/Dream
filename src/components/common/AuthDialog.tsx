@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Sparkles, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import { useI18n } from "@/lib/i18n";
 
 interface AuthDialogProps {
   open: boolean;
@@ -12,6 +13,7 @@ interface AuthDialogProps {
 
 export function AuthDialog({ open, onClose }: AuthDialogProps) {
   const { signUpWithPassword, signInWithPassword } = useAuth();
+  const { t } = useI18n();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +25,7 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
   async function handleSubmit() {
     if (!email.trim() || !password.trim()) return;
     if (password.length < 6) {
-      setError("密码至少 6 位");
+      setError(t("auth.minPassword"));
       return;
     }
     setLoading(true);
@@ -36,14 +38,14 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
       if (error) {
         setError(error);
       } else {
-        setSuccess("注册成功，已自动登录");
+        setSuccess(t("auth.registerSuccess"));
         setTimeout(() => handleClose(), 1000);
       }
     } else {
       const { error } = await signInWithPassword(email, password);
       setLoading(false);
       if (error) {
-        setError(error === "Invalid login credentials" ? "邮箱或密码错误" : error);
+        setError(error === "Invalid login credentials" ? t("auth.wrongCredentials") : error);
       } else {
         handleClose();
       }
@@ -81,7 +83,7 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-atmospheric" />
                   <h2 className="text-lg font-semibold text-white">
-                    {mode === "login" ? "登录" : "注册"} AI Nav
+                    {mode === "login" ? t("auth.login") : t("auth.register")} AI Nav
                   </h2>
                 </div>
                 <button onClick={handleClose} className="text-on-surface/30 hover:text-white transition-colors">
@@ -94,7 +96,7 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="邮箱地址"
+                  placeholder={t("auth.email")}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/40"
                 />
 
@@ -104,7 +106,7 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-                    placeholder="密码（至少 6 位）"
+                    placeholder={t("auth.password")}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder:text-on-surface/30 focus:outline-none focus:border-atmospheric/40"
                   />
                   <button
@@ -121,7 +123,7 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
                   disabled={loading || !email.trim() || !password.trim()}
                   className="w-full py-3 rounded-xl bg-atmospheric text-surface text-sm font-bold hover:scale-[1.02] disabled:opacity-40 transition-all"
                 >
-                  {loading ? "处理中..." : mode === "login" ? "登录" : "注册"}
+                  {loading ? t("auth.processing") : mode === "login" ? t("auth.login") : t("auth.register")}
                 </button>
 
                 {error && <p className="text-xs text-red-400 text-center">{error}</p>}
@@ -129,14 +131,14 @@ export function AuthDialog({ open, onClose }: AuthDialogProps) {
 
                 <p className="text-xs text-on-surface/40 text-center">
                   {mode === "login" ? (
-                    <>还没有账号？<button onClick={() => { setMode("register"); setError(""); }} className="text-atmospheric hover:text-white transition-colors">注册</button></>
+                    <>{t("auth.noAccount")}<button onClick={() => { setMode("register"); setError(""); }} className="text-atmospheric hover:text-white transition-colors">{t("auth.register")}</button></>
                   ) : (
-                    <>已有账号？<button onClick={() => { setMode("login"); setError(""); }} className="text-atmospheric hover:text-white transition-colors">登录</button></>
+                    <>{t("auth.hasAccount")}<button onClick={() => { setMode("login"); setError(""); }} className="text-atmospheric hover:text-white transition-colors">{t("auth.login")}</button></>
                   )}
                 </p>
 
                 <p className="text-[10px] text-on-surface/20 text-center">
-                  登录即表示同意我们的服务条款
+                  {t("auth.terms")}
                 </p>
               </div>
             </div>

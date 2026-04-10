@@ -8,3 +8,4 @@ export { Chatbox } from "./Chatbox";
 export { SearchDialog } from "./SearchDialog";
 export { NavBar } from "./NavBar";
 export { AuthDialog } from "./AuthDialog";
+export { Footer } from "./Footer";

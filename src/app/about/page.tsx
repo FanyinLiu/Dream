@@ -1,48 +1,47 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "关于 AI Nav",
-  description: "AI Nav 是一个精选 AI 工具导航站，帮你按场景找到最好用的 AI 工具。",
-};
+import { useI18n } from "@/lib/i18n";
 
 export default function AboutPage() {
+  const { t } = useI18n();
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="text-4xl md:text-5xl text-white mb-8">关于 AI Nav</h1>
+      <h1 className="text-4xl md:text-5xl text-white mb-8">{t("about.title")}</h1>
 
       <div className="space-y-6">
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
           <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
-            我们是谁？
+            {t("about.whoTitle")}
           </h2>
           <p className="text-on-surface/60 leading-relaxed">
-            AI Nav 是一个精选 AI 工具导航站。每天都有大量新的 AI 工具诞生，但大多数人不知道该用哪个、怎么选。
+            {t("about.whoP1")}
           </p>
           <p className="text-on-surface/60 leading-relaxed mt-3">
-            我们的目标很简单：帮你按使用场景，快速找到最适合的 AI 工具，不花冤枉钱，不浪费时间。
+            {t("about.whoP2")}
           </p>
         </div>
 
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
           <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
-            我们怎么选工具？
+            {t("about.howTitle")}
           </h2>
           <ul className="space-y-3 text-on-surface/60">
-            <li><strong className="text-white">亲自体验</strong> — 每个工具都经过实际使用测试</li>
-            <li><strong className="text-white">真实评价</strong> — 不收取工具方的上架费用</li>
-            <li><strong className="text-white">持续更新</strong> — 定期更新工具信息和新增优质工具</li>
+            <li><strong className="text-white">{t("about.howHands")}</strong>{t("about.howHandsDesc")}</li>
+            <li><strong className="text-white">{t("about.howHonest")}</strong>{t("about.howHonestDesc")}</li>
+            <li><strong className="text-white">{t("about.howUpdated")}</strong>{t("about.howUpdatedDesc")}</li>
           </ul>
         </div>
 
         <div className="p-8 rounded-3xl liquid-glass border border-white/5">
           <h2 className="text-xs uppercase tracking-widest text-atmospheric mb-4 font-semibold">
-            联系我们
+            {t("about.contactTitle")}
           </h2>
           <p className="text-on-surface/60 leading-relaxed">
-            如果你有任何建议，或者想推荐一款好用的 AI 工具，欢迎联系我们。
+            {t("about.contactP1")}
           </p>
           <p className="text-on-surface/60 leading-relaxed mt-2">
-            我们也欢迎 AI 工具开发者主动提交自己的产品。
+            {t("about.contactP2")}
           </p>
         </div>
       </div>
