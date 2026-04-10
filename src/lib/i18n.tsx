@@ -43,6 +43,7 @@ const translations: Record<Locale, Record<string, string>> = {
     "model.mid": "Advanced Models",
     "model.flagship": "Flagship Models",
     "model.upgrade": "Upgrade to Pro for all models →",
+    "model.comingSoon": "More models coming soon",
 
     // Categories
     "cat.browse": "Browse by Category",
@@ -310,6 +311,7 @@ const translations: Record<Locale, Record<string, string>> = {
     "model.mid": "进阶模型",
     "model.flagship": "旗舰模型",
     "model.upgrade": "升级 Pro 解锁全部模型 →",
+    "model.comingSoon": "更多模型即将开放",
 
     "cat.browse": "按分类浏览",
     "cat.browseDesc": "找到适合你场景的专属 AI 工具。",

@@ -12,7 +12,6 @@ export const siteConfig = {
     { label: "推荐", href: "/recommend" },
     { label: "排行", href: "/top" },
     { label: "对比", href: "/compare" },
-    { label: "定价", href: "/pricing" },
   ],
 
   footerLinks: [

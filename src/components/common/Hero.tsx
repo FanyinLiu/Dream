@@ -342,7 +342,7 @@ export function Hero() {
                           key={model.id}
                           onClick={() => {
                             if (locked) {
-                              window.location.href = "/pricing";
+                              // Coming soon — no payment yet
                             } else {
                               setSelectedModel(model);
                               setModelMenuOpen(false);
@@ -361,14 +361,10 @@ export function Hero() {
                 ))}
               </div>
               {!isPro && (
-                <Link
-                  href="/pricing"
-                  onClick={() => setModelMenuOpen(false)}
-                  className="block px-4 py-3 border-t border-white/5 text-[10px] text-atmospheric hover:text-white transition-colors"
-                >
+                <div className="px-4 py-3 border-t border-white/5 text-[10px] text-on-surface/20">
                   <Lock className="w-2.5 h-2.5 inline mr-1 -mt-0.5" />
-                  {t("model.upgrade")}
-                </Link>
+                  {t("model.comingSoon")}
+                </div>
               )}
             </motion.div>
           )}
