@@ -379,11 +379,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem("locale") as Locale | null;
     if (saved && (saved === "en" || saved === "zh")) {
       setLocaleState(saved);
-    } else {
-      // Auto-detect from browser
-      const browserLang = navigator.language.toLowerCase();
-      setLocaleState(browserLang.startsWith("zh") ? "zh" : "en");
     }
+    // Default stays "en" if no saved preference
   }, []);
 
   const setLocale = useCallback((l: Locale) => {
