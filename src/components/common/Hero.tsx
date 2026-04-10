@@ -12,6 +12,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { MODELS, DEFAULT_MODEL } from "@/lib/models";
 import { useMembership } from "@/lib/useMembership";
+import { useI18n } from "@/lib/i18n";
 
 interface ToolResult {
   type: "image" | "text" | "recommend";
@@ -30,19 +31,19 @@ const categoryLabels: Record<string, string> = {
 };
 
 const SCENE_TEMPLATES = [
-  { icon: FileText, label: "写周报", prompt: "帮我推荐一个能快速写工作周报的AI工具", color: "from-blue-500/20 to-blue-600/5" },
-  { icon: ImageIcon, label: "做海报", prompt: "我想做一张活动宣传海报，有没有好用的AI设计工具？", color: "from-pink-500/20 to-pink-600/5" },
-  { icon: Video, label: "剪视频", prompt: "我想把长视频自动剪辑成短视频片段，推荐用哪个AI工具？", color: "from-purple-500/20 to-purple-600/5" },
-  { icon: Code, label: "写代码", prompt: "推荐一个适合我的AI编程助手", color: "from-green-500/20 to-green-600/5" },
-  { icon: Music, label: "做音乐", prompt: "我想用AI生成一首歌，有什么好用的工具？", color: "from-orange-500/20 to-orange-600/5" },
-  { icon: Compass, label: "建网站", prompt: "我想快速搭建一个网站，有什么AI建站工具推荐？", color: "from-cyan-500/20 to-cyan-600/5" },
+  { icon: FileText, labelKey: "hero.scene.report", prompt: "Recommend an AI tool for writing weekly work reports", color: "from-blue-500/20 to-blue-600/5" },
+  { icon: ImageIcon, labelKey: "hero.scene.poster", prompt: "I want to make a poster, recommend a good AI design tool", color: "from-pink-500/20 to-pink-600/5" },
+  { icon: Video, labelKey: "hero.scene.video", prompt: "I want to auto-edit long videos into short clips, which AI tool should I use?", color: "from-purple-500/20 to-purple-600/5" },
+  { icon: Code, labelKey: "hero.scene.code", prompt: "Recommend an AI coding assistant for me", color: "from-green-500/20 to-green-600/5" },
+  { icon: Music, labelKey: "hero.scene.music", prompt: "I want to generate a song with AI, what tools are good?", color: "from-orange-500/20 to-orange-600/5" },
+  { icon: Compass, labelKey: "hero.scene.website", prompt: "I want to quickly build a website, recommend AI website builders", color: "from-cyan-500/20 to-cyan-600/5" },
 ];
 
 const QUICK_ACTIONS = [
-  { label: "工具推荐", Icon: Compass, prompt: "根据我的需求推荐合适的AI工具" },
-  { label: "工具对比", Icon: GitCompareArrows, prompt: "帮我对比几款热门的AI工具，分析各自优缺点" },
-  { label: "AI 写作", Icon: PenTool, prompt: "帮我写一段文案" },
-  { label: "创意灵感", Icon: Lightbulb, prompt: "给我一些AI创作的灵感和点子" },
+  { labelKey: "action.recommend", Icon: Compass, prompt: "Recommend AI tools based on my needs" },
+  { labelKey: "action.compare", Icon: GitCompareArrows, prompt: "Compare popular AI tools and analyze their pros and cons" },
+  { labelKey: "action.writing", Icon: PenTool, prompt: "Help me write some content" },
+  { labelKey: "action.ideas", Icon: Lightbulb, prompt: "Give me some creative AI ideas and inspiration" },
 ];
 
 export function Hero() {
@@ -51,6 +52,7 @@ export function Hero() {
   const [loading, setLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL);
   const { isPro } = useMembership();
+  const { t } = useI18n();
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
@@ -168,17 +170,17 @@ export function Hero() {
               <Sparkles className="w-7 h-7 text-atmospheric" />
             </div>
             <h1 className="text-3xl md:text-4xl text-white text-center mb-2">
-              发现最好用的 <span className="text-atmospheric">AI 工具</span>
+              {t("hero.title.1")} <span className="text-atmospheric">{t("hero.title.2")}</span>
             </h1>
             <p className="text-on-surface/40 text-center font-light">
-              告诉我你想做什么，帮你找到最趁手的 AI 工具
+              {t("hero.subtitle")}
             </p>
 
             {/* Scene template cards */}
             <div className="grid grid-cols-3 gap-2 mt-8 w-full max-w-md mx-auto">
               {SCENE_TEMPLATES.map((scene, i) => (
                 <motion.button
-                  key={scene.label}
+                  key={scene.labelKey}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + i * 0.05 }}
@@ -186,7 +188,7 @@ export function Hero() {
                   className={`flex flex-col items-center gap-2 p-3 rounded-2xl bg-gradient-to-b ${scene.color} border border-white/5 hover:border-atmospheric/30 transition-all group`}
                 >
                   <scene.icon className="w-5 h-5 text-on-surface/40 group-hover:text-atmospheric transition-colors" />
-                  <span className="text-[11px] text-on-surface/50 group-hover:text-white transition-colors">{scene.label}</span>
+                  <span className="text-[11px] text-on-surface/50 group-hover:text-white transition-colors">{t(scene.labelKey)}</span>
                 </motion.button>
               ))}
             </div>
@@ -261,7 +263,7 @@ export function Hero() {
                   handleSend();
                 }
               }}
-              placeholder="问我任何问题..."
+              placeholder={t("hero.placeholder")}
               rows={3}
               className="w-full bg-transparent py-4 pl-5 pr-5 text-sm text-white placeholder:text-on-surface/30 focus:outline-none resize-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             />
@@ -272,16 +274,16 @@ export function Hero() {
             <div className="hidden sm:flex items-center gap-1.5 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all shrink-0">
                 <MessageSquare className="w-3 h-3" />
-                对话
+                {t("action.chat")}
               </button>
               {QUICK_ACTIONS.map((action) => (
                 <button
-                  key={action.label}
+                  key={action.labelKey}
                   onClick={() => handleSend(action.prompt)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] text-on-surface/50 hover:text-white hover:border-atmospheric/30 transition-all shrink-0"
                 >
                   <action.Icon className="w-3 h-3" />
-                  {action.label}
+                  {t(action.labelKey)}
                 </button>
               ))}
             </div>
@@ -326,7 +328,7 @@ export function Hero() {
               className="w-80 overflow-y-auto bg-surface/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 z-[9999]"
             >
               <div className="px-4 pt-4 pb-2">
-                <h3 className="text-xs font-semibold text-white">选择模型</h3>
+                <h3 className="text-xs font-semibold text-white">{t("model.title")}</h3>
               </div>
               <div className="px-2 pb-2">
                 {MODELS.map((group) => (
@@ -365,7 +367,7 @@ export function Hero() {
                   className="block px-4 py-3 border-t border-white/5 text-[10px] text-atmospheric hover:text-white transition-colors"
                 >
                   <Lock className="w-2.5 h-2.5 inline mr-1 -mt-0.5" />
-                  升级 Pro 解锁全部模型 →
+                  {t("model.upgrade")}
                 </Link>
               )}
             </motion.div>

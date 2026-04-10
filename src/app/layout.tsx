@@ -4,6 +4,7 @@ import { siteConfig } from "@/data/site";
 import { Chatbox } from "@/components/common";
 import { NavBar } from "@/components/common/NavBar";
 import { AuthProvider } from "@/lib/AuthContext";
+import { I18nProvider } from "@/lib/i18n";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body className="min-h-screen flex flex-col selection:bg-atmospheric/30 selection:text-white">
+        <I18nProvider>
         <AuthProvider>
           {/* Cinematic Smoke Background — GPU accelerated */}
           <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none will-change-transform">
@@ -85,6 +87,7 @@ export default function RootLayout({
           <Analytics />
           <SpeedInsights />
         </AuthProvider>
+        </I18nProvider>
       </body>
     </html>
   );

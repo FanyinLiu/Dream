@@ -5,10 +5,24 @@ import Link from "next/link";
 import { User, LogOut } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { useAuth } from "@/lib/AuthContext";
+import { useI18n } from "@/lib/i18n";
 import { AuthDialog } from "./AuthDialog";
+import { LangSwitch } from "./LangSwitch";
+
+const NAV_I18N_KEYS: Record<string, string> = {
+  "/": "nav.home",
+  "/create": "nav.create",
+  "/categories": "nav.categories",
+  "/recommend": "nav.recommend",
+  "/top": "nav.top",
+  "/compare": "nav.compare",
+  "/pricing": "nav.pricing",
+  "/about": "nav.about",
+};
 
 export function NavBar() {
   const { user, loading, signOut } = useAuth();
+  const { t } = useI18n();
   const [authOpen, setAuthOpen] = useState(false);
 
   return (
@@ -32,13 +46,13 @@ export function NavBar() {
                 href={item.href}
                 className="text-sm font-medium text-on-surface/60 hover:text-white transition-colors"
               >
-                {item.label}
+                {t(NAV_I18N_KEYS[item.href] ?? "") || item.label}
               </Link>
             ))}
           </div>
 
-          {/* Auth button */}
-          <div className="flex items-center gap-3">
+          {/* Right side */}
+          <div className="flex items-center gap-2">
             {/* Mobile nav */}
             <div className="md:hidden flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10">
               {siteConfig.navItems.map((item) => (
@@ -47,10 +61,12 @@ export function NavBar() {
                   href={item.href}
                   className="text-[11px] text-on-surface/60 hover:text-white transition-colors whitespace-nowrap"
                 >
-                  {item.label}
+                  {t(NAV_I18N_KEYS[item.href] ?? "") || item.label}
                 </Link>
               ))}
             </div>
+
+            <LangSwitch />
 
             {!loading && (
               user ? (
@@ -59,12 +75,11 @@ export function NavBar() {
                     href="/favorites"
                     className="text-xs text-on-surface/40 hover:text-white transition-colors hidden md:block"
                   >
-                    收藏
+                    {t("nav.favorites")}
                   </Link>
                   <button
                     onClick={signOut}
                     className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-on-surface/40 hover:text-white transition-colors"
-                    title="退出登录"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                   </button>
@@ -72,10 +87,10 @@ export function NavBar() {
               ) : (
                 <button
                   onClick={() => setAuthOpen(true)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-on-surface/60 hover:text-white hover:border-atmospheric/30 transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-on-surface/60 hover:text-white hover:border-atmospheric/30 transition-all"
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span className="hidden md:inline">登录</span>
+                  <span className="hidden md:inline">{t("nav.login")}</span>
                 </button>
               )
             )}
